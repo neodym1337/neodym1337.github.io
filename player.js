@@ -178,7 +178,58 @@ receiverApp.CastPlayer = function(element) {
    * @private {cast.receiver.MediaManager}
    */
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
-  this.mediaManager_.onLoad = this.onLoad_.bind(this);
+  this.mediaManager_.onLoad = function (event) {
+    var contentId = receiverApp.getValue_(event.data, ['media', 'contentId']);
+    if(window.mediaPlayer) {
+        window.mediaPlayer.unload(); // Ensure unload before loading again
+    }
+
+    //if (event.data['media'] && event.data['media']['contentId']) {
+    var url = contentId; //event.data['media']['contentId'];
+
+    mediaHost = new cast.player.api.Host({
+        'mediaElement': self.mediaElement_,
+        'url': url
+    });
+
+    mediaHost.onError = function (errorCode) {
+        console.error('### HOST ERROR - Fatal Error: code = ' + errorCode);
+        setHudMessage('mediaHostState', 'Fatal Error: code = ' + errorCode);
+        if (window.mediaPlayer) {
+            window.mediaPlayer.unload();
+        }
+    }
+
+    var initialTimeIndexSeconds = event.data['media']['currentTime'] || 0;
+    // TODO: real code would know what content it was going to access and this would not be here.
+    var protocol = null;
+
+    var parser = document.createElement('a');
+    parser.href = url;
+
+    var ext = ext = parser.pathname.split('.').pop();
+    if (ext === 'm3u8') {
+        protocol =  cast.player.api.CreateHlsStreamingProtocol(window.mediaHost);
+    } else if (ext === 'mpd') {
+        protocol = cast.player.api.CreateDashStreamingProtocol(window.mediaHost);
+    } else if (ext === 'ism/') {
+        protocol = cast.player.api.CreateSmoothStreamingProtocol(window.mediaHost);
+    }
+    console.log('### Media Protocol Identified as ' + ext);
+    setHudMessage('mediaProtocol', ext);
+
+    //if (protocol === null) {
+        // Call on original handler
+     //   window.mediaManager['onLoadOrig'](event); // Call on the original callback
+    //} else {
+        // Advanced Playback - HLS, MPEG DASH, SMOOTH STREAMING
+        // Player registers to listen to the media element events through the mediaHost property of the
+        // mediaElement
+    window.mediaPlayer = new cast.player.api.Player(mediaHost);
+    window.mediaPlayer.load(protocol, initialTimeIndexSeconds);
+    //}
+    //}
+  };
   this.mediaManager_.onStop = this.onStop_.bind(this);
   /*
   this.mediaManager_.onEnded = this.onEnded_.bind(this);
@@ -443,55 +494,7 @@ receiverApp.CastPlayer.prototype.onLoad_ = function(event) {
             //self.mediaElement_.autoplay = autoplay || true;
             //self.mediaElement_.src = contentId || '';
 
-            if(self.mediaPlayer) {
-                self.mediaPlayer.unload(); // Ensure unload before loading again
-            }
-
-            //if (event.data['media'] && event.data['media']['contentId']) {
-            var url = contentId; //event.data['media']['contentId'];
-
-            self.mediaHost = new cast.player.api.Host({
-                'mediaElement': self.mediaElement_,
-                'url': url
-            });
-
-            self.mediaHost.onError = function (errorCode) {
-                console.error('### HOST ERROR - Fatal Error: code = ' + errorCode);
-                setHudMessage('mediaHostState', 'Fatal Error: code = ' + errorCode);
-                if (self.mediaPlayer) {
-                    self.mediaPlayer.unload();
-                }
-            }
-
-            var initialTimeIndexSeconds = event.data['media']['currentTime'] || 0;
-            // TODO: real code would know what content it was going to access and this would not be here.
-            var protocol = null;
-
-            var parser = document.createElement('a');
-            parser.href = url;
-
-            var ext = ext = parser.pathname.split('.').pop();
-            if (ext === 'm3u8') {
-                protocol =  cast.player.api.CreateHlsStreamingProtocol(window.mediaHost);
-            } else if (ext === 'mpd') {
-                protocol = cast.player.api.CreateDashStreamingProtocol(window.mediaHost);
-            } else if (ext === 'ism/') {
-                protocol = cast.player.api.CreateSmoothStreamingProtocol(window.mediaHost);
-            }
-            console.log('### Media Protocol Identified as ' + ext);
-            setHudMessage('mediaProtocol', ext);
-
-            //if (protocol === null) {
-                // Call on original handler
-             //   window.mediaManager['onLoadOrig'](event); // Call on the original callback
-            //} else {
-                // Advanced Playback - HLS, MPEG DASH, SMOOTH STREAMING
-                // Player registers to listen to the media element events through the mediaHost property of the
-                // mediaElement
-            self.mediaPlayer = new cast.player.api.Player(self.mediaHost);
-            self.mediaPlayer.load(protocol, initialTimeIndexSeconds);
-            //}
-            //}
+            
 
       break;
   }
