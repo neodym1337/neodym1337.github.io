@@ -46,6 +46,11 @@ receiverApp.State = {
   IDLE: 'idle'
 };
 
+window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
+    //alert("Error occured: " + errorMsg);//or any message
+    setHudMessage('errorMessage', lineNumber +' ' + errorMsg);
+    return false;
+}
 
 function setHudMessage(elementId, message) {
     document.getElementById(elementId).innerHTML = '' + JSON.stringify(message);
