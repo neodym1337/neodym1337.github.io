@@ -89,8 +89,8 @@ window.onload = function() {
       window.player = new receiverApp.CastPlayer(playerDiv);
       window.castreceiver.start(window.castreceiver);
 
-      cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
-      cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
+      //cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
+      //cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
 
       console.log('### Application Loaded. Starting system.');
         setHudMessage('applicationState','Loaded. Starting up.');
