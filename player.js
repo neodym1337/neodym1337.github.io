@@ -46,6 +46,11 @@ receiverApp.State = {
   IDLE: 'idle'
 };
 
+
+function setHudMessage(elementId, message) {
+    document.getElementById(elementId).innerHTML = '' + JSON.stringify(message);
+}
+
 /**
  * <p>
  * If we are running only in Chrome, then run with only the player - let's us
@@ -81,8 +86,105 @@ window.onload = function() {
 
       cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
       cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
+
+      console.log('### Application Loaded. Starting system.');
+        setHudMessage('applicationState','Loaded. Starting up.');
   }
 }
+ /**
+         * Called to process 'ready' event. Only called after calling castReceiverManager.start(config) and the
+         * system becomes ready to start receiving messages.
+         *
+         * @param {cast.receiver.CastReceiverManager.Event} event - can be null
+         *
+         * There is no default handler
+         */
+        window.castreceiver.onReady = function(event) {
+            console.log("### Cast Receiver Manager is READY: " + JSON.stringify(event));
+            setHudMessage('castReceiverManagerMessage', 'READY: ' + JSON.stringify(event));
+            setHudMessage('applicationState','Loaded. Started. Ready.');
+        }
+
+        /**
+         * If provided, it processes the 'senderconnected' event.
+         * Called to process the 'senderconnected' event.
+         * @param {cast.receiver.CastReceiverManager.Event} event - can be null
+         *
+         * There is no default handler
+         */
+        window.castreceiver.onSenderConnected = function(event) {
+            console.log("### Cast Receiver Manager - Sender Connected : " + JSON.stringify(event));
+            setHudMessage('castReceiverManagerMessage', 'Sender Connected: ' + JSON.stringify(event));
+
+            // TODO - add sender and grab CastChannel from CastMessageBus.getCastChannel(senderId)
+            var senders = window.castReceiverManager.getSenders();
+            setHudMessage('sessionCount', '' + senders.length);
+        }
+
+        /**
+         * If provided, it processes the 'senderdisconnected' event.
+         * Called to process the 'senderdisconnected' event.
+         * @param {cast.receiver.CastReceiverManager.Event} event - can be null
+         *
+         * There is no default handler
+         */
+        window.castreceiver.onSenderDisconnected = function(event) {
+            console.log("### Cast Receiver Manager - Sender Disconnected : " + JSON.stringify(event));
+            setHudMessage('castReceiverManagerMessage', 'Sender Disconnected: ' + JSON.stringify(event));
+
+            var senders = window.castReceiverManager.getSenders();
+            setHudMessage('sessionCount', '' + senders.length);
+
+            //If last sender explicity disconnects, turn off
+            if(senders.length == 0 && event.reason == cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER)
+              window.close();
+        }
+
+        /**
+         * If provided, it processes the 'systemvolumechanged' event.
+         * Called to process the 'systemvolumechanged' event.
+         * @param {cast.receiver.CastReceiverManager.Event} event - can be null
+         *
+         * There is no default handler
+         */
+        window.castreceiver.onSystemVolumeChanged = function(event) {
+            console.log("### Cast Receiver Manager - System Volume Changed : " + JSON.stringify(event));
+            setHudMessage('castReceiverManagerMessage', 'System Volume Changed: ' + JSON.stringify(event));
+
+            // See cast.receiver.media.Volume
+            console.log("### Volume: " + event.data['level'] + " is muted? " + event.data['muted']);
+            setHudMessage('volumeMessage', 'Level: ' + event.data['level'] + ' -- muted? ' + event.data['muted']);
+        }
+
+        /**
+         * Called to process the 'visibilitychanged' event.
+         *
+         * Fired when the visibility of the application has changed (for example
+         * after a HDMI Input change or when the TV is turned off/on and the cast
+         * device is externally powered). Note that this API has the same effect as
+         * the webkitvisibilitychange event raised by your document, we provided it
+         * as CastReceiverManager API for convenience and to avoid a dependency on a
+         * webkit-prefixed event.
+         *
+         * @param {cast.receiver.CastReceiverManager.Event} event - can be null
+         *
+         * There is no default handler for this event type.
+         */
+        window.castreceiver.onVisibilityChanged = function(event) {
+            console.log("### Cast Receiver Manager - Visibility Changed : " + JSON.stringify(event));
+            setHudMessage('castReceiverManagerMessage', 'Visibility Changed: ' + JSON.stringify(event));
+
+            /** check if visible and pause media if not - add a timer to tear down after a period of time
+               if visibilty does not change back **/
+            if (event.data) { // It is visible
+                window.mediaElement.play(); // Resume media playback
+                window.clearTimeout(window.timeout); // Turn off the timeout
+                window.timeout = null;
+            } else {
+                window.mediaElement.pause(); // Pause playback
+                window.timeout = window.setTimeout(function(){window.close();}, 10000); // 10 Minute timeout
+            }
+        }
 
 /**
  * <p>
@@ -166,7 +268,14 @@ receiverApp.CastPlayer = function(element) {
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
   this.mediaManager_.onLoad = this.onLoad_.bind(this);
   this.mediaManager_.onStop = this.onStop_.bind(this);
-
+  /*
+  this.mediaManager_.onEnded = this.onEnded_.bind(this);
+  this.mediaManager_.onError = this.onError_.bind(this);
+  this.mediaManager_.onGetStatus = this.onGetStatus_.bind(this);
+  this.mediaManager_.onLoadMetadataError = this.onLoadMetadataError_.bind(this);
+  this.mediaManager_.onPause = this.onPause_.bind(this);
+  this.mediaManager_.onPlay = this.onPlay_.bind(this);
+    */
 };
 
 /**
