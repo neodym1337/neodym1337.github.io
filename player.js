@@ -458,7 +458,7 @@ receiverApp.CastPlayer.prototype.onLoad_ = function(event) {
             self.mediaHost.onError = function (errorCode) {
                 console.error('### HOST ERROR - Fatal Error: code = ' + errorCode);
                 setHudMessage('mediaHostState', 'Fatal Error: code = ' + errorCode);
-                if (self.mediaPlayer !== null) {
+                if (self.mediaPlayer) {
                     self.mediaPlayer.unload();
                 }
             }
