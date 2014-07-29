@@ -56,8 +56,6 @@ function setHudMessage(elementId, message) {
     document.getElementById(elementId).innerHTML = '' + JSON.stringify(message);
 }
 
-setHudMessage("castObject", JSON.stringify(cast));
-
 /**
  * <p>
  * If we are running only in Chrome, then run with only the player - let's us
