@@ -48,7 +48,7 @@ receiverApp.State = {
 
 window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
     //alert("Error occured: " + errorMsg);//or any message
-    setHudMessage('errorMessage', lineNumber +' ' + errorMsg);
+    setHudMessage('errorMessage', url + ' ' + lineNumber +' ' + errorMsg);
     return false;
 }
 
