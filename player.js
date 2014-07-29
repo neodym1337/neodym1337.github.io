@@ -187,7 +187,7 @@ receiverApp.CastPlayer = function(element) {
     //if (event.data['media'] && event.data['media']['contentId']) {
     var url = contentId; //event.data['media']['contentId'];
 
-    mediaHost = new cast.player.api.Host({
+    var mediaHost = new cast.player.api.Host({
         'mediaElement': self.mediaElement_,
         'url': url
     });
@@ -209,11 +209,11 @@ receiverApp.CastPlayer = function(element) {
 
     var ext = ext = parser.pathname.split('.').pop();
     if (ext === 'm3u8') {
-        protocol =  cast.player.api.CreateHlsStreamingProtocol(window.mediaHost);
+        protocol =  cast.player.api.CreateHlsStreamingProtocol(mediaHost);
     } else if (ext === 'mpd') {
-        protocol = cast.player.api.CreateDashStreamingProtocol(window.mediaHost);
+        protocol = cast.player.api.CreateDashStreamingProtocol(mediaHost);
     } else if (ext === 'ism/') {
-        protocol = cast.player.api.CreateSmoothStreamingProtocol(window.mediaHost);
+        protocol = cast.player.api.CreateSmoothStreamingProtocol(mediaHost);
     }
     console.log('### Media Protocol Identified as ' + ext);
     setHudMessage('mediaProtocol', ext);
