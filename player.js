@@ -443,7 +443,7 @@ receiverApp.CastPlayer.prototype.onLoad_ = function(event) {
             //self.mediaElement_.autoplay = autoplay || true;
             //self.mediaElement_.src = contentId || '';
 
-            if(self.mediaPlayer !== null) {
+            if(self.mediaPlayer) {
                 self.mediaPlayer.unload(); // Ensure unload before loading again
             }
 
