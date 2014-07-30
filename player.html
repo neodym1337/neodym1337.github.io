@@ -915,7 +915,7 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT SEEKED " + e);
 
         clearTimeout(this.seekingTimeout_);
-        window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(this.element_,
+        window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
                 'seeking', 3000);
 
         setHudMessage('mediaElementState','Seeked');
