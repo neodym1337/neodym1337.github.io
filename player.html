@@ -149,7 +149,6 @@ The overlay layer holds:
     window.mediaElement = playerDiv.querySelector('video');
     window.mediaElement.autoplay = true;
 
-    window.player = new sampleplayer.CastPlayer(playerDiv); // NEW OBJECT
 
 // CASTPLAYER
 
@@ -344,6 +343,9 @@ The overlay layer holds:
         element.style.webkitTransition = 'opacity ' + time + 's';
         element.style.opacity = opacity;
     };
+
+
+    window.player = new sampleplayer.CastPlayer(playerDiv); // NEW OBJECT
 
 
     console.log('### Application Loaded. Starting system.');
