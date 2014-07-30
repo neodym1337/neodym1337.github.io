@@ -851,6 +851,7 @@ The overlay layer holds:
     window.mediaElement.addEventListener('canplay', function(e){
         console.log("######### MEDIA ELEMENT CAN PLAY");
         setHudMessage('mediaElementState','Can Play');
+        window.player.setState_(sampleplayer.State.PLAYING, false);
     });
     window.mediaElement.addEventListener('ended', function(e){
         console.log("######### MEDIA ELEMENT ENDED");
@@ -860,7 +861,6 @@ The overlay layer holds:
     });
     window.mediaElement.addEventListener('playing', function(e){
         console.log("######### MEDIA ELEMENT PLAYING");
-
         var isLoading = window.player.state_ == sampleplayer.State.LOADING;
         var xfade = isLoading;
         var delay = !isLoading ? 0 : 3000;      // 3 seconds
