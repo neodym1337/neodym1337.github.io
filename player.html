@@ -257,7 +257,7 @@ The overlay layer holds:
      */
     sampleplayer.setBackgroundImage_ = function(element, url) {
         element.style.backgroundImage = (url ? 'url("' + url + '")' : 'none');
-        element.style.display = (url ? '' : 'none');
+        element.style.display = '';//(url ? '' : 'none');
     };
 
     /**
