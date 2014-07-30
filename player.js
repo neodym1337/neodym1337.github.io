@@ -20,11 +20,23 @@ function setHudMessage(elementId, message) {
 
 /** @type {HTMLMediaElement} */
 
-var playerDiv = document.getElementById('player');
+window.onload = function() {
+    var userAgent = window.navigator.userAgent;
+    var playerDiv = document.getElementById('player');
 
-window.mediaElement = playerDiv.querySelector('video');
+    window.mediaElement = playerDiv.querySelector('video');
+    
+    cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
-window.mediaElement.autoplay = true;
+    window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+
+}
+
+//var playerDiv = document.getElementById('player');
+
+//window.mediaElement = playerDiv.querySelector('video');
+
+//window.mediaElement.autoplay = true;
 
 console.log('### Application Loaded. Starting system.');
 setHudMessage('applicationState','Loaded. Starting up.');
@@ -47,9 +59,7 @@ setHudMessage('applicationState','Loaded. Starting up.');
  * No logging.
  * NONE
  **/
-cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
-window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
 
 /**
  * Called to process 'ready' event. Only called after calling castReceiverManager.start(config) and the
