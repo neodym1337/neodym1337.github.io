@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="45c9feec-f6e9-4747-a8f3-f251874110bd" name="Default" comment="" />
+    <ignored path="neodym1337.github.io.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file leaf-file-name="player.js" pinned="false" current="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/sampleReceiver/player.js">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state vertical-scroll-proportion="0.014608234" vertical-offset="5419" max-vertical-offset="8685">
+                    <caret line="376" column="2" selection-start-line="376" selection-start-column="2" selection-end-line="376" selection-end-column="2" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="neodym1337.github.io" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="player.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/player.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="7.883959" vertical-offset="4305" max-vertical-offset="14610">
+              <caret line="749" column="0" selection-start-line="749" selection-start-column="0" selection-end-line="749" selection-end-column="0" />
+              <folding>
+                <marker date="1406720164000" expanded="true" signature="3292:3375" placeholder="/** The amount of time in a given state before the player goes idle. ...*/" />
+                <marker date="1406720164000" expanded="true" signature="3434:3796" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="3804:10178" placeholder="/** Describes the type of media being played ...*/" />
+                <marker date="1406720164000" expanded="true" signature="10258:10306" placeholder="{&quot;IMAGE&quot;: 'image'...}" />
+                <marker date="1406720164000" expanded="true" signature="10357:10569" placeholder="/** Describes the state of the player ...*/" />
+                <marker date="1406720164000" expanded="true" signature="10595:10907" placeholder="{&quot;LAUNCHING&quot;: 'launching'...}" />
+                <marker date="1406720164000" expanded="true" signature="11436:11479" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="17715:18207" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="18131:18194" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="18200:18210" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="18464:18634" placeholder="/** Called when the media ends. ...*/" />
+                <marker date="1406720164000" expanded="true" signature="18672:18730" placeholder="/** Called when the media ends ...*/" />
+                <marker date="1406720164000" expanded="true" signature="18819:18888" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="18937:19103" placeholder="/** Default implementation of onError. ...*/" />
+                <marker date="1406720164000" expanded="true" signature="19176:19255" placeholder="/** Called when there is an error not triggered by a LOAD request ...*/" />
+                <marker date="1406720164000" expanded="true" signature="19370:19522" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="24197:24776" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="24861:25062" placeholder="/** Default implementation of the set volume event. ...*/" />
+                <marker date="1406720164000" expanded="true" signature="25145:25210" placeholder="/** Process set volume event ...*/" />
+                <marker date="1406720164000" expanded="true" signature="25265:25455" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="25620:26874" placeholder="/** Processes the stop event. ...*/" />
+                <marker date="1406720164000" expanded="true" signature="27061:27257" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="27343:27815" placeholder="/** Default implementation for the load event. ...*/" />
+                <marker date="1406720164000" expanded="true" signature="27921:28076" placeholder="/** Processes the load event. ...*/" />
+                <marker date="1406720164000" expanded="true" signature="28204:30831" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="31191:31782" placeholder="/** Maximum time in seconds before closing an idle ...*/" />
+                <marker date="1406720164000" expanded="true" signature="32058:32296" placeholder="/** Initializes the system manager. The application should call this method when ...*/" />
+                <marker date="1406720164000" expanded="true" signature="32730:33430" placeholder="/**play - The process of play has started ...*/" />
+                <marker date="1406720164000" expanded="true" signature="33735:33842" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="34224:35325" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="35436:35454" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="36097:36162" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="36425:36438" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="36557:36623" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="36784:36992" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="37094:37279" placeholder="/** ALTERNATIVE TO onVisibilityChanged ...*/" />
+                <marker date="1406720164000" expanded="true" signature="37407:37772" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="37413:37575" placeholder="{...}" />
+                <marker date="1406720164000" expanded="true" signature="37581:37766" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="player.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sampleReceiver/player.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="670" max-vertical-offset="4770">
+              <caret line="72" column="15" selection-start-line="72" selection-start-column="15" selection-end-line="72" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="player.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sampleReceiver/player.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-11.0" vertical-offset="261" max-vertical-offset="1140">
+              <caret line="35" column="6" selection-start-line="35" selection-start-column="6" selection-end-line="35" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="player.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sampleReceiver/player.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1853" max-vertical-offset="8685">
+              <caret line="201" column="79" selection-start-line="201" selection-start-column="79" selection-end-line="201" selection-end-column="79" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="true" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/sampleReceiver/player.css" />
+        <option value="$PROJECT_DIR$/player.html" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="177" />
+    <option name="y" value="121" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="1" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neodym1337.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neodym1337.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neodym1337.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neodym1337.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neodym1337.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sampleReceiver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neodym1337.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="neodym1337.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="customReceiver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="fileColors" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="FullScreen" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/customReceiver" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="name" value="Dart" />
+      <option name="saveOutputToFile" value="false" />
+      <option name="showConsoleOnStdErr" value="false" />
+      <option name="showConsoleOnStdOut" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
+      <setting name="configLocationType" value="CONFIG_FILE" />
+      <setting name="settingsFile" value="" />
+      <setting name="serverType" value="INTERNAL" />
+      <setting name="preferredDebugBrowser" value="Chrome" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="CucumberJavaScriptRunConfigurationType" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" />
+      <option name="executablePath" />
+      <option name="filePath" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="">
+      <method />
+    </configuration>
+    <list size="0" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="45c9feec-f6e9-4747-a8f3-f251874110bd" name="Default" comment="" />
+      <created>1406709373867</created>
+      <updated>1406709373867</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="177" y="121" width="1400" height="1000" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/player.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9885">
+          <caret line="64" column="19" selection-start-line="64" selection-start-column="13" selection-end-line="64" selection-end-column="19" />
+          <folding>
+            <marker date="1406720164000" expanded="true" signature="3292:3375" placeholder="/** The amount of time in a given state before the player goes idle. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="3434:3796" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="3804:10178" placeholder="/** Describes the type of media being played ...*/" />
+            <marker date="1406720164000" expanded="true" signature="10258:10306" placeholder="{&quot;IMAGE&quot;: 'image'...}" />
+            <marker date="1406720164000" expanded="true" signature="10357:10569" placeholder="/** Describes the state of the player ...*/" />
+            <marker date="1406720164000" expanded="true" signature="10595:10907" placeholder="{&quot;LAUNCHING&quot;: 'launching'...}" />
+            <marker date="1406720164000" expanded="true" signature="11436:11479" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="17715:18207" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="18131:18194" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="18200:18210" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="18464:18634" placeholder="/** Called when the media ends. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="18672:18730" placeholder="/** Called when the media ends ...*/" />
+            <marker date="1406720164000" expanded="true" signature="18819:18888" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="18937:19103" placeholder="/** Default implementation of onError. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="19176:19255" placeholder="/** Called when there is an error not triggered by a LOAD request ...*/" />
+            <marker date="1406720164000" expanded="true" signature="19370:19522" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="24197:24776" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="24861:25062" placeholder="/** Default implementation of the set volume event. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="25145:25210" placeholder="/** Process set volume event ...*/" />
+            <marker date="1406720164000" expanded="true" signature="25265:25455" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="25620:26874" placeholder="/** Processes the stop event. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="27061:27257" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="27343:27815" placeholder="/** Default implementation for the load event. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="27921:28076" placeholder="/** Processes the load event. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="28204:30831" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="31191:31782" placeholder="/** Maximum time in seconds before closing an idle ...*/" />
+            <marker date="1406720164000" expanded="true" signature="32058:32296" placeholder="/** Initializes the system manager. The application should call this method when ...*/" />
+            <marker date="1406720164000" expanded="true" signature="32730:33430" placeholder="/**play - The process of play has started ...*/" />
+            <marker date="1406720164000" expanded="true" signature="33735:33842" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="34224:35325" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="35436:35454" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="36097:36162" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="36425:36438" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="36557:36623" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="36784:36992" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="37094:37279" placeholder="/** ALTERNATIVE TO onVisibilityChanged ...*/" />
+            <marker date="1406720164000" expanded="true" signature="37407:37772" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="37413:37575" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="37581:37766" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sampleReceiver/player.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="670" max-vertical-offset="4770">
+          <caret line="72" column="15" selection-start-line="72" selection-start-column="15" selection-end-line="72" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sampleReceiver/player.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="261" max-vertical-offset="1140">
+          <caret line="35" column="6" selection-start-line="35" selection-start-column="6" selection-end-line="35" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sampleReceiver/player.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1883" max-vertical-offset="8895">
+          <caret line="543" column="0" selection-start-line="543" selection-start-column="0" selection-end-line="543" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/player.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8895">
+          <caret line="25" column="0" selection-start-line="24" selection-start-column="4" selection-end-line="26" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sampleReceiver/player.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="670" max-vertical-offset="4770">
+          <caret line="72" column="15" selection-start-line="72" selection-start-column="15" selection-end-line="72" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sampleReceiver/player.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.0" vertical-offset="261" max-vertical-offset="1140">
+          <caret line="35" column="6" selection-start-line="35" selection-start-column="6" selection-end-line="35" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33247754" vertical-offset="17471" max-vertical-offset="57240">
+          <caret line="1182" column="17" selection-start-line="1182" selection-start-column="17" selection-end-line="1182" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sampleReceiver/player.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1853" max-vertical-offset="8685">
+          <caret line="201" column="79" selection-start-line="201" selection-start-column="79" selection-end-line="201" selection-end-column="79" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/player.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="7.883959" vertical-offset="4305" max-vertical-offset="14610">
+          <caret line="749" column="0" selection-start-line="749" selection-start-column="0" selection-end-line="749" selection-end-column="0" />
+          <folding>
+            <marker date="1406720164000" expanded="true" signature="3292:3375" placeholder="/** The amount of time in a given state before the player goes idle. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="3434:3796" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="3804:10178" placeholder="/** Describes the type of media being played ...*/" />
+            <marker date="1406720164000" expanded="true" signature="10258:10306" placeholder="{&quot;IMAGE&quot;: 'image'...}" />
+            <marker date="1406720164000" expanded="true" signature="10357:10569" placeholder="/** Describes the state of the player ...*/" />
+            <marker date="1406720164000" expanded="true" signature="10595:10907" placeholder="{&quot;LAUNCHING&quot;: 'launching'...}" />
+            <marker date="1406720164000" expanded="true" signature="11436:11479" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="17715:18207" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="18131:18194" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="18200:18210" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="18464:18634" placeholder="/** Called when the media ends. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="18672:18730" placeholder="/** Called when the media ends ...*/" />
+            <marker date="1406720164000" expanded="true" signature="18819:18888" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="18937:19103" placeholder="/** Default implementation of onError. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="19176:19255" placeholder="/** Called when there is an error not triggered by a LOAD request ...*/" />
+            <marker date="1406720164000" expanded="true" signature="19370:19522" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="24197:24776" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="24861:25062" placeholder="/** Default implementation of the set volume event. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="25145:25210" placeholder="/** Process set volume event ...*/" />
+            <marker date="1406720164000" expanded="true" signature="25265:25455" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="25620:26874" placeholder="/** Processes the stop event. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="27061:27257" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="27343:27815" placeholder="/** Default implementation for the load event. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="27921:28076" placeholder="/** Processes the load event. ...*/" />
+            <marker date="1406720164000" expanded="true" signature="28204:30831" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="31191:31782" placeholder="/** Maximum time in seconds before closing an idle ...*/" />
+            <marker date="1406720164000" expanded="true" signature="32058:32296" placeholder="/** Initializes the system manager. The application should call this method when ...*/" />
+            <marker date="1406720164000" expanded="true" signature="32730:33430" placeholder="/**play - The process of play has started ...*/" />
+            <marker date="1406720164000" expanded="true" signature="33735:33842" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="34224:35325" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="35436:35454" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="36097:36162" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="36425:36438" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="36557:36623" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="36784:36992" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="37094:37279" placeholder="/** ALTERNATIVE TO onVisibilityChanged ...*/" />
+            <marker date="1406720164000" expanded="true" signature="37407:37772" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="37413:37575" placeholder="{...}" />
+            <marker date="1406720164000" expanded="true" signature="37581:37766" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+
