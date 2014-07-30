@@ -306,6 +306,75 @@ window.onload = function() {
                 }
             }
         }
+
+                /**
+         play - The process of play has started
+         waiting - When the video stops due to buffering
+         volumechange - volume has changed
+         stalled - trying to get data, but not available
+         ratechange - some speed changed
+         canplay - It is possible to start playback, but no guarantee of not buffering
+         canplaythrough - It seems likely that we can play w/o buffering issues
+         ended - the video has finished
+         error - error occured during loading of the video
+         playing - when the video has started playing
+         seeking - started seeking
+         seeked - seeking has completed
+
+         http://www.w3.org/2010/05/video/mediaevents.html for more info.
+         **/
+        window.mediaElement.addEventListener('loadstart', function(e){
+            console.log("######### MEDIA ELEMENT LOAD START");
+            setHudMessage('mediaElementState','Load Start');
+        });
+        window.mediaElement.addEventListener('loadeddata', function(e){
+            console.log("######### MEDIA ELEMENT DATA LOADED");
+            setHudMessage('mediaElementState','Data Loaded');
+        });
+        window.mediaElement.addEventListener('canplay', function(e){
+            console.log("######### MEDIA ELEMENT CAN PLAY");
+            setHudMessage('mediaElementState','Can Play');  
+        });
+        window.mediaElement.addEventListener('ended', function(e){
+            console.log("######### MEDIA ELEMENT ENDED");
+            setHudMessage('mediaElementState','Ended');
+        });
+        window.mediaElement.addEventListener('playing', function(e){
+            console.log("######### MEDIA ELEMENT PLAYING");
+            setHudMessage('mediaElementState','Playing');
+        });
+        window.mediaElement.addEventListener('waiting', function(e){
+            console.log("######### MEDIA ELEMENT WAITING");
+            setHudMessage('mediaElementState','Waiting');
+        });
+        window.mediaElement.addEventListener('stalled', function(e){
+            console.log("######### MEDIA ELEMENT STALLED");
+            setHudMessage('mediaElementState','Stalled');
+        });
+        window.mediaElement.addEventListener('error', function(e){
+            console.log("######### MEDIA ELEMENT ERROR " + e);
+            setHudMessage('mediaElementState','Error');
+        });
+        window.mediaElement.addEventListener('abort', function(e){
+            console.log("######### MEDIA ELEMENT ABORT " + e);
+            setHudMessage('mediaElementState','Abort');
+        });
+        window.mediaElement.addEventListener('suspend', function(e){
+            console.log("######### MEDIA ELEMENT SUSPEND " + e);
+            setHudMessage('mediaElementState','Suspended');
+        });
+        window.mediaElement.addEventListener('progress', function(e){
+            setHudMessage('mediaElementState','Progress');
+        });
+
+        window.mediaElement.addEventListener('seeking', function(e){
+            console.log("######### MEDIA ELEMENT SEEKING " + e);
+            setHudMessage('mediaElementState','Seeking');
+        });
+        window.mediaElement.addEventListener('seeked', function(e){
+            console.log("######### MEDIA ELEMENT SEEKED " + e);
+            setHudMessage('mediaElementState','Seeked');
+        });
 }
 
 //var playerDiv = document.getElementById('player');
@@ -495,74 +564,7 @@ appConfig.maxInactivity = 6000; // 10 minutes for testing, use default 10sec in 
 window.castReceiverManager.start(appConfig);
 
 
-/**
- play - The process of play has started
- waiting - When the video stops due to buffering
- volumechange - volume has changed
- stalled - trying to get data, but not available
- ratechange - some speed changed
- canplay - It is possible to start playback, but no guarantee of not buffering
- canplaythrough - It seems likely that we can play w/o buffering issues
- ended - the video has finished
- error - error occured during loading of the video
- playing - when the video has started playing
- seeking - started seeking
- seeked - seeking has completed
 
- http://www.w3.org/2010/05/video/mediaevents.html for more info.
- **/
-window.mediaElement.addEventListener('loadstart', function(e){
-    console.log("######### MEDIA ELEMENT LOAD START");
-    setHudMessage('mediaElementState','Load Start');
-});
-window.mediaElement.addEventListener('loadeddata', function(e){
-    console.log("######### MEDIA ELEMENT DATA LOADED");
-    setHudMessage('mediaElementState','Data Loaded');
-});
-window.mediaElement.addEventListener('canplay', function(e){
-    console.log("######### MEDIA ELEMENT CAN PLAY");
-    setHudMessage('mediaElementState','Can Play');  
-});
-window.mediaElement.addEventListener('ended', function(e){
-    console.log("######### MEDIA ELEMENT ENDED");
-    setHudMessage('mediaElementState','Ended');
-});
-window.mediaElement.addEventListener('playing', function(e){
-    console.log("######### MEDIA ELEMENT PLAYING");
-    setHudMessage('mediaElementState','Playing');
-});
-window.mediaElement.addEventListener('waiting', function(e){
-    console.log("######### MEDIA ELEMENT WAITING");
-    setHudMessage('mediaElementState','Waiting');
-});
-window.mediaElement.addEventListener('stalled', function(e){
-    console.log("######### MEDIA ELEMENT STALLED");
-    setHudMessage('mediaElementState','Stalled');
-});
-window.mediaElement.addEventListener('error', function(e){
-    console.log("######### MEDIA ELEMENT ERROR " + e);
-    setHudMessage('mediaElementState','Error');
-});
-window.mediaElement.addEventListener('abort', function(e){
-    console.log("######### MEDIA ELEMENT ABORT " + e);
-    setHudMessage('mediaElementState','Abort');
-});
-window.mediaElement.addEventListener('suspend', function(e){
-    console.log("######### MEDIA ELEMENT SUSPEND " + e);
-    setHudMessage('mediaElementState','Suspended');
-});
-window.mediaElement.addEventListener('progress', function(e){
-    setHudMessage('mediaElementState','Progress');
-});
-
-window.mediaElement.addEventListener('seeking', function(e){
-    console.log("######### MEDIA ELEMENT SEEKING " + e);
-    setHudMessage('mediaElementState','Seeking');
-});
-window.mediaElement.addEventListener('seeked', function(e){
-    console.log("######### MEDIA ELEMENT SEEKED " + e);
-    setHudMessage('mediaElementState','Seeked');
-});
 
 /**
  * ALTERNATIVE TO onVisibilityChanged
