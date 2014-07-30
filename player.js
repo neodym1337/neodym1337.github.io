@@ -1,622 +1,564 @@
 
 "use strict";
 
-
-// 192.168.188.136:9222
-
-// Create the namespace
- 
-window.receiverApp = window.receiverApp || {};
-
-/**
- * The amount of time in a given state before the player goes idle.
- */
-receiverApp.IDLE_TIMEOUT = {
-  LAUNCHING: 30 * 1000,    // 30 seconds
-  LOADING: 3000 * 1000,    // 50 minutes
-  PAUSED: 30 * 1000,       // 10 minutes normally, use 30 seconds for demo
-  STALLED: 30 * 1000,      // 30 seconds
-  DONE: 30 * 1000,         // 5 minutes normally, use 30 seconds for demo
-  IDLE: 30 * 1000          // 5 minutes normally, use 30 seconds for demo
-};
-
-/**
- * Describes the type of media being played
- *
- * @enum {string}
- */
-receiverApp.Type = {
-  IMAGE: 'image',
-  VIDEO: 'video'
-};
-
-/**
- * Describes the state of the player
- *
- * @enum {string}
- */
-receiverApp.State = {
-  LAUNCHING: 'launching',
-  LOADING: 'loading',
-  BUFFERING: 'buffering',
-  PLAYING: 'playing',
-  PAUSED: 'paused',
-  STALLED: 'stalled',
-  DONE: 'done',
-  IDLE: 'idle'
-};
-
-window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
-    //alert("Error occured: " + errorMsg);//or any message
-    setHudMessage('errorMessage', url + ' ' + lineNumber +' ' + errorMsg);
-    return false;
-}
+window.castReceiverManager = null;
+window.mediaManager = null;
+window.messageBus = null;
+window.mediaElement = null;
+window.mediaHost = null;
+window.mediaProtocol = null;
+window.mediaPlayer = null;
+window.connectedCastSenders = []; // {senderId:'', channel:obj}
 
 function setHudMessage(elementId, message) {
     document.getElementById(elementId).innerHTML = '' + JSON.stringify(message);
 }
 
+// Initialize the receiver SDK before starting the app-specific logic
+
+window.mediaElement = document.getElementById('receiverVideoElement');
+window.mediaElement.autoplay = true;
+
+console.log('### Application Loaded. Starting system.');
+setHudMessage('applicationState','Loaded. Starting up.');
+
 /**
- * <p>
- * If we are running only in Chrome, then run with only the player - let's us
- * test things. If on a Chromecast then we get everything and remote control
- * should work.
- * </p>
- * <p>
- * In the Chromecast case, we:
- * </p>
- * <ol>
- * <li>Get and start the CastReceiver</li>
- * <li>Setup the slideshow channel</li>
- * <li>Start the player (this)</li>
- * </ol>
+ * Sets the log verbosity level.
  *
- * @param {Element} element the element to attach the player
- * @constructor
- * @export
+ * Debug logging (all messages).
+ * DEBUG
+ *
+ * Verbose logging (sender messages).
+ * VERBOSE
+ *
+ * Info logging (events, general logs).x
+ * INFO
+ *
+ * Error logging (errors).
+ * ERROR
+ *
+ * No logging.
+ * NONE
+ **/
+cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
+
+window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+
+/**
+ * Called to process 'ready' event. Only called after calling castReceiverManager.start(config) and the
+ * system becomes ready to start receiving messages.
+ *
+ * @param {cast.receiver.CastReceiverManager.Event} event - can be null
+ *
+ * There is no default handler
  */
-window.onload = function() {
-  var userAgent = window.navigator.userAgent;
-  var playerDiv = document.getElementById('player');
-// If you want to do some development using the Chrome browser, and then run on
-// a Chromecast you can check the userAgent to see what your running on, then
-// you would only initialize the receiver code when you are actually on a
-// Chromecast device.
-  if (!((userAgent.indexOf('CrKey') > -1) || (userAgent.indexOf('TV') > -1))) {
-      window.player = new receiverApp.CastPlayer(playerDiv);
-  } else {
-      window.castreceiver = cast.receiver.CastReceiverManager.getInstance();
-      window.player = new receiverApp.CastPlayer(playerDiv);
-      window.castreceiver.start(window.castreceiver);
-
-      //cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
-      //cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
-
-      console.log('### Application Loaded. Starting system.');
-        setHudMessage('applicationState','Loaded. Starting up.');
-  }
+window.castReceiverManager.onReady = function(event) {
+    console.log("### Cast Receiver Manager is READY: " + JSON.stringify(event));
+    setHudMessage('castReceiverManagerMessage', 'READY: ' + JSON.stringify(event));
+    setHudMessage('applicationState','Loaded. Started. Ready.');
 }
 
+/**
+ * If provided, it processes the 'senderconnected' event.
+ * Called to process the 'senderconnected' event.
+ * @param {cast.receiver.CastReceiverManager.Event} event - can be null
+ *
+ * There is no default handler
+ */
+window.castReceiverManager.onSenderConnected = function(event) {
+    console.log("### Cast Receiver Manager - Sender Connected : " + JSON.stringify(event));
+    setHudMessage('castReceiverManagerMessage', 'Sender Connected: ' + JSON.stringify(event));
+
+    // TODO - add sender and grab CastChannel from CastMessageBus.getCastChannel(senderId)
+    var senders = window.castReceiverManager.getSenders();
+    setHudMessage('sessionCount', '' + senders.length);
+}
 
 /**
- * <p>
- * Cast player constructor - This does the following:
- * </p>
- * <ol>
- * <li>Bind a listener to visibilitychange</li>
- * <li>Set the default state</li>
- * <li>Bind event listeners for img & video tags<br />
- *  error, stalled, waiting, playing, pause, ended, timeupdate, seeking, &
- *  seeked</li>
- * <li>Find and remember the various elements</li>
- * <li>Create the MediaManager and bind to onLoad & onStop</li>
- * </ol>
+ * If provided, it processes the 'senderdisconnected' event.
+ * Called to process the 'senderdisconnected' event.
+ * @param {cast.receiver.CastReceiverManager.Event} event - can be null
  *
- * @param {Element} element the element to attach the player
- * @constructor
- * @export
+ * There is no default handler
  */
-receiverApp.CastPlayer = function(element) {
+window.castReceiverManager.onSenderDisconnected = function(event) {
+    console.log("### Cast Receiver Manager - Sender Disconnected : " + JSON.stringify(event));
+    setHudMessage('castReceiverManagerMessage', 'Sender Disconnected: ' + JSON.stringify(event));
 
-  /**
-   * The DOM element the player is attached.
-   * @private {Element}
-   */
-  this.element_ = element;
-// We want to know when the user changes from watching our content to watching
-// another element, such as broadcast TV, or another HDMI port.  This will only
-// fire when CEC supports it in the TV.
-  this.element_.ownerDocument.addEventListener(
-      'webkitvisibilitychange', this.onVisibilityChange_.bind(this), false);
+    var senders = window.castReceiverManager.getSenders();
+    setHudMessage('sessionCount', '' + senders.length);
 
-  /**
-   * The current state of the player
-   * @private {receiverApp.State}
-   */
-  this.state_;
-  this.setState_(receiverApp.State.LAUNCHING);
+    //If last sender explicity disconnects, turn off
+    if(senders.length == 0 && event.reason == cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER)
+      window.close();
+}
 
-  /**
-   * The image element.
-   * @private {HTMLImageElement}
-   */
-  this.imageElement_ = /** @type {HTMLImageElement} */
-      (this.element_.querySelector('img'));
-  this.imageElement_.addEventListener('error', this.onError_.bind(this), false);
+/**
+ * If provided, it processes the 'systemvolumechanged' event.
+ * Called to process the 'systemvolumechanged' event.
+ * @param {cast.receiver.CastReceiverManager.Event} event - can be null
+ *
+ * There is no default handler
+ */
+window.castReceiverManager.onSystemVolumeChanged = function(event) {
+    console.log("### Cast Receiver Manager - System Volume Changed : " + JSON.stringify(event));
+    setHudMessage('castReceiverManagerMessage', 'System Volume Changed: ' + JSON.stringify(event));
 
-  /**
-   * The media element
-   * @private {HTMLMediaElement}
-   */
-  this.mediaElement_ = /** @type {HTMLMediaElement} */
-      (this.element_.querySelector('video'));
-  this.mediaElement_.addEventListener('error', this.onError_.bind(this), false);
-  this.mediaElement_.addEventListener('stalled', this.onStalled_.bind(this),
-      false);
-  this.mediaElement_.addEventListener('waiting', this.onBuffering_.bind(this),
-      false);
-  this.mediaElement_.addEventListener('playing', this.onPlaying_.bind(this),
-      false);
-  this.mediaElement_.addEventListener('pause', this.onPause_.bind(this), false);
-  this.mediaElement_.addEventListener('ended', this.onEnded_.bind(this), false);
-  this.mediaElement_.addEventListener('timeupdate', this.onProgress_.bind(this),
-      false);
-  this.mediaElement_.addEventListener('seeking', this.onSeekStart_.bind(this),
-      false);
-  this.mediaElement_.addEventListener('seeked', this.onSeekEnd_.bind(this),
-      false);
+    // See cast.receiver.media.Volume
+    console.log("### Volume: " + event.data['level'] + " is muted? " + event.data['muted']);
+    setHudMessage('volumeMessage', 'Level: ' + event.data['level'] + ' -- muted? ' + event.data['muted']);
+}
 
-  this.progressBarInnerElement_ = this.element_.querySelector(
-      '.controls-progress-inner');
-  this.progressBarThumbElement_ = this.element_.querySelector(
-      '.controls-progress-thumb');
-  this.curTimeElement_ = this.element_.querySelector('.controls-cur-time');
-  this.totalTimeElement_ = this.element_.querySelector('.controls-total-time');
+/**
+ * Called to process the 'visibilitychanged' event.
+ *
+ * Fired when the visibility of the application has changed (for example
+ * after a HDMI Input change or when the TV is turned off/on and the cast
+ * device is externally powered). Note that this API has the same effect as
+ * the webkitvisibilitychange event raised by your document, we provided it
+ * as CastReceiverManager API for convenience and to avoid a dependency on a
+ * webkit-prefixed event.
+ *
+ * @param {cast.receiver.CastReceiverManager.Event} event - can be null
+ *
+ * There is no default handler for this event type.
+ */
+window.castReceiverManager.onVisibilityChanged = function(event) {
+    console.log("### Cast Receiver Manager - Visibility Changed : " + JSON.stringify(event));
+    setHudMessage('castReceiverManagerMessage', 'Visibility Changed: ' + JSON.stringify(event));
 
-  /**
-   * The remote media object
-   * @private {cast.receiver.MediaManager}
-   */
-  this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
-  this.mediaManager_.onLoad = function (event) {
-    var contentId = receiverApp.getValue_(event.data, ['media', 'contentId']);
-    if(window.mediaPlayer) {
+    /** check if visible and pause media if not - add a timer to tear down after a period of time
+       if visibilty does not change back **/
+    if (event.data) { // It is visible
+        window.mediaElement.play(); // Resume media playback
+        window.clearTimeout(window.timeout); // Turn off the timeout
+        window.timeout = null;
+    } else {
+        window.mediaElement.pause(); // Pause playback
+        window.timeout = window.setTimeout(function(){window.close();}, 10000); // 10 Minute timeout
+    }
+}
+
+/**
+ * Use the messageBus to listen for incoming messages on a virtual channel using a namespace string.
+ * Also use messageBus to send messages back to a sender or broadcast a message to all senders.
+ * You can check the cast.receiver.CastMessageBus.MessageType that a message bus processes though a call
+ * to getMessageType. As well, you get the namespace of a message bus by calling getNamespace()
+ */
+window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:com.google.devrel.custom');
+/**
+ * The namespace urn:x-cast:com.google.devrel.custom is used to identify the protocol of showing/hiding
+ * the heads up display messages (The messages defined at the beginning of the html).
+ *
+ * The protocol consists of one string message: show
+ * In the case of the message value not being show - the assumed value is hide.
+ **/
+window.messageBus.onMessage = function(event) {
+    console.log("### Message Bus - Media Message: " + JSON.stringify(event));
+    setHudMessage('messageBusMessage', event);
+
+    console.log("### CUSTOM MESSAGE: " + JSON.stringify(event));
+    // show/hide messages
+    console.log(event['data']);
+    if(event['data']==='show') {
+        document.getElementById('messages').style.display = 'block';
+    } else {
+        document.getElementById('messages').style.display = 'none';
+    }
+}
+
+// This class is used to send/receive media messages/events using the media protocol/namesapce (urn:x-cast:com.google.cast.media).
+window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
+
+/**
+ * Called when the media ends.
+ *
+ * mediaManager.resetMediaElement(cast.receiver.media.IdleReason.FINISHED);
+ **/
+window.mediaManager['onEndedOrig'] = window.mediaManager.onEnded;
+/**
+ * Called when the media ends
+ */
+window.mediaManager.onEnded = function() {
+    console.log("### Media Manager - ENDED" );
+    setHudMessage('mediaManagerMessage', 'ENDED');
+
+    window.mediaManager['onEndedOrig']();
+}
+
+/**
+ * Default implementation of onError.
+ *
+ * mediaManager.resetMediaElement(cast.receiver.media.IdleReason.ERROR)
+ **/
+window.mediaManager['onErrorOrig'] = window.mediaManager.onError;
+/**
+ * Called when there is an error not triggered by a LOAD request
+ * @param obj
+ */
+window.mediaManager.onError = function(obj) {
+    console.log("### Media Manager - error: " + JSON.stringify(obj));
+    setHudMessage('mediaManagerMessage', 'ERROR - ' + JSON.stringify(obj));
+
+    window.mediaManager['onErrorOrig'](obj);
+}
+
+/**
+ * Processes the get status event.
+ *
+ * Sends a media status message to the requesting sender (event.data.requestId)
+ **/
+window.mediaManager['onGetStatusOrig'] = window.mediaManager.onGetStatus;
+/**
+ * Processes the get status event.
+ * @param event
+ */
+window.mediaManager.onGetStatus = function(event) {
+    console.log("### Media Manager - GET STATUS: " + JSON.stringify(event));
+    setHudMessage('mediaManagerMessage', 'GET STATUS ' + JSON.stringify(event));
+
+    window.mediaManager['onGetStatusOrig'](event);
+}
+
+/**
+ * Default implementation of onLoadMetadataError.
+ *
+ * mediaManager.resetMediaElement(cast.receiver.media.IdleReason.ERROR, false);
+ * mediaManager.sendLoadError(cast.receiver.media.ErrorType.LOAD_FAILED);
+ **/
+window.mediaManager['onLoadMetadataErrorOrig'] = window.mediaManager.onLoadMetadataError;
+/**
+ * Called when load has had an error, overridden to handle application specific logic.
+ * @param event
+ */
+window.mediaManager.onLoadMetadataError = function(event) {
+    console.log("### Media Manager - LOAD METADATA ERROR: " + JSON.stringify(event));
+    setHudMessage('mediaManagerMessage', 'LOAD METADATA ERROR: ' + JSON.stringify(event));
+
+    window.mediaManager['onLoadMetadataErrorOrig'](event);
+}
+
+/**
+ * Default implementation of onMetadataLoaded
+ *
+ * Passed a cast.receiver.MediaManager.LoadInfo event object
+ * Sets the mediaElement.currentTime = loadInfo.message.currentTime
+ * Sends the new status after a LOAD message has been completed succesfully.
+ * Note: Applications do not normally need to call this API.
+ * When the application overrides onLoad, it may need to manually declare that
+ * the LOAD request was sucessful. The default implementaion will send the new
+ * status to the sender when the video/audio element raises the
+ * 'loadedmetadata' event.
+ * The default behavior may not be acceptable in a couple scenarios:
+ *
+ * 1) When the application does not want to declare LOAD succesful until for
+ *    example 'canPlay' is raised (instead of 'loadedmetadata').
+ * 2) When the application is not actually loading the media element (for
+ *    example if LOAD is used to load an image).
+ **/
+window.mediaManager['onLoadMetadataOrig'] = window.mediaManager.onLoadMetadataLoaded;
+/**
+ * Called when load has completed, overridden to handle application specific logic.
+ * @param event
+ */
+window.mediaManager.onLoadMetadataLoaded = function(event) {
+    console.log("### Media Manager - LOADED METADATA: " + JSON.stringify(event));
+    setHudMessage('mediaManagerMessage', 'LOADED METADATA: ' + JSON.stringify(event));
+
+    window.mediaManager['onLoadMetadataOrig'](event);
+}
+
+/**
+ * Processes the pause event.
+ *
+ * mediaElement.pause();
+ * Broadcast (without sending media information) to all senders that pause has happened.
+ **/
+window.mediaManager['onPauseOrig'] = window.mediaManager.onPause;
+/**
+ * Process pause event
+ * @param event
+ */
+window.mediaManager.onPause = function(event) {
+    console.log("### Media Manager - PAUSE: " + JSON.stringify(event));
+    setHudMessage('mediaManagerMessage', 'PAUSE: ' + JSON.stringify(event));
+
+    window.mediaManager['onPauseOrig'](event);
+}
+
+/**
+ * Default - Processes the play event.
+ *
+ * mediaElement.play();
+ *
+ **/
+window.mediaManager['onPlayOrig'] = window.mediaManager.onPlay;
+/**
+ * Process play event
+ * @param event
+ */
+window.mediaManager.onPlay = function(event) {
+    console.log("### Media Manager - PLAY: " + JSON.stringify(event));
+    setHudMessage('mediaManagerMessage', 'PLAY: ' + JSON.stringify(event));
+
+    window.mediaManager['onPlayOrig'](event);
+}
+
+/**
+ * Default implementation of the seek event.
+ * Sets the mediaElement.currentTime to event.data.currentTime.
+ * If the event.data.resumeState is cast.receiver.media.SeekResumeState.PLAYBACK_START and the mediaElement is paused then
+ * call mediaElement.play(). Otherwise if event.data.resumeState is cast.receiver.media.SeekResumeState.PLAYBACK_PAUSE and
+ * the mediaElement is not paused, call mediaElement.pause().
+ * Broadcast (without sending media information) to all senders that seek has happened.
+ **/
+window.mediaManager['onSeekOrig'] = window.mediaManager.onSeek;
+/**
+ * Process seek event
+ * @param event
+ */
+window.mediaManager.onSeek = function(event) {
+    console.log("### Media Manager - SEEK: " + JSON.stringify(event));
+    setHudMessage('mediaManagerMessage', 'SEEK: ' + JSON.stringify(event));
+
+    window.mediaManager['onSeekOrig'](event);
+}
+
+/**
+ * Default implementation of the set volume event.
+ * Checks event.data.volume.level is defined and sets the mediaElement.volume to the value
+ * Checks event.data.volume.muted is defined and sets the mediaElement.muted to the value
+ * Broadcasts (without sending media information) to all senders that the volume has changed.
+ **/
+window.mediaManager['onSetVolumeOrig'] = window.mediaManager.onSetVolume;
+/**
+ * Process set volume event
+ * @param event
+ */
+window.mediaManager.onSetVolume = function(event) {
+    console.log("### Media Manager - SET VOLUME: " + JSON.stringify(event));
+    setHudMessage('mediaManagerMessage', 'SET VOLUME: ' + JSON.stringify(event));
+
+    window.mediaManager['onSetVolumeOrig'](event);
+}
+
+/**
+ * Processes the stop event.
+ *
+ * window.mediaManager.resetMediaElement(cast.receiver.media.IdleReason.CANCELLED, true, event.data.requestId);
+ *
+ * Resets Media Element to IDLE state. After this call the mediaElement
+ * properties will change, paused will be true, currentTime will be zero and
+ * the src attribute will be empty. This only needs to be manually called if the
+ * developer wants to override the default behavior of onError, onStop or
+ * onEnded, for example.
+ **/
+window.mediaManager['onStopOrig'] = window.mediaManager.onStop;
+/**
+ * Process stop event
+ * @param event
+ */
+window.mediaManager.onStop = function(event) {
+    console.log("### Media Manager - STOP: " + JSON.stringify(event));
+    setHudMessage('mediaManagerMessage', 'STOP: ' + JSON.stringify(event));
+
+    window.mediaManager['onStopOrig'](event);
+
+    
+}
+
+/**
+ * Default implementation for the load event.
+ *
+ * Sets the mediaElement.autoplay to false.
+ * Checks that data.media and data.media.contentId are valid then sets the mediaElement.src to the
+ * data.media.contentId.
+ *
+ * Checks the data.autoplay value:
+ *   - if undefined sets mediaElement.autoplay = true
+ *   - if has value then sets mediaElement.autoplay to that value
+ **/
+window.mediaManager['onLoadOrig'] = window.mediaManager.onLoad;
+/**
+ * Processes the load event.
+ * @param event
+ */
+window.mediaManager.onLoad = function(event) {
+    console.log("### Media Manager - LOAD: " + JSON.stringify(event));
+    setHudMessage('mediaManagerMessage', 'LOAD ' + JSON.stringify(event));
+
+    // TODO - setup for load here
+    // TODO - if there is an error during load: call mediaManager.sendLoadError to notify sender
+    // TODO - if there is no error call mediaManager.sendLoadCompleteComplete
+    // TODO - call mediaManager.setMediaInformation(MediaInformation)
+
+    if(window.mediaPlayer !== null) {
         window.mediaPlayer.unload(); // Ensure unload before loading again
     }
 
-    //if (event.data['media'] && event.data['media']['contentId']) {
-    var url = contentId; //event.data['media']['contentId'];
+    if (event.data['media'] && event.data['media']['contentId']) {
+        var url = event.data['media']['contentId'];
 
-    var mediaHost = new cast.player.api.Host({
-        'mediaElement': self.mediaElement_,
-        'url': url
-    });
+        window.mediaHost = new cast.player.api.Host({
+            'mediaElement': window.mediaElement,
+            'url': url
+        });
 
-    mediaHost.onError = function (errorCode) {
-        console.error('### HOST ERROR - Fatal Error: code = ' + errorCode);
-        setHudMessage('mediaHostState', 'Fatal Error: code = ' + errorCode);
-        if (window.mediaPlayer) {
-            window.mediaPlayer.unload();
+        window.mediaHost.onError = function (errorCode) {
+            console.error('### HOST ERROR - Fatal Error: code = ' + errorCode);
+            setHudMessage('mediaHostState', 'Fatal Error: code = ' + errorCode);
+            if (window.mediaPlayer !== null) {
+                window.mediaPlayer.unload();
+            }
+        }
+
+        var initialTimeIndexSeconds = event.data['media']['currentTime'] || 0;
+        // TODO: real code would know what content it was going to access and this would not be here.
+        var protocol = null;
+
+        var parser = document.createElement('a');
+        parser.href = url;
+
+        var ext = ext = parser.pathname.split('.').pop();
+        if (ext === 'm3u8') {
+            protocol =  cast.player.api.CreateHlsStreamingProtocol(window.mediaHost);
+        } else if (ext === 'mpd') {
+            protocol = cast.player.api.CreateDashStreamingProtocol(window.mediaHost);
+        } else if (ext === 'ism/') {
+            protocol = cast.player.api.CreateSmoothStreamingProtocol(window.mediaHost);
+        }
+        console.log('### Media Protocol Identified as ' + ext);
+        setHudMessage('mediaProtocol', ext);
+
+        if (protocol === null) {
+            // Call on original handler
+            window.mediaManager['onLoadOrig'](event); // Call on the original callback
+        } else {
+            // Advanced Playback - HLS, MPEG DASH, SMOOTH STREAMING
+            // Player registers to listen to the media element events through the mediaHost property of the
+            // mediaElement
+            window.mediaPlayer = new cast.player.api.Player(window.mediaHost);
+            window.mediaPlayer.load(protocol, initialTimeIndexSeconds);
         }
     }
-
-    var initialTimeIndexSeconds = event.data['media']['currentTime'] || 0;
-    // TODO: real code would know what content it was going to access and this would not be here.
-    var protocol = null;
-
-    var parser = document.createElement('a');
-    parser.href = url;
-
-    var ext = ext = parser.pathname.split('.').pop();
-    if (ext === 'm3u8') {
-        protocol =  cast.player.api.CreateHlsStreamingProtocol(mediaHost);
-    } else if (ext === 'mpd') {
-        protocol = cast.player.api.CreateDashStreamingProtocol(mediaHost);
-    } else if (ext === 'ism/') {
-        protocol = cast.player.api.CreateSmoothStreamingProtocol(mediaHost);
-    }
-    console.log('### Media Protocol Identified as ' + ext);
-    setHudMessage('mediaProtocol', ext);
-
-    //if (protocol === null) {
-        // Call on original handler
-     //   window.mediaManager['onLoadOrig'](event); // Call on the original callback
-    //} else {
-        // Advanced Playback - HLS, MPEG DASH, SMOOTH STREAMING
-        // Player registers to listen to the media element events through the mediaHost property of the
-        // mediaElement
-    window.mediaPlayer = new cast.player.api.Player(mediaHost);
-    window.mediaPlayer.load(protocol, initialTimeIndexSeconds);
-    //}
-    //}
-  };
-  this.mediaManager_.onStop = this.onStop_.bind(this);
-  /*
-  this.mediaManager_.onEnded = this.onEnded_.bind(this);
-  this.mediaManager_.onError = this.onError_.bind(this);
-  this.mediaManager_.onGetStatus = this.onGetStatus_.bind(this);
-  this.mediaManager_.onLoadMetadataError = this.onLoadMetadataError_.bind(this);
-  this.mediaManager_.onPause = this.onPause_.bind(this);
-  this.mediaManager_.onPlay = this.onPlay_.bind(this);
-    */
-};
+}
 
 /**
- * Sets the amount of time before the player is considered idle.
- *
- * @param {number} t the time in milliseconds before the player goes idle
- * @private
- */
-receiverApp.CastPlayer.prototype.setIdleTimeout_ = function(t) {
-  clearTimeout(this.idle_);
-  if (t) {
-    this.idle_ = setTimeout(this.onIdle_.bind(this), t);
-  }
-};
+ * Application config
+ **/
+var appConfig = new cast.receiver.CastReceiverManager.Config();
 
 /**
- * Sets the type of player
- *
- * @param {string} mimeType the mime type of the content
- * @private
+ * Text that represents the application status. It should meet
+ * internationalization rules as may be displayed by the sender application.
+ * @type {string|undefined}
+ **/
+appConfig.statusText = 'Ready to play';
+
+/**
+ * Maximum time in seconds before closing an idle
+ * sender connection. Setting this value enables a heartbeat message to keep
+ * the connection alive. Used to detect unresponsive senders faster than
+ * typical TCP timeouts. The minimum value is 5 seconds, there is no upper
+ * bound enforced but practically it's minutes before platform TCP timeouts
+ * come into play. Default value is 10 seconds.
+ * @type {number|undefined}
+ **/
+appConfig.maxInactivity = 6000; // 10 minutes for testing, use default 10sec in prod by not setting this value
+
+/**
+ * Initializes the system manager. The application should call this method when
+ * it is ready to start receiving messages, typically after registering
+ * to listen for the events it is interested on.
  */
-receiverApp.CastPlayer.prototype.setContentType_ = function(mimeType) {
-    console.log('Mimetype ' + mimeType);
-  if (mimeType.indexOf('image/') == 0) {
-    this.type_ = receiverApp.Type.IMAGE;
-  } else if (mimeType.indexOf('application/vnd.apple.mpegURL') == 0) {  // @"application/vnd.apple.mpegURL"
-    this.type_ = receiverApp.Type.VIDEO;
-  }
-};
+window.castReceiverManager.start(appConfig);
 
 
 /**
- * Sets the state of the player
+ play - The process of play has started
+ waiting - When the video stops due to buffering
+ volumechange - volume has changed
+ stalled - trying to get data, but not available
+ ratechange - some speed changed
+ canplay - It is possible to start playback, but no guarantee of not buffering
+ canplaythrough - It seems likely that we can play w/o buffering issues
+ ended - the video has finished
+ error - error occured during loading of the video
+ playing - when the video has started playing
+ seeking - started seeking
+ seeked - seeking has completed
+
+ http://www.w3.org/2010/05/video/mediaevents.html for more info.
+ **/
+window.mediaElement.addEventListener('loadstart', function(e){
+    console.log("######### MEDIA ELEMENT LOAD START");
+    setHudMessage('mediaElementState','Load Start');
+});
+window.mediaElement.addEventListener('loadeddata', function(e){
+    console.log("######### MEDIA ELEMENT DATA LOADED");
+    setHudMessage('mediaElementState','Data Loaded');
+});
+window.mediaElement.addEventListener('canplay', function(e){
+    console.log("######### MEDIA ELEMENT CAN PLAY");
+    setHudMessage('mediaElementState','Can Play');  
+});
+window.mediaElement.addEventListener('ended', function(e){
+    console.log("######### MEDIA ELEMENT ENDED");
+    setHudMessage('mediaElementState','Ended');
+});
+window.mediaElement.addEventListener('playing', function(e){
+    console.log("######### MEDIA ELEMENT PLAYING");
+    setHudMessage('mediaElementState','Playing');
+});
+window.mediaElement.addEventListener('waiting', function(e){
+    console.log("######### MEDIA ELEMENT WAITING");
+    setHudMessage('mediaElementState','Waiting');
+});
+window.mediaElement.addEventListener('stalled', function(e){
+    console.log("######### MEDIA ELEMENT STALLED");
+    setHudMessage('mediaElementState','Stalled');
+});
+window.mediaElement.addEventListener('error', function(e){
+    console.log("######### MEDIA ELEMENT ERROR " + e);
+    setHudMessage('mediaElementState','Error');
+});
+window.mediaElement.addEventListener('abort', function(e){
+    console.log("######### MEDIA ELEMENT ABORT " + e);
+    setHudMessage('mediaElementState','Abort');
+});
+window.mediaElement.addEventListener('suspend', function(e){
+    console.log("######### MEDIA ELEMENT SUSPEND " + e);
+    setHudMessage('mediaElementState','Suspended');
+});
+window.mediaElement.addEventListener('progress', function(e){
+    setHudMessage('mediaElementState','Progress');
+});
+
+window.mediaElement.addEventListener('seeking', function(e){
+    console.log("######### MEDIA ELEMENT SEEKING " + e);
+    setHudMessage('mediaElementState','Seeking');
+});
+window.mediaElement.addEventListener('seeked', function(e){
+    console.log("######### MEDIA ELEMENT SEEKED " + e);
+    setHudMessage('mediaElementState','Seeked');
+});
+
+/**
+ * ALTERNATIVE TO onVisibilityChanged
  *
- * @param {receiverApp.State} state the new state of the player
- * @param {boolean=} crossfade true if should cross fade between states
- * @param {number=} delay the amount of time (in ms) to wait
- */
-receiverApp.CastPlayer.prototype.setState_ = function(state, crossfade, delay){
-  var self = this;
-  clearTimeout(self.delay_);
-  if (delay) {
-    var func = function() { self.setState_(state, crossfade); };
-    self.delay_ = setTimeout(func, delay);
-  } else {
-    if (!crossfade) {
-      self.state_ = state;
-      self.element_.className = 'player ' + (self.type_ || '') + ' ' + state;
-      self.setIdleTimeout_(receiverApp.IDLE_TIMEOUT[state.toUpperCase()]);
-      console.log('setState(%o)', state);
+ * Use this to know when the user switched away from the Cast device input. It depends on the TV
+ * Supporting CEC
+ **/
+document.addEventListener('webkitvisibilitychange', function(){
+    if(document.webkithidden) {
+        window.mediaElement.pause(); // Pause playback
+        window.timeout = window.setTimeout(function(){window.close();}, 10000); // 10 second timeout
     } else {
-      receiverApp.fadeOut_(self.element_, 0.75, function() {
-        self.setState_(state, false);
-        receiverApp.fadeIn_(self.element_, 0.75);
-      });
+        window.mediaElement.play(); // Resume media playback
+        window.clearTimeout(window.timeout); // Turn off the timeout
+        window.timeout = null;
     }
-  }
-};
+});
 
-/**
- * Callback called when media has stalled
- *
- */
-receiverApp.CastPlayer.prototype.onStalled_ = function() {
-  console.log('onStalled');
-  this.setState_(receiverApp.State.BUFFERING, false);
-  if (this.mediaElement_.currentTime) {
-    this.mediaElement_.load();  // see if we can restart the process
-  }
-};
-
-/**
- * Callback called when media is buffering
- *
- */
-receiverApp.CastPlayer.prototype.onBuffering_ = function() {
-  console.log('onBuffering');
-  if (this.state_ != receiverApp.State.LOADING) {
-    this.setState_(receiverApp.State.BUFFERING, false);
-  }
-};
-
-/**
- * Callback called when media has started playing
- *
- */
-receiverApp.CastPlayer.prototype.onPlaying_ = function() {
-  console.log('onPlaying');
-  var isLoading = this.state_ == receiverApp.State.LOADING;
-  var xfade = isLoading;
-  var delay = !isLoading ? 0 : 3000;      // 3 seconds
-  this.setState_(receiverApp.State.PLAYING, xfade, delay);
-};
-
-/**
- * Callback called when media has been paused
- *
- */
-receiverApp.CastPlayer.prototype.onPause_ = function() {
-  console.log('onPause');
-  if (this.state_ != receiverApp.State.DONE) {
-    this.setState_(receiverApp.State.PAUSED, false);
-  }
-};
-
-
-/**
- * Callback called when media has been stopped
- *
- */
-receiverApp.CastPlayer.prototype.onStop_ = function() {
-  console.log('onStop');
-  var self = this;
-  receiverApp.fadeOut_(self.element_, 0.75, function() {
-    self.mediaElement_.pause();
-    self.mediaElement_.removeAttribute('src');
-    self.imageElement_.removeAttribute('src');
-    self.setState_(receiverApp.State.DONE, false);
-    receiverApp.fadeIn_(self.element_, 0.75);
-  });
-};
-
-
-/**
- * Callback called when media has ended
- *
- */
-receiverApp.CastPlayer.prototype.onEnded_ = function() {
-  console.log('onEnded');
-  this.setState_(receiverApp.State.DONE, true);
-};
-
-/**
- * Callback called when media position has changed
- *
- */
-receiverApp.CastPlayer.prototype.onProgress_ = function() {
-  var curTime = this.mediaElement_.currentTime;
-  var totalTime = this.mediaElement_.duration;
-  if (!isNaN(curTime) && !isNaN(totalTime)) {
-    var pct = 100 * (curTime / totalTime);
-    this.curTimeElement_.innerText = receiverApp.formatDuration_(curTime);
-    this.totalTimeElement_.innerText = receiverApp.formatDuration_(totalTime);
-    this.progressBarInnerElement_.style.width = pct + '%';
-    this.progressBarThumbElement_.style.left = pct + '%';
-  }
-};
-
-/**
- * Callback called when user starts seeking
- *
- */
-receiverApp.CastPlayer.prototype.onSeekStart_ = function() {
-  console.log('onSeekStart');
-  clearTimeout(this.seekingTimeout_);
-  this.element_.classList.add('seeking');
-};
-
-/**
- * Callback called when user stops seeking
- *
- */
-receiverApp.CastPlayer.prototype.onSeekEnd_ = function() {
-  console.log('onSeekEnd');
-  clearTimeout(this.seekingTimeout_);
-  this.seekingTimeout_ = receiverApp.addClassWithTimeout_(this.element_,
-      'seeking', 3000);
-};
-
-/**
- * Callback called when media volume has changed - we rely on the pause timer
- * to get us to the right state.  If we are paused for too long, things will
- * close. Otherwise, we can come back, and we start again.
- *
- */
-receiverApp.CastPlayer.prototype.onVisibilityChange_ = function() {
-  console.log('onVisibilityChange');
-  if (document.webkitHidden) {
-    this.mediaElement_.pause();
-  } else {
-    this.mediaElement_.play();
-  }
-};
-
-/**
- * Callback called when player enters idle state 
- *
- */
-receiverApp.CastPlayer.prototype.onIdle_ = function() {
-  console.log('onIdle');
-  if (this.state_ != receiverApp.State.IDLE) {
-    this.setState_(receiverApp.State.IDLE, true);
-  } else {
-    window.close();
-  }
-};
-
-/**
- * Called to handle an error when the media could not be loaded.
- * cast.MediaManager in the Receiver also listens for this event, and it will
- * notify any senders. We choose to just enter the done state, bring up the
- * finished image and let the user either choose to do something else.  We are
- * trying not to put up errors on the second screen.
- *
- */
-receiverApp.CastPlayer.prototype.onError_ = function() {
-  console.log('onError');
-  this.setState_(receiverApp.State.DONE, true);
-};
-
-/**
- * Called to handle a load request
- * TODO() handle errors better here (i.e. missing contentId, contentType, etc)
- *
- * @param {cast.receiver.MediaManager.Event} event the load event
- */
-receiverApp.CastPlayer.prototype.onLoad_ = function(event) {
-    
-    var self = this;
-
-    var title = receiverApp.getValue_(event.data, ['media', 'metadata', 'title']
-      );
-    var titleElement = self.element_.querySelector('.media-title');
-    receiverApp.setInnerText_(titleElement, title);
-
-    var subtitle = receiverApp.getValue_(event.data, ['media', 'metadata',
-      'subtitle']);
-    var subtitleElement = self.element_.querySelector('.media-subtitle');
-    receiverApp.setInnerText_(subtitleElement, subtitle);
-
-    var artwork = receiverApp.getValue_(event.data, ['media', 'metadata',
-      'images', 0, 'url']);
-    var artworkElement = self.element_.querySelector('.media-artwork');
-    receiverApp.setBackgroundImage_(artworkElement, artwork);
-
-    var autoplay = receiverApp.getValue_(event.data, ['autoplay']);
-    var contentId = receiverApp.getValue_(event.data, ['media', 'contentId']);
-    var contentType = receiverApp.getValue_(event.data, ['media', 'contentType']
-      );
-    self.setContentType_(contentType);
-    self.setState_(receiverApp.State.LOADING, false);
-    switch (self.type_) {
-        case receiverApp.Type.IMAGE:
-            self.imageElement_.onload = function() {
-                self.setState_(receiverApp.State.PAUSED, false);
-            };
-            self.imageElement_.src = contentId || '';
-            self.mediaElement_.removeAttribute('src');
-            break;
-        case receiverApp.Type.VIDEO:
-            self.imageElement_.onload = null;
-            self.imageElement_.removeAttribute('src');
-            //self.mediaElement_.autoplay = autoplay || true;
-            //self.mediaElement_.src = contentId || '';
-
-            
-
-      break;
-  }
-};
-
-/**
- * Get a value from an object multiple levels deep.
- *
- * @param {Object} obj The object.
- * @param {Array} keys The keys keys.
- * @returns {R} the value of the property with the given keys
- * @template R
- */
-receiverApp.getValue_ = function(obj, keys) {
-  for (var i = 0; i < keys.length; i++) {
-    if (obj === null || obj === undefined) {
-      return '';                    // default to an empty string
-    } else {
-      obj = obj[keys[i]];
-    }
-  }
-  return obj;
-};
-
-/**
- * Sets the inner text for the given element.
- *
- * @param {Element} element The element.
- * @param {string} text The text.
- */
-receiverApp.setInnerText_ = function(element, text) {
-  element.innerText = text || '';
-};
-
-/**
- * Sets the background image for the given element.
- *
- * @param {Element} element The element.
- * @param {string} url The image url.
- */
-receiverApp.setBackgroundImage_ = function(element, url) {
-  element.style.backgroundImage = (url ? 'url("' + url + '")' : 'none');
-  element.style.display = (url ? '' : 'none');
-};
-
-/**
- * Formats the given duration
- *
- * @param {number} dur the duration (in seconds)
- * @return {string} the time (in HH:MM:SS)
- */
-receiverApp.formatDuration_ = function(dur) {
-  function digit(n) { return ('00' + Math.floor(n)).slice(-2); }
-  var hr = Math.floor(dur / 3600);
-  var min = Math.floor(dur / 60) % 60;
-  var sec = dur % 60;
-  if (!hr) {
-    return digit(min) + ':' + digit(sec);
-  } else {
-    return digit(hr) + ':' + digit(min) + ':' + digit(sec);
-  }
-};
-
-/**
- * Adds the given className to the given element for the specified amount of
- * time
- *
- * @param {Element} element the element to add the given class
- * @param {string} className the class name to add to the given element
- * @param {number} timeout the amount of time (in ms) the class should be
- *                 added to the given element
- * @return {number} returns a numerical id, which can be used later with
- *                  window.clearTimeout()
- */
-receiverApp.addClassWithTimeout_ = function(element, className, timeout) {
-  element.classList.add(className);
-  return setTimeout(function() {
-    element.classList.remove(className);
-  }, timeout);
-};
-
-/**
- * Causes the given element to fade in
- *
- * @param {Element} element the element to fade in
- * @param {number} time the amount of time (in seconds) to transition
- * @param {function()=} doneFunc the function to call when complete
- */
-receiverApp.fadeIn_ = function(element, time, doneFunc) {
-  receiverApp.fadeTo_(element, '', time, doneFunc);
-};
-
-/**
- * Causes the given element to fade out
- *
- * @param {Element} element the element to fade out
- * @param {number} time the amount of time (in seconds) to transition
- * @param {function()=} doneFunc the function to call when complete
- */
-receiverApp.fadeOut_ = function(element, time, doneFunc) {
-  receiverApp.fadeTo_(element, 0, time, doneFunc);
-};
-
-/**
- * Causes the given element to fade to the given opacity
- *
- * @param {Element} element the element to fade in/out
- * @param {string|number} opacity the opacity to transition to
- * @param {number} time the amount of time (in seconds) to transition
- * @param {function()=} doneFunc the function to call when complete
- */
-receiverApp.fadeTo_ = function(element, opacity, time, doneFunc) {
-  var listener = null;
-  listener = function() {
-    element.style.webkitTransition = '';
-    element.removeEventListener('webkitTransitionEnd', listener, false);
-    if (doneFunc) {
-      doneFunc();
-    }
-  };
-  element.addEventListener('webkitTransitionEnd', listener, false);
-  element.style.webkitTransition = 'opacity ' + time + 's';
-  element.style.opacity = opacity;
-};
+// Add your app logic here after the receiver SDK has been initialized.
 
