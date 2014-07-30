@@ -159,10 +159,6 @@ The overlay layer holds:
         this.state_;
         this.setState_(sampleplayer.State.LAUNCHING);
 
-        this.imageElement_ = /** @type {HTMLImageElement} */
-                (this.element_.querySelector('img'));
-        this.imageElement_.addEventListener('error', this.onError_.bind(this), false);
-
         this.mediaElement_ = /** @type {HTMLMediaElement} */
                 (this.element_.querySelector('video'));
 
@@ -697,7 +693,6 @@ The overlay layer holds:
         sampleplayer.fadeOut_(self.element_, 0.75, function() {
             self.mediaElement_.pause();
             self.mediaElement_.removeAttribute('src');
-            self.imageElement_.removeAttribute('src');
             self.setState_(sampleplayer.State.DONE, false);
             sampleplayer.fadeIn_(self.element_, 0.75);
         });
