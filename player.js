@@ -28,7 +28,7 @@ window.onload = function() {
     
     cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
-    window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+ 
 
 }
 
@@ -59,7 +59,7 @@ setHudMessage('applicationState','Loaded. Starting up.');
  * No logging.
  * NONE
  **/
-
+   window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
 
 /**
  * Called to process 'ready' event. Only called after calling castReceiverManager.start(config) and the
