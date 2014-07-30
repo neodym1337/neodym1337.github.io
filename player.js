@@ -31,7 +31,281 @@ window.onload = function() {
     console.log('### Application Loaded. Starting system.');
     setHudMessage('applicationState','Loaded. Starting up.');
  
+    // This class is used to send/receive media messages/events using the media protocol/namesapce (urn:x-cast:com.google.cast.media).
+        //window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
 
+        /**
+         * Called when the media ends.
+         *
+         * mediaManager.resetMediaElement(cast.receiver.media.IdleReason.FINISHED);
+         **/
+        window.mediaManager['onEndedOrig'] = window.mediaManager.onEnded;
+        /**
+         * Called when the media ends
+         */
+        window.mediaManager.onEnded = function() {
+            console.log("### Media Manager - ENDED" );
+            setHudMessage('mediaManagerMessage', 'ENDED');
+
+            window.mediaManager['onEndedOrig']();
+        }
+
+        /**
+         * Default implementation of onError.
+         *
+         * mediaManager.resetMediaElement(cast.receiver.media.IdleReason.ERROR)
+         **/
+        window.mediaManager['onErrorOrig'] = window.mediaManager.onError;
+        /**
+         * Called when there is an error not triggered by a LOAD request
+         * @param obj
+         */
+        window.mediaManager.onError = function(obj) {
+            console.log("### Media Manager - error: " + JSON.stringify(obj));
+            setHudMessage('mediaManagerMessage', 'ERROR - ' + JSON.stringify(obj));
+
+            window.mediaManager['onErrorOrig'](obj);
+        }
+
+        /**
+         * Processes the get status event.
+         *
+         * Sends a media status message to the requesting sender (event.data.requestId)
+         **/
+        window.mediaManager['onGetStatusOrig'] = window.mediaManager.onGetStatus;
+        /**
+         * Processes the get status event.
+         * @param event
+         */
+        window.mediaManager.onGetStatus = function(event) {
+            console.log("### Media Manager - GET STATUS: " + JSON.stringify(event));
+            setHudMessage('mediaManagerMessage', 'GET STATUS ' + JSON.stringify(event));
+
+            window.mediaManager['onGetStatusOrig'](event);
+        }
+
+        /**
+         * Default implementation of onLoadMetadataError.
+         *
+         * mediaManager.resetMediaElement(cast.receiver.media.IdleReason.ERROR, false);
+         * mediaManager.sendLoadError(cast.receiver.media.ErrorType.LOAD_FAILED);
+         **/
+        window.mediaManager['onLoadMetadataErrorOrig'] = window.mediaManager.onLoadMetadataError;
+        /**
+         * Called when load has had an error, overridden to handle application specific logic.
+         * @param event
+         */
+        window.mediaManager.onLoadMetadataError = function(event) {
+            console.log("### Media Manager - LOAD METADATA ERROR: " + JSON.stringify(event));
+            setHudMessage('mediaManagerMessage', 'LOAD METADATA ERROR: ' + JSON.stringify(event));
+
+            window.mediaManager['onLoadMetadataErrorOrig'](event);
+        }
+
+        /**
+         * Default implementation of onMetadataLoaded
+         *
+         * Passed a cast.receiver.MediaManager.LoadInfo event object
+         * Sets the mediaElement.currentTime = loadInfo.message.currentTime
+         * Sends the new status after a LOAD message has been completed succesfully.
+         * Note: Applications do not normally need to call this API.
+         * When the application overrides onLoad, it may need to manually declare that
+         * the LOAD request was sucessful. The default implementaion will send the new
+         * status to the sender when the video/audio element raises the
+         * 'loadedmetadata' event.
+         * The default behavior may not be acceptable in a couple scenarios:
+         *
+         * 1) When the application does not want to declare LOAD succesful until for
+         *    example 'canPlay' is raised (instead of 'loadedmetadata').
+         * 2) When the application is not actually loading the media element (for
+         *    example if LOAD is used to load an image).
+         **/
+        window.mediaManager['onLoadMetadataOrig'] = window.mediaManager.onLoadMetadataLoaded;
+        /**
+         * Called when load has completed, overridden to handle application specific logic.
+         * @param event
+         */
+        window.mediaManager.onLoadMetadataLoaded = function(event) {
+            console.log("### Media Manager - LOADED METADATA: " + JSON.stringify(event));
+            setHudMessage('mediaManagerMessage', 'LOADED METADATA: ' + JSON.stringify(event));
+
+            window.mediaManager['onLoadMetadataOrig'](event);
+        }
+
+        /**
+         * Processes the pause event.
+         *
+         * mediaElement.pause();
+         * Broadcast (without sending media information) to all senders that pause has happened.
+         **/
+        window.mediaManager['onPauseOrig'] = window.mediaManager.onPause;
+        /**
+         * Process pause event
+         * @param event
+         */
+        window.mediaManager.onPause = function(event) {
+            console.log("### Media Manager - PAUSE: " + JSON.stringify(event));
+            setHudMessage('mediaManagerMessage', 'PAUSE: ' + JSON.stringify(event));
+
+            window.mediaManager['onPauseOrig'](event);
+        }
+
+        /**
+         * Default - Processes the play event.
+         *
+         * mediaElement.play();
+         *
+         **/
+        window.mediaManager['onPlayOrig'] = window.mediaManager.onPlay;
+        /**
+         * Process play event
+         * @param event
+         */
+        window.mediaManager.onPlay = function(event) {
+            console.log("### Media Manager - PLAY: " + JSON.stringify(event));
+            setHudMessage('mediaManagerMessage', 'PLAY: ' + JSON.stringify(event));
+
+            window.mediaManager['onPlayOrig'](event);
+        }
+
+        /**
+         * Default implementation of the seek event.
+         * Sets the mediaElement.currentTime to event.data.currentTime.
+         * If the event.data.resumeState is cast.receiver.media.SeekResumeState.PLAYBACK_START and the mediaElement is paused then
+         * call mediaElement.play(). Otherwise if event.data.resumeState is cast.receiver.media.SeekResumeState.PLAYBACK_PAUSE and
+         * the mediaElement is not paused, call mediaElement.pause().
+         * Broadcast (without sending media information) to all senders that seek has happened.
+         **/
+        window.mediaManager['onSeekOrig'] = window.mediaManager.onSeek;
+        /**
+         * Process seek event
+         * @param event
+         */
+        window.mediaManager.onSeek = function(event) {
+            console.log("### Media Manager - SEEK: " + JSON.stringify(event));
+            setHudMessage('mediaManagerMessage', 'SEEK: ' + JSON.stringify(event));
+
+            window.mediaManager['onSeekOrig'](event);
+        }
+
+        /**
+         * Default implementation of the set volume event.
+         * Checks event.data.volume.level is defined and sets the mediaElement.volume to the value
+         * Checks event.data.volume.muted is defined and sets the mediaElement.muted to the value
+         * Broadcasts (without sending media information) to all senders that the volume has changed.
+         **/
+        window.mediaManager['onSetVolumeOrig'] = window.mediaManager.onSetVolume;
+        /**
+         * Process set volume event
+         * @param event
+         */
+        window.mediaManager.onSetVolume = function(event) {
+            console.log("### Media Manager - SET VOLUME: " + JSON.stringify(event));
+            setHudMessage('mediaManagerMessage', 'SET VOLUME: ' + JSON.stringify(event));
+
+            window.mediaManager['onSetVolumeOrig'](event);
+        }
+
+        /**
+         * Processes the stop event.
+         *
+         * window.mediaManager.resetMediaElement(cast.receiver.media.IdleReason.CANCELLED, true, event.data.requestId);
+         *
+         * Resets Media Element to IDLE state. After this call the mediaElement
+         * properties will change, paused will be true, currentTime will be zero and
+         * the src attribute will be empty. This only needs to be manually called if the
+         * developer wants to override the default behavior of onError, onStop or
+         * onEnded, for example.
+         **/
+        window.mediaManager['onStopOrig'] = window.mediaManager.onStop;
+        /**
+         * Process stop event
+         * @param event
+         */
+        window.mediaManager.onStop = function(event) {
+            console.log("### Media Manager - STOP: " + JSON.stringify(event));
+            setHudMessage('mediaManagerMessage', 'STOP: ' + JSON.stringify(event));
+
+            window.mediaManager['onStopOrig'](event);
+
+
+        }
+
+        /**
+         * Default implementation for the load event.
+         *
+         * Sets the mediaElement.autoplay to false.
+         * Checks that data.media and data.media.contentId are valid then sets the mediaElement.src to the
+         * data.media.contentId.
+         *
+         * Checks the data.autoplay value:
+         *   - if undefined sets mediaElement.autoplay = true
+         *   - if has value then sets mediaElement.autoplay to that value
+         **/
+        window.mediaManager['onLoadOrig'] = window.mediaManager.onLoad;
+        /**
+         * Processes the load event.
+         * @param event
+         */
+        window.mediaManager.onLoad = function(event) {
+            console.log("### Media Manager - LOAD: " + JSON.stringify(event));
+            setHudMessage('mediaManagerMessage', 'LOAD ' + JSON.stringify(event));
+
+            // TODO - setup for load here
+            // TODO - if there is an error during load: call mediaManager.sendLoadError to notify sender
+            // TODO - if there is no error call mediaManager.sendLoadCompleteComplete
+            // TODO - call mediaManager.setMediaInformation(MediaInformation)
+
+            if(window.mediaPlayer !== null) {
+                window.mediaPlayer.unload(); // Ensure unload before loading again
+            }
+
+            if (event.data['media'] && event.data['media']['contentId']) {
+                var url = event.data['media']['contentId'];
+
+                window.mediaHost = new cast.player.api.Host({
+                    'mediaElement': window.mediaElement,
+                    'url': url
+                });
+
+                window.mediaHost.onError = function (errorCode) {
+                    console.error('### HOST ERROR - Fatal Error: code = ' + errorCode);
+                    setHudMessage('mediaHostState', 'Fatal Error: code = ' + errorCode);
+                    if (window.mediaPlayer !== null) {
+                        window.mediaPlayer.unload();
+                    }
+                }
+
+                var initialTimeIndexSeconds = event.data['media']['currentTime'] || 0;
+                // TODO: real code would know what content it was going to access and this would not be here.
+                var protocol = null;
+
+                var parser = document.createElement('a');
+                parser.href = url;
+
+                var ext = ext = parser.pathname.split('.').pop();
+                if (ext === 'm3u8') {
+                    protocol =  cast.player.api.CreateHlsStreamingProtocol(window.mediaHost);
+                } else if (ext === 'mpd') {
+                    protocol = cast.player.api.CreateDashStreamingProtocol(window.mediaHost);
+                } else if (ext === 'ism/') {
+                    protocol = cast.player.api.CreateSmoothStreamingProtocol(window.mediaHost);
+                }
+                console.log('### Media Protocol Identified as ' + ext);
+                setHudMessage('mediaProtocol', ext);
+
+                if (protocol === null) {
+                    // Call on original handler
+                    window.mediaManager['onLoadOrig'](event); // Call on the original callback
+                } else {
+                    // Advanced Playback - HLS, MPEG DASH, SMOOTH STREAMING
+                    // Player registers to listen to the media element events through the mediaHost property of the
+                    // mediaElement
+                    window.mediaPlayer = new cast.player.api.Player(window.mediaHost);
+                    window.mediaPlayer.load(protocol, initialTimeIndexSeconds);
+                }
+            }
+        }
 }
 
 //var playerDiv = document.getElementById('player');
@@ -188,281 +462,7 @@ window.messageBus.onMessage = function(event) {
     }
 }
 
-// This class is used to send/receive media messages/events using the media protocol/namesapce (urn:x-cast:com.google.cast.media).
-//window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
 
-/**
- * Called when the media ends.
- *
- * mediaManager.resetMediaElement(cast.receiver.media.IdleReason.FINISHED);
- **/
-window.mediaManager['onEndedOrig'] = window.mediaManager.onEnded;
-/**
- * Called when the media ends
- */
-window.mediaManager.onEnded = function() {
-    console.log("### Media Manager - ENDED" );
-    setHudMessage('mediaManagerMessage', 'ENDED');
-
-    window.mediaManager['onEndedOrig']();
-}
-
-/**
- * Default implementation of onError.
- *
- * mediaManager.resetMediaElement(cast.receiver.media.IdleReason.ERROR)
- **/
-window.mediaManager['onErrorOrig'] = window.mediaManager.onError;
-/**
- * Called when there is an error not triggered by a LOAD request
- * @param obj
- */
-window.mediaManager.onError = function(obj) {
-    console.log("### Media Manager - error: " + JSON.stringify(obj));
-    setHudMessage('mediaManagerMessage', 'ERROR - ' + JSON.stringify(obj));
-
-    window.mediaManager['onErrorOrig'](obj);
-}
-
-/**
- * Processes the get status event.
- *
- * Sends a media status message to the requesting sender (event.data.requestId)
- **/
-window.mediaManager['onGetStatusOrig'] = window.mediaManager.onGetStatus;
-/**
- * Processes the get status event.
- * @param event
- */
-window.mediaManager.onGetStatus = function(event) {
-    console.log("### Media Manager - GET STATUS: " + JSON.stringify(event));
-    setHudMessage('mediaManagerMessage', 'GET STATUS ' + JSON.stringify(event));
-
-    window.mediaManager['onGetStatusOrig'](event);
-}
-
-/**
- * Default implementation of onLoadMetadataError.
- *
- * mediaManager.resetMediaElement(cast.receiver.media.IdleReason.ERROR, false);
- * mediaManager.sendLoadError(cast.receiver.media.ErrorType.LOAD_FAILED);
- **/
-window.mediaManager['onLoadMetadataErrorOrig'] = window.mediaManager.onLoadMetadataError;
-/**
- * Called when load has had an error, overridden to handle application specific logic.
- * @param event
- */
-window.mediaManager.onLoadMetadataError = function(event) {
-    console.log("### Media Manager - LOAD METADATA ERROR: " + JSON.stringify(event));
-    setHudMessage('mediaManagerMessage', 'LOAD METADATA ERROR: ' + JSON.stringify(event));
-
-    window.mediaManager['onLoadMetadataErrorOrig'](event);
-}
-
-/**
- * Default implementation of onMetadataLoaded
- *
- * Passed a cast.receiver.MediaManager.LoadInfo event object
- * Sets the mediaElement.currentTime = loadInfo.message.currentTime
- * Sends the new status after a LOAD message has been completed succesfully.
- * Note: Applications do not normally need to call this API.
- * When the application overrides onLoad, it may need to manually declare that
- * the LOAD request was sucessful. The default implementaion will send the new
- * status to the sender when the video/audio element raises the
- * 'loadedmetadata' event.
- * The default behavior may not be acceptable in a couple scenarios:
- *
- * 1) When the application does not want to declare LOAD succesful until for
- *    example 'canPlay' is raised (instead of 'loadedmetadata').
- * 2) When the application is not actually loading the media element (for
- *    example if LOAD is used to load an image).
- **/
-window.mediaManager['onLoadMetadataOrig'] = window.mediaManager.onLoadMetadataLoaded;
-/**
- * Called when load has completed, overridden to handle application specific logic.
- * @param event
- */
-window.mediaManager.onLoadMetadataLoaded = function(event) {
-    console.log("### Media Manager - LOADED METADATA: " + JSON.stringify(event));
-    setHudMessage('mediaManagerMessage', 'LOADED METADATA: ' + JSON.stringify(event));
-
-    window.mediaManager['onLoadMetadataOrig'](event);
-}
-
-/**
- * Processes the pause event.
- *
- * mediaElement.pause();
- * Broadcast (without sending media information) to all senders that pause has happened.
- **/
-window.mediaManager['onPauseOrig'] = window.mediaManager.onPause;
-/**
- * Process pause event
- * @param event
- */
-window.mediaManager.onPause = function(event) {
-    console.log("### Media Manager - PAUSE: " + JSON.stringify(event));
-    setHudMessage('mediaManagerMessage', 'PAUSE: ' + JSON.stringify(event));
-
-    window.mediaManager['onPauseOrig'](event);
-}
-
-/**
- * Default - Processes the play event.
- *
- * mediaElement.play();
- *
- **/
-window.mediaManager['onPlayOrig'] = window.mediaManager.onPlay;
-/**
- * Process play event
- * @param event
- */
-window.mediaManager.onPlay = function(event) {
-    console.log("### Media Manager - PLAY: " + JSON.stringify(event));
-    setHudMessage('mediaManagerMessage', 'PLAY: ' + JSON.stringify(event));
-
-    window.mediaManager['onPlayOrig'](event);
-}
-
-/**
- * Default implementation of the seek event.
- * Sets the mediaElement.currentTime to event.data.currentTime.
- * If the event.data.resumeState is cast.receiver.media.SeekResumeState.PLAYBACK_START and the mediaElement is paused then
- * call mediaElement.play(). Otherwise if event.data.resumeState is cast.receiver.media.SeekResumeState.PLAYBACK_PAUSE and
- * the mediaElement is not paused, call mediaElement.pause().
- * Broadcast (without sending media information) to all senders that seek has happened.
- **/
-window.mediaManager['onSeekOrig'] = window.mediaManager.onSeek;
-/**
- * Process seek event
- * @param event
- */
-window.mediaManager.onSeek = function(event) {
-    console.log("### Media Manager - SEEK: " + JSON.stringify(event));
-    setHudMessage('mediaManagerMessage', 'SEEK: ' + JSON.stringify(event));
-
-    window.mediaManager['onSeekOrig'](event);
-}
-
-/**
- * Default implementation of the set volume event.
- * Checks event.data.volume.level is defined and sets the mediaElement.volume to the value
- * Checks event.data.volume.muted is defined and sets the mediaElement.muted to the value
- * Broadcasts (without sending media information) to all senders that the volume has changed.
- **/
-window.mediaManager['onSetVolumeOrig'] = window.mediaManager.onSetVolume;
-/**
- * Process set volume event
- * @param event
- */
-window.mediaManager.onSetVolume = function(event) {
-    console.log("### Media Manager - SET VOLUME: " + JSON.stringify(event));
-    setHudMessage('mediaManagerMessage', 'SET VOLUME: ' + JSON.stringify(event));
-
-    window.mediaManager['onSetVolumeOrig'](event);
-}
-
-/**
- * Processes the stop event.
- *
- * window.mediaManager.resetMediaElement(cast.receiver.media.IdleReason.CANCELLED, true, event.data.requestId);
- *
- * Resets Media Element to IDLE state. After this call the mediaElement
- * properties will change, paused will be true, currentTime will be zero and
- * the src attribute will be empty. This only needs to be manually called if the
- * developer wants to override the default behavior of onError, onStop or
- * onEnded, for example.
- **/
-window.mediaManager['onStopOrig'] = window.mediaManager.onStop;
-/**
- * Process stop event
- * @param event
- */
-window.mediaManager.onStop = function(event) {
-    console.log("### Media Manager - STOP: " + JSON.stringify(event));
-    setHudMessage('mediaManagerMessage', 'STOP: ' + JSON.stringify(event));
-
-    window.mediaManager['onStopOrig'](event);
-
-
-}
-
-/**
- * Default implementation for the load event.
- *
- * Sets the mediaElement.autoplay to false.
- * Checks that data.media and data.media.contentId are valid then sets the mediaElement.src to the
- * data.media.contentId.
- *
- * Checks the data.autoplay value:
- *   - if undefined sets mediaElement.autoplay = true
- *   - if has value then sets mediaElement.autoplay to that value
- **/
-window.mediaManager['onLoadOrig'] = window.mediaManager.onLoad;
-/**
- * Processes the load event.
- * @param event
- */
-window.mediaManager.onLoad = function(event) {
-    console.log("### Media Manager - LOAD: " + JSON.stringify(event));
-    setHudMessage('mediaManagerMessage', 'LOAD ' + JSON.stringify(event));
-
-    // TODO - setup for load here
-    // TODO - if there is an error during load: call mediaManager.sendLoadError to notify sender
-    // TODO - if there is no error call mediaManager.sendLoadCompleteComplete
-    // TODO - call mediaManager.setMediaInformation(MediaInformation)
-
-    if(window.mediaPlayer !== null) {
-        window.mediaPlayer.unload(); // Ensure unload before loading again
-    }
-
-    if (event.data['media'] && event.data['media']['contentId']) {
-        var url = event.data['media']['contentId'];
-
-        window.mediaHost = new cast.player.api.Host({
-            'mediaElement': window.mediaElement,
-            'url': url
-        });
-
-        window.mediaHost.onError = function (errorCode) {
-            console.error('### HOST ERROR - Fatal Error: code = ' + errorCode);
-            setHudMessage('mediaHostState', 'Fatal Error: code = ' + errorCode);
-            if (window.mediaPlayer !== null) {
-                window.mediaPlayer.unload();
-            }
-        }
-
-        var initialTimeIndexSeconds = event.data['media']['currentTime'] || 0;
-        // TODO: real code would know what content it was going to access and this would not be here.
-        var protocol = null;
-
-        var parser = document.createElement('a');
-        parser.href = url;
-
-        var ext = ext = parser.pathname.split('.').pop();
-        if (ext === 'm3u8') {
-            protocol =  cast.player.api.CreateHlsStreamingProtocol(window.mediaHost);
-        } else if (ext === 'mpd') {
-            protocol = cast.player.api.CreateDashStreamingProtocol(window.mediaHost);
-        } else if (ext === 'ism/') {
-            protocol = cast.player.api.CreateSmoothStreamingProtocol(window.mediaHost);
-        }
-        console.log('### Media Protocol Identified as ' + ext);
-        setHudMessage('mediaProtocol', ext);
-
-        if (protocol === null) {
-            // Call on original handler
-            window.mediaManager['onLoadOrig'](event); // Call on the original callback
-        } else {
-            // Advanced Playback - HLS, MPEG DASH, SMOOTH STREAMING
-            // Player registers to listen to the media element events through the mediaHost property of the
-            // mediaElement
-            window.mediaPlayer = new cast.player.api.Player(window.mediaHost);
-            window.mediaPlayer.load(protocol, initialTimeIndexSeconds);
-        }
-    }
-}
 
 /**
  * Application config
