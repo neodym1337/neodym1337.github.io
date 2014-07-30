@@ -88,6 +88,48 @@ The overlay layer holds:
     <script type="text/javascript">
     "use strict";
 
+    // custom object to encapsulate video element and it's properties
+    window.sampleplayer = window.sampleplayer || {};
+
+    /**
+     * The amount of time in a given state before the player goes idle.
+     */
+    sampleplayer.IDLE_TIMEOUT = {
+        LAUNCHING: 30 * 1000,    // 30 seconds
+        LOADING: 3000 * 1000,    // 50 minutes
+        PAUSED: 30 * 1000,       // 10 minutes normally, use 30 seconds for demo
+        STALLED: 30 * 1000,      // 30 seconds
+        DONE: 30 * 1000,         // 5 minutes normally, use 30 seconds for demo
+        IDLE: 30 * 1000          // 5 minutes normally, use 30 seconds for demo
+    };
+
+    /**
+     * Describes the type of media being played
+     *
+     * @enum {string}
+     */
+    sampleplayer.Type = {
+        IMAGE: 'image',
+        VIDEO: 'video'
+    };
+
+    /**
+     * Describes the state of the player
+     *
+     * @enum {string}
+     */
+    sampleplayer.State = {
+        LAUNCHING: 'launching',
+        LOADING: 'loading',
+        BUFFERING: 'buffering',
+        PLAYING: 'playing',
+        PAUSED: 'paused',
+        STALLED: 'stalled',
+        DONE: 'done',
+        IDLE: 'idle'
+    };
+
+
     window.castReceiverManager = null;
     window.mediaManager = null;
     window.messageBus = null;
@@ -106,6 +148,203 @@ The overlay layer holds:
     var playerDiv = document.getElementById('player');
     window.mediaElement = playerDiv.querySelector('video');
     window.mediaElement.autoplay = true;
+
+    window.player = new sampleplayer.CastPlayer(playerDiv); // NEW OBJECT
+
+// CASTPLAYER
+
+    sampleplayer.CastPlayer = function(element) {
+
+        this.element_ = element;
+
+        this.state_;
+        this.setState_(sampleplayer.State.LAUNCHING);
+
+        this.imageElement_ = /** @type {HTMLImageElement} */
+                (this.element_.querySelector('img'));
+        this.imageElement_.addEventListener('error', this.onError_.bind(this), false);
+
+        this.mediaElement_ = /** @type {HTMLMediaElement} */
+                (this.element_.querySelector('video'));
+
+        this.progressBarInnerElement_ = this.element_.querySelector(
+                '.controls-progress-inner');
+        this.progressBarThumbElement_ = this.element_.querySelector(
+                '.controls-progress-thumb');
+        this.curTimeElement_ = this.element_.querySelector('.controls-cur-time');
+        this.totalTimeElement_ = this.element_.querySelector('.controls-total-time');
+
+    };
+
+    sampleplayer.CastPlayer.prototype.setIdleTimeout_ = function(t) {
+        clearTimeout(this.idle_);
+        if (t) {
+            this.idle_ = setTimeout(this.onIdle_.bind(this), t);
+        }
+    };
+
+    sampleplayer.CastPlayer.prototype.setContentType_ = function(mimeType) {
+        if (mimeType.indexOf('image/') == 0) {
+            this.type_ = sampleplayer.Type.IMAGE;
+        } else if (mimeType.indexOf('video/') == 0) {
+            this.type_ = sampleplayer.Type.VIDEO;
+        }
+    };
+
+    sampleplayer.CastPlayer.prototype.setState_ = function(state, crossfade, delay){
+        var self = this;
+        clearTimeout(self.delay_);
+        if (delay) {
+            var func = function() { self.setState_(state, crossfade); };
+            self.delay_ = setTimeout(func, delay);
+        } else {
+            if (!crossfade) {
+                self.state_ = state;
+                self.element_.className = 'player ' + (self.type_ || '') + ' ' + state;
+                self.setIdleTimeout_(sampleplayer.IDLE_TIMEOUT[state.toUpperCase()]);
+                console.log('setState(%o)', state);
+            } else {
+                sampleplayer.fadeOut_(self.element_, 0.75, function() {
+                    self.setState_(state, false);
+                    sampleplayer.fadeIn_(self.element_, 0.75);
+                });
+            }
+        }
+    };
+
+    /**
+     * Callback called when player enters idle state
+     *
+     */
+    sampleplayer.CastPlayer.prototype.onIdle_ = function() {
+        console.log('onIdle');
+        if (this.state_ != sampleplayer.State.IDLE) {
+            this.setState_(sampleplayer.State.IDLE, true);
+        } else {
+            window.close();
+        }
+    };
+
+    /**
+     * Get a value from an object multiple levels deep.
+     *
+     * @param {Object} obj The object.
+     * @param {Array} keys The keys keys.
+     * @returns {R} the value of the property with the given keys
+     * @template R
+     */
+    sampleplayer.getValue_ = function(obj, keys) {
+        for (var i = 0; i < keys.length; i++) {
+            if (obj === null || obj === undefined) {
+                return '';                    // default to an empty string
+            } else {
+                obj = obj[keys[i]];
+            }
+        }
+        return obj;
+    };
+
+    /**
+     * Sets the inner text for the given element.
+     *
+     * @param {Element} element The element.
+     * @param {string} text The text.
+     */
+    sampleplayer.setInnerText_ = function(element, text) {
+        element.innerText = text || '';
+    };
+
+    /**
+     * Sets the background image for the given element.
+     *
+     * @param {Element} element The element.
+     * @param {string} url The image url.
+     */
+    sampleplayer.setBackgroundImage_ = function(element, url) {
+        element.style.backgroundImage = (url ? 'url("' + url + '")' : 'none');
+        element.style.display = (url ? '' : 'none');
+    };
+
+    /**
+     * Formats the given duration
+     *
+     * @param {number} dur the duration (in seconds)
+     * @return {string} the time (in HH:MM:SS)
+     */
+    sampleplayer.formatDuration_ = function(dur) {
+        function digit(n) { return ('00' + Math.floor(n)).slice(-2); }
+        var hr = Math.floor(dur / 3600);
+        var min = Math.floor(dur / 60) % 60;
+        var sec = dur % 60;
+        if (!hr) {
+            return digit(min) + ':' + digit(sec);
+        } else {
+            return digit(hr) + ':' + digit(min) + ':' + digit(sec);
+        }
+    };
+
+    /**
+     * Adds the given className to the given element for the specified amount of
+     * time
+     *
+     * @param {Element} element the element to add the given class
+     * @param {string} className the class name to add to the given element
+     * @param {number} timeout the amount of time (in ms) the class should be
+     *                 added to the given element
+     * @return {number} returns a numerical id, which can be used later with
+     *                  window.clearTimeout()
+     */
+    sampleplayer.addClassWithTimeout_ = function(element, className, timeout) {
+        element.classList.add(className);
+        return setTimeout(function() {
+            element.classList.remove(className);
+        }, timeout);
+    };
+
+    /**
+     * Causes the given element to fade in
+     *
+     * @param {Element} element the element to fade in
+     * @param {number} time the amount of time (in seconds) to transition
+     * @param {function()=} doneFunc the function to call when complete
+     */
+    sampleplayer.fadeIn_ = function(element, time, doneFunc) {
+        sampleplayer.fadeTo_(element, '', time, doneFunc);
+    };
+
+    /**
+     * Causes the given element to fade out
+     *
+     * @param {Element} element the element to fade out
+     * @param {number} time the amount of time (in seconds) to transition
+     * @param {function()=} doneFunc the function to call when complete
+     */
+    sampleplayer.fadeOut_ = function(element, time, doneFunc) {
+        sampleplayer.fadeTo_(element, 0, time, doneFunc);
+    };
+
+    /**
+     * Causes the given element to fade to the given opacity
+     *
+     * @param {Element} element the element to fade in/out
+     * @param {string|number} opacity the opacity to transition to
+     * @param {number} time the amount of time (in seconds) to transition
+     * @param {function()=} doneFunc the function to call when complete
+     */
+    sampleplayer.fadeTo_ = function(element, opacity, time, doneFunc) {
+        var listener = null;
+        listener = function() {
+            element.style.webkitTransition = '';
+            element.removeEventListener('webkitTransitionEnd', listener, false);
+            if (doneFunc) {
+                doneFunc();
+            }
+        };
+        element.addEventListener('webkitTransitionEnd', listener, false);
+        element.style.webkitTransition = 'opacity ' + time + 's';
+        element.style.opacity = opacity;
+    };
+
 
     console.log('### Application Loaded. Starting system.');
     setHudMessage('applicationState','Loaded. Starting up.');
@@ -288,6 +527,8 @@ The overlay layer holds:
         console.log("### Media Manager - error: " + JSON.stringify(obj));
         setHudMessage('mediaManagerMessage', 'ERROR - ' + JSON.stringify(obj));
 
+        window.player.setState_(sampleplayer.State.DONE, true);
+
         window.mediaManager['onErrorOrig'](obj);
     }
 
@@ -450,6 +691,15 @@ The overlay layer holds:
         console.log("### Media Manager - STOP: " + JSON.stringify(event));
         setHudMessage('mediaManagerMessage', 'STOP: ' + JSON.stringify(event));
 
+        var self = window.player;
+        sampleplayer.fadeOut_(self.element_, 0.75, function() {
+            self.mediaElement_.pause();
+            self.mediaElement_.removeAttribute('src');
+            self.imageElement_.removeAttribute('src');
+            self.setState_(sampleplayer.State.DONE, false);
+            sampleplayer.fadeIn_(self.element_, 0.75);
+        });
+
         window.mediaManager['onStopOrig'](event);
     }
 
@@ -472,6 +722,29 @@ The overlay layer holds:
     window.mediaManager.onLoad = function(event) {
         console.log("### Media Manager - LOAD: " + JSON.stringify(event));
         setHudMessage('mediaManagerMessage', 'LOAD ' + JSON.stringify(event));
+
+        var self = window.player;
+
+        var title = sampleplayer.getValue_(event.data, ['media', 'metadata', 'title']
+        );
+        var titleElement = self.element_.querySelector('.media-title');
+        sampleplayer.setInnerText_(titleElement, title);
+
+        var subtitle = sampleplayer.getValue_(event.data, ['media', 'metadata',
+            'subtitle']);
+        var subtitleElement = self.element_.querySelector('.media-subtitle');
+        sampleplayer.setInnerText_(subtitleElement, subtitle);
+
+        var artwork = sampleplayer.getValue_(event.data, ['media', 'metadata',
+            'images', 0, 'url']);
+        var artworkElement = self.element_.querySelector('.media-artwork');
+        sampleplayer.setBackgroundImage_(artworkElement, artwork);
+
+        var contentId = sampleplayer.getValue_(event.data, ['media', 'contentId']);
+        var contentType = sampleplayer.getValue_(event.data, ['media', 'contentType']
+        );
+        self.setContentType_(contentType);
+        self.setState_(sampleplayer.State.LOADING, false);
 
         // TODO - setup for load here
         // TODO - if there is an error during load: call mediaManager.sendLoadError to notify sender
@@ -590,18 +863,33 @@ The overlay layer holds:
     });
     window.mediaElement.addEventListener('ended', function(e){
         console.log("######### MEDIA ELEMENT ENDED");
+        window.player.setState_(sampleplayer.State.DONE, true);
+
         setHudMessage('mediaElementState','Ended');
     });
     window.mediaElement.addEventListener('playing', function(e){
         console.log("######### MEDIA ELEMENT PLAYING");
+
+        var isLoading = window.player.state_ == sampleplayer.State.LOADING;
+        var xfade = isLoading;
+        var delay = !isLoading ? 0 : 3000;      // 3 seconds
+        window.player.setState_(sampleplayer.State.PLAYING, xfade, delay);
         setHudMessage('mediaElementState','Playing');
     });
     window.mediaElement.addEventListener('waiting', function(e){
         console.log("######### MEDIA ELEMENT WAITING");
+        if (window.player.state_ != sampleplayer.State.LOADING) {
+            window.player.setState_(sampleplayer.State.BUFFERING, false);
+        }
         setHudMessage('mediaElementState','Waiting');
     });
     window.mediaElement.addEventListener('stalled', function(e){
         console.log("######### MEDIA ELEMENT STALLED");
+        window.player.setState_(sampleplayer.State.BUFFERING, false);
+//        if (this.mediaElement_.currentTime) {
+//            this.mediaElement_.load();  // see if we can restart the process
+//        }
+
         setHudMessage('mediaElementState','Stalled');
     });
     window.mediaElement.addEventListener('error', function(e){
@@ -622,12 +910,42 @@ The overlay layer holds:
 
     window.mediaElement.addEventListener('seeking', function(e){
         console.log("######### MEDIA ELEMENT SEEKING " + e);
+        clearTimeout(this.seekingTimeout_);
+        window.player.element_.classList.add('seeking');
         setHudMessage('mediaElementState','Seeking');
     });
     window.mediaElement.addEventListener('seeked', function(e){
         console.log("######### MEDIA ELEMENT SEEKED " + e);
+
+        clearTimeout(this.seekingTimeout_);
+        window.player.seekingTimeout_ = window.player.addClassWithTimeout_(this.element_,
+                'seeking', 3000);
+
         setHudMessage('mediaElementState','Seeked');
     });
+
+    window.mediaElement.addEventListener('pause', function(e) {
+        console.log("######### MEDIA ELEMENT Paused ");
+        setHudMessage('mediaElementState','Paused');
+        if (window.player.state_ != sampleplayer.State.DONE) {
+            window.player.setState_(sampleplayer.State.PAUSED, false);
+        }
+    });
+
+
+    window.mediaElement.addEventListener('timeupdate', function(e) {
+        console.log("######### MEDIA ELEMENT timeupdate ");
+        var curTime = window.player.mediaElement_.currentTime;
+        var totalTime = window.player.mediaElement_.duration;
+        if (!isNaN(curTime) && !isNaN(totalTime)) {
+            var pct = 100 * (curTime / totalTime);
+            window.player.curTimeElement_.innerText = sampleplayer.formatDuration_(curTime);
+            window.player.totalTimeElement_.innerText = sampleplayer.formatDuration_(totalTime);
+            window.player.progressBarInnerElement_.style.width = pct + '%';
+            window.player.progressBarThumbElement_.style.left = pct + '%';
+        }
+    });
+
 
     /**
      * ALTERNATIVE TO onVisibilityChanged
