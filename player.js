@@ -20,7 +20,9 @@ function setHudMessage(elementId, message) {
 
 /** @type {HTMLMediaElement} */
 
-window.mediaElement = document.querySelector('video');
+var playerDiv = document.getElementById('player');
+
+window.mediaElement = playerDiv.querySelector('video');
 
 window.mediaElement.autoplay = true;
 
