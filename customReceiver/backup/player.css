@@ -47,7 +47,22 @@
 body {
   background-color: #000;
 }
+ #messages {
+            color: #FFFFFF;
+            float: left;
+            margin-left: 25px;
+            margin-top:  25px;
+            z-index: 2;
+            position:absolute;
+            font-weight: bold;
+            width:1000PX;
+            background-color: rgba(0,0,0,0.5);
+        }
 
+#messages span {
+    font-weight: normal;
+}
+        
 .player {
   background-size: cover;
   background-position: center;
