@@ -16,7 +16,12 @@ function setHudMessage(elementId, message) {
 
 // Initialize the receiver SDK before starting the app-specific logic
 
-window.mediaElement = document.getElementById('receiverVideoElement');
+//window.mediaElement = document.getElementById('receiverVideoElement');
+
+/** @type {HTMLMediaElement} */
+
+window.mediaElement = document.querySelector('video');
+
 window.mediaElement.autoplay = true;
 
 console.log('### Application Loaded. Starting system.');
@@ -364,7 +369,7 @@ window.mediaManager.onStop = function(event) {
 
     window.mediaManager['onStopOrig'](event);
 
-    
+
 }
 
 /**
