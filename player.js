@@ -26,7 +26,8 @@ window.onload = function() {
 
     window.mediaElement = playerDiv.querySelector('video');
 
-    
+    console.log('### Application Loaded. Starting system.');
+    setHudMessage('applicationState','Loaded. Starting up.');
  
 
 }
@@ -37,8 +38,7 @@ window.onload = function() {
 
 //window.mediaElement.autoplay = true;
 
-console.log('### Application Loaded. Starting system.');
-setHudMessage('applicationState','Loaded. Starting up.');
+
 
 /**
  * Sets the log verbosity level.
