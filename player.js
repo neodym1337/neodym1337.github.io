@@ -26,6 +26,8 @@ window.onload = function() {
 
     window.mediaElement = playerDiv.querySelector('video');
 
+    window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
+
     console.log('### Application Loaded. Starting system.');
     setHudMessage('applicationState','Loaded. Starting up.');
  
@@ -187,7 +189,7 @@ window.messageBus.onMessage = function(event) {
 }
 
 // This class is used to send/receive media messages/events using the media protocol/namesapce (urn:x-cast:com.google.cast.media).
-window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
+//window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
 
 /**
  * Called when the media ends.
