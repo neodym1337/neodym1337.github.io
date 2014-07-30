@@ -64,7 +64,6 @@ The overlay layer holds:
     </div>
 	<div id="player" class="player">
 		<div class="media">
-			<img></img>
 			<video></video>
 		</div>
 		<div class="overlay">
@@ -179,9 +178,7 @@ The overlay layer holds:
     };
 
     sampleplayer.CastPlayer.prototype.setContentType_ = function(mimeType) {
-        if (mimeType.indexOf('image/') == 0) {
-            this.type_ = sampleplayer.Type.IMAGE;
-        } else if (mimeType.indexOf('video/') == 0) {
+        if (mimeType.indexOf('application/vnd.apple.mpegURL') == 0) {
             this.type_ = sampleplayer.Type.VIDEO;
         }
     };
@@ -315,9 +312,6 @@ The overlay layer holds:
      * @param {number} time the amount of time (in seconds) to transition
      * @param {function()=} doneFunc the function to call when complete
      */
-    sampleplayer.fadeOut_ = function(element, time, doneFunc) {
-        sampleplayer.fadeTo_(element, 0, time, doneFunc);
-    };
 
     /**
      * Causes the given element to fade to the given opacity
