@@ -78,7 +78,7 @@ body {
 }
 
 .player.idle, .player.done {
-  background-image: url('assets/done.png');
+  background-image: url('assets/br-logo-blue@2x.png');
 }
 
 .player img, .player video {
@@ -151,9 +151,9 @@ body {
 
 .player.launching .launching-spinner {
     display: block;
-    width: 60px;
-    height: 60px;
-    margin: 300px auto;
+    width: 80px;
+    height: 80px;
+    margin: 400px auto;
     background-color: #FFFFFF;
 
     border-radius: 100%;
