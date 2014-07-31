@@ -303,7 +303,7 @@ body {
   -webkit-animation: loading 1s infinite ease-in;
 }
 
-.player .loading-spinner {
+.player .launching-spinner {
     width: 40px;
     height: 40px;
     margin: 100px auto;
