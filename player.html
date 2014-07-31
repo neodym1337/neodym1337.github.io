@@ -35,7 +35,7 @@ The overlay layer holds:
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Cast Receiver / Player sample</title>
+	<title>BR MeLiNa Custom Receiver</title>
 	<link rel="stylesheet" href="player.css" />
   <script type="text/javascript" 
 		src="http://www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js">
@@ -193,6 +193,7 @@ The overlay layer holds:
             var func = function() { self.setState_(state, crossfade); };
             self.delay_ = setTimeout(func, delay);
         } else {
+
             if (!crossfade) {
                 self.state_ = state;
                 self.element_.className = 'player ' + (self.type_ || '') + ' ' + state;
@@ -213,11 +214,14 @@ The overlay layer holds:
      */
     sampleplayer.CastPlayer.prototype.onIdle_ = function() {
         console.log('onIdle');
+        //this.setState_(sampleplayer.State.IDLE, true);
+
         if (this.state_ != sampleplayer.State.IDLE) {
             this.setState_(sampleplayer.State.IDLE, true);
         } else {
             window.close();
         }
+
     };
 
     /**
@@ -314,6 +318,9 @@ The overlay layer holds:
      * @param {number} time the amount of time (in seconds) to transition
      * @param {function()=} doneFunc the function to call when complete
      */
+    sampleplayer.fadeOut_ = function(element, time, doneFunc) {
+        sampleplayer.fadeTo_(element, 0, time, doneFunc);
+    };
 
     /**
      * Causes the given element to fade to the given opacity
@@ -349,7 +356,7 @@ The overlay layer holds:
     /**
      * Sets the log verbosity level.
      *
-     * Debug logging (all messages).
+     * Debug logging (all messages).s
      * DEBUG
      *
      * Verbose logging (sender messages).
