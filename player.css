@@ -208,7 +208,10 @@ body {
 */
 
 .player.video.paused .media-artwork,
-.player.video.paused .media-info{
+.player.video.paused .media-info,
+.player.video.paused .media-info. media-title,
+.player.video.paused .media-info. media-subtitle,
+{
     display: block;
 }
 
