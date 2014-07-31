@@ -854,6 +854,8 @@ The overlay layer holds:
      seeked - seeking has completed
 
      http://www.w3.org/2010/05/video/mediaevents.html for more info.
+
+     http://www.w3.org/TR/html5/embedded-content-0.html#mediaevents
      **/
     window.mediaElement.addEventListener('loadstart', function(e){
         console.log("######### MEDIA ELEMENT LOAD START");
@@ -875,6 +877,8 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT ENDED");
         window.player.setState_(sampleplayer.State.DONE, true);
 
+        //Finished playing through media
+
         setHudMessage('mediaElementState','Ended');
     });
     window.mediaElement.addEventListener('playing', function(e){
@@ -891,10 +895,13 @@ The overlay layer holds:
             window.player.setState_(sampleplayer.State.BUFFERING, false);
         }
         setHudMessage('mediaElementState','Waiting');
+        //Playback has stopped because the next frame is not available, but the user agent expects that frame to become available in due course.
+        //This is what we want for buffering
     });
     window.mediaElement.addEventListener('stalled', function(e){
         console.log("######### MEDIA ELEMENT STALLED");
-        window.player.setState_(sampleplayer.State.BUFFERING, false);
+
+        //window.player.setState_(sampleplayer.State.BUFFERING, false);
 //        if (this.mediaElement_.currentTime) {
 //            this.mediaElement_.load();  // see if we can restart the process
 //        }
@@ -912,9 +919,13 @@ The overlay layer holds:
     window.mediaElement.addEventListener('suspend', function(e){
         console.log("######### MEDIA ELEMENT SUSPEND " + e);
         setHudMessage('mediaElementState','Suspended');
+
+        //The user agent is intentionally not currently fetching media data. (but can be playing)
     });
     window.mediaElement.addEventListener('progress', function(e){
         setHudMessage('mediaElementState','Progress');
+
+        //The user agent is fetching media data. (but can be playing)
     });
 
     window.mediaElement.addEventListener('seeking', function(e){
