@@ -78,7 +78,7 @@ body {
 }
 
 .player.idle, .player.done {
-  background-image: url('assets/br-logo-blue@2x.png');
+  background-image: url('assets/done.png');
 }
 
 .player img, .player video {
@@ -142,12 +142,13 @@ body {
   display: none;
 }
 
+/* launching spinner */
 
 .player .launching-spinner
 {
     display: none;
 }
-/* logo */
+
 
 .player.launching .launching-spinner {
     display: block;
