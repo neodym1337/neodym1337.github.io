@@ -78,7 +78,7 @@ body {
 }
 
 .player.idle, .player.done {
-  background-image: url('done.png');
+  background-image: url('assets/done.png');
 }
 
 .player img, .player video {
