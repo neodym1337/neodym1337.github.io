@@ -178,6 +178,8 @@ The overlay layer holds:
     };
 
     sampleplayer.CastPlayer.prototype.setContentType_ = function(mimeType) {
+
+        // HLS stream mimetype 'application/vnd.apple.mpegURL'
         if (mimeType.indexOf('application/vnd.apple.mpegURL') == 0) {
             this.type_ = sampleplayer.Type.VIDEO;
         }
