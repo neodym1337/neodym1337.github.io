@@ -851,7 +851,10 @@ The overlay layer holds:
     window.mediaElement.addEventListener('canplay', function(e){
         console.log("######### MEDIA ELEMENT CAN PLAY");
         setHudMessage('mediaElementState','Can Play');
-        window.player.setState_(sampleplayer.State.PLAYING, false);
+        if(window.mediaElement.seeking == false) {
+            // only play when we are not in the process of seeking
+            window.player.setState_(sampleplayer.State.PLAYING, false);
+        }
     });
     window.mediaElement.addEventListener('ended', function(e){
         console.log("######### MEDIA ELEMENT ENDED");
@@ -907,7 +910,6 @@ The overlay layer holds:
     });
     window.mediaElement.addEventListener('seeked', function(e){
         console.log("######### MEDIA ELEMENT SEEKED " + e);
-
         clearTimeout(this.seekingTimeout_);
         window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
                 'seeking', 3000);
