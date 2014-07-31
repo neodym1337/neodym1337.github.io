@@ -303,6 +303,12 @@ body {
   -webkit-animation: loading 1s infinite ease-in;
 }
 
+.player .loading-spinner {
+    content: url("assets/buffering.png");
+    -webkit-animation: spin 1s infinite linear;
+    display: block;
+
+}
 /* ------------------------------------------------- */
 /* Skin                                              */
 /* ------------------------------------------------- */
