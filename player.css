@@ -304,9 +304,12 @@ body {
 }
 
 .player .launching-spinner {
-    width: 40px;
-    height: 40px;
-    margin: 100px auto;
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:60%;
     background-color: #FFFFFF;
 
     border-radius: 100%;
