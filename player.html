@@ -100,7 +100,7 @@ The overlay layer holds:
         PAUSED: 30 * 1000,       // 10 minutes normally, use 30 seconds for demo
         STALLED: 30 * 1000,      // 30 seconds
         DONE: 30 * 1000,         // 5 minutes normally, use 30 seconds for demo
-        IDLE: 60 * 5 * 1000 //30 * 1000          // 5 minutes normally, use 30 seconds for demo
+        IDLE: 60 * 5 * 1000      //30 * 1000          // 5 minutes normally, use 30 seconds for demo
     };
 
     /**
@@ -213,8 +213,8 @@ The overlay layer holds:
      *
      */
     sampleplayer.CastPlayer.prototype.onIdle_ = function() {
-        console.log('onIdle');
-        //this.setState_(sampleplayer.State.IDLE, true);
+        //console.log('onIdle');
+
 
         if (this.state_ != sampleplayer.State.IDLE) {
             this.setState_(sampleplayer.State.IDLE, true);
@@ -388,7 +388,8 @@ The overlay layer holds:
         setHudMessage('castReceiverManagerMessage', 'READY: ' + JSON.stringify(event));
         setHudMessage('applicationState','Loaded. Started. Ready.');
 
-        //TODO: remove loading spinner here
+        window.player.setState_(sampleplayer.State.IDLE, true);
+        ////TODO: remove loading spinner here
     }
 
     /**
