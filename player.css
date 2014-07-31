@@ -128,16 +128,32 @@ body {
   left: 50%;
 }
 
+
+
+.player:not(.launching)  .logo {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 72px;
+}
+
+.player.video.playing .logo {
+  display: none;
+}
+
+
 .player .launching-spinner
 {
     display: none;
 }
+/* logo */
 
 .player.launching .launching-spinner {
     display: block;
     width: 60px;
     height: 60px;
-    margin: 200px auto;
+    margin: 300px auto;
     background-color: #FFFFFF;
 
     border-radius: 100%;
@@ -164,19 +180,6 @@ body {
           opacity: 0;
       }
 }
-
-.player:not(.launching)  .logo {
-  display: block;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  margin-bottom: 72px;
-}
-
-.player.video.playing .logo {
-  display: none;
-}
-
 /* ------------------------------------------------- */
 /* Media Info                                        */
 /* ------------------------------------------------- */
