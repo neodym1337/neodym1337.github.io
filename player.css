@@ -196,7 +196,7 @@ body {
   right: 96px;
   bottom: 96px;
 }
-
+/*
 .player.video.buffering .media-artwork,
 .player.video.buffering .media-info,
 .player.video.paused .media-artwork,
@@ -205,6 +205,13 @@ body {
 .player.video.seeking .media-info {
   display: none;
 }
+*/
+
+.player.video.paused .media-artwork,
+.player.video.paused .media-info{
+    display: block;
+}
+
 .player .media-artwork {
   background-size: contain;
   background-position: bottom;
