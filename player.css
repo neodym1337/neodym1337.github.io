@@ -133,7 +133,7 @@ body {
     display: none;
 }
 
-.player .launching .launching-spinner {
+.player.launching .launching-spinner {
     display: block;
     width: 60px;
     height: 60px;
