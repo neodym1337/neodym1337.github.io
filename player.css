@@ -283,8 +283,33 @@ body {
 }
 
 .player.buffering .controls-play-pause {
+ /*
   background-image: url("assets/buffering.png");
   -webkit-animation: spin 1s infinite linear;
+  */
+    width: 20px;
+    height: 20px;
+    border: 10px solid #ccffcc;
+    border-top-color: rgb(0,255,0);
+    border-radius: 100%;
+    -webkit-animation: loading linear .9s infinite;
+    animation: loading linear .9s infinite;
+}
+
+.loading-spinner {
+    width: 30px;
+    height: 30px;
+    border: 14px solid #ccffcc;
+    border-top-color: rgb(0,255,0);
+    border-radius: 100%;
+    -webkit-animation: loading linear .7s infinite;
+    animation: loading linear .7s infinite;
+}
+@-webkit-keyframes loading {
+    100% {-webkit-transform: rotate(360deg);}
+}
+@keyframes loading {
+    100% {transform: rotate(360deg);}
 }
 
 .player.paused .controls-play-pause {
