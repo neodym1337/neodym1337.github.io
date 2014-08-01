@@ -250,12 +250,20 @@ body {
   margin-bottom: 0px;
 }
 
+.player.video .media-text {
+    display: table-cell;
+    height: 279px;
+    vertical-align: bottom;
+    padding-bottom: 64px;
+}
+/*
 .player.video .media-info {
   display: table-cell;
   height: 279px;
   vertical-align: bottom;
   padding-bottom: 64px;
 }
+*/
 
 .player.launching .controls, .player.launching .media-info,
 .player.launching .media-artwork {
