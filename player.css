@@ -241,9 +241,9 @@ body {
 }
 
 .player.video .media-artwork {
-  position: absolute;
+
   width: 144px;
-  height: 215px;
+  height: 270px;
   float: left;
   margin-right: 20px;
   /* margin-bottom: 64px; */
