@@ -68,7 +68,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   color: #f1f1f1;
-  font-family: 'Open Sans',sans-serif;
+  font-family: Arial, Helvetica,sans-serif;
   font-weight: 300;
   position: absolute;
   left: 0;
@@ -245,7 +245,8 @@ body {
   height: 215px;
   float: left;
   margin-right: 20px;
-  margin-bottom: 64px;
+  /* margin-bottom: 64px; */
+  margin-bottom: 30px;
 }
 
 .player.video .media-info {
@@ -292,6 +293,7 @@ body {
     border: 10px solid #e5e5e5;
     border-top-color: #F5F5F5;
     border-radius: 100%;
+    opacity: 0.5;
     -webkit-animation: buffer-spinner-animation linear .9s infinite;
     animation: buffer-spinner-animation linear .9s infinite;
 }
