@@ -246,8 +246,7 @@ body {
   height: 110px;
   float: left;
   margin-right: 20px;
-  /* margin-bottom: 64px; */
-  margin-bottom: 0px;
+  margin-bottom: 70px;
 }
 
 .player.video .media-text {
