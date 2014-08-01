@@ -241,6 +241,7 @@ body {
 }
 
 .player.video .media-artwork {
+  position: absolute;
   width: 144px;
   height: 215px;
   float: left;
