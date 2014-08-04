@@ -82,7 +82,6 @@ The overlay layer holds:
 
 			<div class="media-info">
                 <div class="media-artwork"></div>
-
 				<div class="media-title"></div>
 				<div class="media-subtitle"></div>
 			</div>
@@ -128,6 +127,7 @@ The overlay layer holds:
         PLAYING: 'playing',
         PAUSED: 'paused',
         STALLED: 'stalled',
+        SEEKING: 'seeking',
         DONE: 'done',
         IDLE: 'idle'
     };
@@ -728,11 +728,15 @@ The overlay layer holds:
      * Processes the load event.
      * @param event
      */
+
+    //var firstPlay;
     window.mediaManager.onLoad = function(event) {
         console.log("### Media Manager - LOAD: " + JSON.stringify(event));
         setHudMessage('mediaManagerMessage', 'LOAD ' + JSON.stringify(event));
 
         var self = window.player;
+
+        //firstPlay = true;
 
         var title = sampleplayer.getValue_(event.data, ['media', 'metadata', 'title']
         );
@@ -750,9 +754,10 @@ The overlay layer holds:
         sampleplayer.setBackgroundImage_(artworkElement, artwork);
 
         var contentId = sampleplayer.getValue_(event.data, ['media', 'contentId']);
-        var contentType = sampleplayer.getValue_(event.data, ['media', 'contentType']
-        );
+        var contentType = sampleplayer.getValue_(event.data, ['media', 'contentType']);
+
         self.setContentType_(contentType);
+
         self.setState_(sampleplayer.State.LOADING, false);
 
         // TODO - setup for load here
@@ -886,9 +891,15 @@ The overlay layer holds:
     });
     window.mediaElement.addEventListener('playing', function(e){
         console.log("######### MEDIA ELEMENT PLAYING");
+
         var isLoading = window.player.state_ == sampleplayer.State.LOADING;
         var xfade = isLoading;
         var delay = !isLoading ? 0 : 3000;      // 3 seconds
+
+        if (isLoading){
+            //TODO: Add metadata with timeout
+            sampleplayer.addClassWithTimeout_(window.player.element_, 'media-artwork', 5000);
+        }
         window.player.setState_(sampleplayer.State.PLAYING, xfade, delay);
         setHudMessage('mediaElementState','Playing');
     });

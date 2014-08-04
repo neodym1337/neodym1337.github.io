@@ -128,8 +128,6 @@ body {
   left: 50%;
 }
 
-
-
 .player:not(.launching)  .logo {
   display: block;
   position: absolute;
@@ -143,7 +141,6 @@ body {
 }
 
 /* launching spinner */
-
 .player .launching-spinner
 {
     display: none;
@@ -196,16 +193,6 @@ body {
   right: 96px;
   bottom: 96px;
 }
-/*
-.player.video.buffering .media-artwork,
-.player.video.buffering .media-info,
-.player.video.paused .media-artwork,
-.player.video.paused .media-info,
-.player.video.seeking .media-artwork,
-.player.video.seeking .media-info {
-  display: none;
-}
-*/
 
 .player.video.paused .media-artwork,
 .player.video.paused .media-info,
