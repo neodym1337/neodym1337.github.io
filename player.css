@@ -190,7 +190,7 @@ body {
 .player.audio.paused .overlay, .player.audio.playing .overlay,
 .player.audio.seeking .overlay, .player.video.buffering .overlay,
 .player.video.loading .overlay, .player.video.paused .overlay,
-.player.video.seeking .overlay {
+.player.video.seeking .overlay, .player.video.playing .overlay {
   display: block;
   position: absolute;
   left: 96px;
