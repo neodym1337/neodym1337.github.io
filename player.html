@@ -918,7 +918,7 @@ The overlay layer holds:
     window.mediaElement.addEventListener('stalled', function(e){
         console.log("######### MEDIA ELEMENT STALLED");
 
-        window.player.setState_(sampleplayer.State.BUFFERING, false); //TODO:Buffering state should not be set here because movie can be playing while stalled.
+        //window.player.setState_(sampleplayer.State.BUFFERING, false); //TODO:Buffering state should not be set here because movie can be playing while stalled.
         //We only show buffering state if video stops due to buffering, i.e. 'waiting' event
 //        if (this.mediaElement_.currentTime) {
 //            this.mediaElement_.load();  // see if we can restart the process
