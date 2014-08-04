@@ -893,16 +893,15 @@ The overlay layer holds:
     });
     window.mediaElement.addEventListener('playing', function(e){
         console.log("######### MEDIA ELEMENT PLAYING");
-
+        //Is loading will usually be false here since we set state playing in canplay eventlistener
+        //Why do they do it in example code?
         var isLoading = window.player.state_ == sampleplayer.State.LOADING;
         var xfade = isLoading;
         var delay = !isLoading ? 0 : 3000;      // 3 seconds
 
-        //Is loading will usually be false here since we set state playing in canplay eventlistener
-        if (isLoading){
-            //TODO: Add metadata with timeout
-            sampleplayer.addClassWithTimeout_(window.player.element_, 'media-artwork', 5000);
-        }
+        var mediaInfo_ = sampleplayer.element_.querySelector('.media-info');
+        setTimeout(sampleplayer.fadeOut_(mediaInfo_, 0.75), 5000);
+
         window.player.setState_(sampleplayer.State.PLAYING, xfade, delay);
         setHudMessage('mediaElementState','Playing');
     });
@@ -973,7 +972,7 @@ The overlay layer holds:
         }
     });
 
-
+    /** Progress bar */
     window.mediaElement.addEventListener('timeupdate', function(e) {
         console.log("######### MEDIA ELEMENT timeupdate ");
         var curTime = window.player.mediaElement_.currentTime;

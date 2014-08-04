@@ -201,7 +201,7 @@ body {
 
 
 .player.video.playing .media-info{
-    display:none;
+    display:block;
 }
 
 .player.video.paused .media-artwork,
