@@ -948,16 +948,20 @@ The overlay layer holds:
 
     window.mediaElement.addEventListener('seeking', function(e){
         console.log("######### MEDIA ELEMENT SEEKING " + e);
+        /*
         clearTimeout(this.seekingTimeout_);
         window.player.element_.classList.add('seeking');
+        */
+        window.player.setState_(sampleplayer.State.SEEKING, false);
         setHudMessage('mediaElementState','Seeking');
     });
     window.mediaElement.addEventListener('seeked', function(e){
         console.log("######### MEDIA ELEMENT SEEKED " + e);
+        /*
         clearTimeout(this.seekingTimeout_);
         window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
                 'seeking', 3000);
-
+        */
         setHudMessage('mediaElementState','Seeked');
     });
 
