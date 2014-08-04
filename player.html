@@ -67,6 +67,7 @@ The overlay layer holds:
 			<video></video>
 		</div>
 		<div class="overlay">
+
             <div class="launching-spinner"></div>
 			<div class="logo"></div>
 
@@ -872,6 +873,11 @@ The overlay layer holds:
     window.mediaElement.addEventListener('loadeddata', function(e){
         console.log("######### MEDIA ELEMENT DATA LOADED");
         setHudMessage('mediaElementState','Data Loaded');
+
+        //Add artwork when we play the first time
+        document.getElementById('paused').style.display = 'block';
+        //sampleplayer.addClassWithTimeout_(window.player.element_, 'paused', 5000);
+
     });
     window.mediaElement.addEventListener('canplay', function(e){
         console.log("######### MEDIA ELEMENT CAN PLAY");
@@ -896,6 +902,7 @@ The overlay layer holds:
         var xfade = isLoading;
         var delay = !isLoading ? 0 : 3000;      // 3 seconds
 
+        //Is loading will usually be false here since we set state playing in canplay eventlistener
         if (isLoading){
             //TODO: Add metadata with timeout
             sampleplayer.addClassWithTimeout_(window.player.element_, 'media-artwork', 5000);
@@ -915,7 +922,7 @@ The overlay layer holds:
     window.mediaElement.addEventListener('stalled', function(e){
         console.log("######### MEDIA ELEMENT STALLED");
 
-        window.player.setState_(sampleplayer.State.BUFFERING, false); //TODO:Buffering state should not be set here because movie can be playing while stalled.
+        //window.player.setState_(sampleplayer.State.BUFFERING, false); //TODO:Buffering state should not be set here because movie can be playing while stalled.
         //We only show buffering state if video stops due to buffering, i.e. 'waiting' event
 //        if (this.mediaElement_.currentTime) {
 //            this.mediaElement_.load();  // see if we can restart the process
