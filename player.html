@@ -67,7 +67,6 @@ The overlay layer holds:
 			<video></video>
 		</div>
 		<div class="overlay">
-
             <div class="launching-spinner"></div>
 			<div class="logo"></div>
 
@@ -874,9 +873,6 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT DATA LOADED");
         setHudMessage('mediaElementState','Data Loaded');
 
-        //Add artwork when we play the first time
-        //document.getElementById('paused').style.display = 'block';
-        //sampleplayer.addClassWithTimeout_(window.player.element_, 'paused', 5000);
 
     });
     window.mediaElement.addEventListener('canplay', function(e){
@@ -922,7 +918,7 @@ The overlay layer holds:
     window.mediaElement.addEventListener('stalled', function(e){
         console.log("######### MEDIA ELEMENT STALLED");
 
-        //window.player.setState_(sampleplayer.State.BUFFERING, false); //TODO:Buffering state should not be set here because movie can be playing while stalled.
+        window.player.setState_(sampleplayer.State.BUFFERING, false); //TODO:Buffering state should not be set here because movie can be playing while stalled.
         //We only show buffering state if video stops due to buffering, i.e. 'waiting' event
 //        if (this.mediaElement_.currentTime) {
 //            this.mediaElement_.load();  // see if we can restart the process
@@ -952,20 +948,16 @@ The overlay layer holds:
 
     window.mediaElement.addEventListener('seeking', function(e){
         console.log("######### MEDIA ELEMENT SEEKING " + e);
-        //clearTimeout(this.seekingTimeout_);
-        //window.player.element_.classList.add('seeking');
-
-        window.player.setState_(sampleplayer.State.SEEKING, false);
-
+        clearTimeout(this.seekingTimeout_);
+        window.player.element_.classList.add('seeking');
         setHudMessage('mediaElementState','Seeking');
     });
     window.mediaElement.addEventListener('seeked', function(e){
         console.log("######### MEDIA ELEMENT SEEKED " + e);
-        /*
         clearTimeout(this.seekingTimeout_);
         window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
                 'seeking', 3000);
-        */
+
         setHudMessage('mediaElementState','Seeked');
     });
 
