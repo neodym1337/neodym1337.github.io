@@ -370,6 +370,13 @@ body {
   display: none;
 }
 
+.player.video.playing .controls-cur-time, .player.video.playing .controls-total-time,
+.player.video.playing .controls-progress-thumb {
+
+
+}
+
+
 .player.loading .controls-progress-inner {
   width: 50px !important;
   -webkit-animation: loading 1s infinite ease-in;

@@ -88,7 +88,8 @@ sampleplayer.State = {
   PAUSED: 'paused',
   STALLED: 'stalled',
   DONE: 'done',
-  IDLE: 'idle'
+  IDLE: 'idle',
+  SEEKING: 'seeking'
 };
 
 /**
@@ -363,8 +364,11 @@ sampleplayer.CastPlayer.prototype.onProgress_ = function() {
  */
 sampleplayer.CastPlayer.prototype.onSeekStart_ = function() {
   console.log('onSeekStart');
+   /*
   clearTimeout(this.seekingTimeout_);
   this.element_.classList.add('seeking');
+  */
+    this.setState_(sampleplayer.State.SEEKING, false);
 };
 
 /**
@@ -373,9 +377,12 @@ sampleplayer.CastPlayer.prototype.onSeekStart_ = function() {
  */
 sampleplayer.CastPlayer.prototype.onSeekEnd_ = function() {
   console.log('onSeekEnd');
+   this.setState_(sampleplayer.State.PLAYING, false);
+    /*
   clearTimeout(this.seekingTimeout_);
   this.seekingTimeout_ = sampleplayer.addClassWithTimeout_(this.element_,
       'seeking', 3000);
+      */
 };
 
 /**
