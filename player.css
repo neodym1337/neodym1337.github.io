@@ -377,6 +377,12 @@ body {
 }
 
 
+.player.video.seeking .controls-cur-time, .player.video.seeking .controls-total-time,
+.player.video.seeking .controls-progress-thumb {
+display: block;
+
+}
+
 .player.loading .controls-progress-inner {
   width: 50px !important;
   -webkit-animation: loading 1s infinite ease-in;
