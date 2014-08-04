@@ -101,6 +101,10 @@ body {
   display: none;
 }
 
+.player.playing .overlay {
+  display: block;
+}
+
 .player.launching .overlay {
   display: block;
   position: absolute;
@@ -194,6 +198,10 @@ body {
   bottom: 96px;
 }
 
+
+
+
+.player.video.playing .media-info,
 .player.video.paused .media-artwork,
 .player.video.paused .media-info,
 .player.video.paused .media-info. media-title,
