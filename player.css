@@ -313,9 +313,17 @@ body {
   background-image: url("assets/paused.png");
 }
 
-.player.playing .controls-play-pause {
+.player.video.playing .controls {
+ display: none;
+}
+/*
+.player.video.playing .controls-play-pause,
+.player.video.playing .controls-progress,
+.player.video.playing .controls-cur-time,
+.player.video.playing .controls-total-time{
   display: none;
 }
+*/
 
 .player .controls-progress {
   height: 12px;
@@ -371,11 +379,13 @@ body {
   display: none;
 }
 
+/*
 .player.video.playing .controls-cur-time, .player.video.playing .controls-total-time,
 .player.video.playing .controls-progress-thumb {
 
 
 }
+*/
 
 
 .player.video.seeking .controls-cur-time, .player.video.seeking .controls-total-time,
