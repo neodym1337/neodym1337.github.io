@@ -700,11 +700,11 @@ The overlay layer holds:
         setHudMessage('mediaManagerMessage', 'STOP: ' + JSON.stringify(event));
 
         var self = window.player;
-        sampleplayer.fadeOut_(self.element_, 0.75, function() {
+        window.player.fadeOut_(self.element_, 0.75, function() {
             self.mediaElement_.pause();
             self.mediaElement_.removeAttribute('src');
             self.setState_(sampleplayer.State.DONE, false);
-            sampleplayer.fadeIn_(self.element_, 0.75);
+            window.player.fadeIn_(self.element_, 0.75);
         });
 
         window.mediaManager['onStopOrig'](event);
@@ -735,8 +735,8 @@ The overlay layer holds:
         var self = window.player;
 
         //firstPlay = true;
-        var mediaInfo_ = window.player.element_.querySelector('.media-info');
-        self.fadeIn_(mediaInfo_, 0);
+        //var mediaInfo_ = self.element_.querySelector('.media-info');
+        //self.fadeIn_(mediaInfo_, 0);
 
         var title = sampleplayer.getValue_(event.data, ['media', 'metadata', 'title']
         );
@@ -970,7 +970,7 @@ The overlay layer holds:
         if (window.player.state_ != sampleplayer.State.DONE) {
 
             var mediaInfo_ = window.player.element_.querySelector('.media-info');
-            self.fadeIn_(mediaInfo_, 0);
+            window.player.fadeIn_(mediaInfo_, 0);
             window.player.setState_(sampleplayer.State.PAUSED, false);
         }
     });
