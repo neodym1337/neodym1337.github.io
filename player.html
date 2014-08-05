@@ -900,10 +900,11 @@ The overlay layer holds:
 
         setHudMessage('mediaElementState','Ended');
     });
-    window.mediaElement.addEventListener('playing', function(e){
+    window.mediaElement.addEventListener('playing', function(e) {
         console.log("######### MEDIA ELEMENT PLAYING");
         //Is loading will usually be false here since we set state playing in canplay eventlistener
         //Why do they do it in example code?
+
         /*
         var isLoading = window.player.state_ == sampleplayer.State.LOADING;
         var xfade = isLoading;
@@ -915,14 +916,21 @@ The overlay layer holds:
         window.player.setState_(sampleplayer.State.PLAYING, xfade, delay);
         */
 
+        var
 
+                mediaInfo_ = window.player.element_.querySelector('.media-info');
 
         var isLoading = window.player.state_ == sampleplayer.State.LOADING;
 
-
-        var mediaInfo_ = window.player.element_.querySelector('.media-info');
-        setTimeout(window.player.fadeOut_(mediaInfo_, 0.75), 10000);
-
+        var isPaused = window.player.state_ == sampleplayer.State.PAUSED;
+        if (isPaused){
+            window.player.fadeOut_(mediaInfo_, 0.75)
+        }
+        else{
+            setTimeout(function() {
+                window.player.fadeOut_(mediaInfo_, 0.75)
+            }, 5000);
+        }
         window.player.setState_(sampleplayer.State.PLAYING, false);
         setHudMessage('mediaElementState','Playing');
     });
@@ -994,6 +1002,10 @@ The overlay layer holds:
             window.player.fadeIn_(mediaInfo_, 0);
             window.player.setState_(sampleplayer.State.PAUSED, false);
             //setTimeout(window.player.fadeOut_(mediaInfo_, 0.75), 5000);
+
+            setTimeout(function() {
+                window.player.fadeOut_(mediaInfo_, 0.75)
+            }, 5000);
         }
     });
 
