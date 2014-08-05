@@ -735,6 +735,8 @@ The overlay layer holds:
         var self = window.player;
 
         //firstPlay = true;
+        var mediaInfo_ = window.player.element_.querySelector('.media-info');
+        self.fadeIn_(mediaInfo_, 0);
 
         var title = sampleplayer.getValue_(event.data, ['media', 'metadata', 'title']
         );
@@ -966,6 +968,9 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT Paused ");
         setHudMessage('mediaElementState','Paused');
         if (window.player.state_ != sampleplayer.State.DONE) {
+
+            var mediaInfo_ = window.player.element_.querySelector('.media-info');
+            self.fadeIn_(mediaInfo_, 0);
             window.player.setState_(sampleplayer.State.PAUSED, false);
         }
     });
