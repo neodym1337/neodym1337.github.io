@@ -202,9 +202,9 @@ The overlay layer holds:
                 self.setIdleTimeout_(sampleplayer.IDLE_TIMEOUT[state.toUpperCase()]);
                 console.log('setState(%o)', state);
             } else {
-                sampleplayer.fadeOut_(self.element_, 0.75, function() {
+                self.fadeOut_(self.element_, 0.75, function() {
                     self.setState_(state, false);
-                    sampleplayer.fadeIn_(self.element_, 0.75);
+                    self.fadeIn_(self.element_, 0.75);
                 });
             }
         }
@@ -309,7 +309,7 @@ The overlay layer holds:
      * @param {number} time the amount of time (in seconds) to transition
      * @param {function()=} doneFunc the function to call when complete
      */
-    sampleplayer.fadeIn_ = function(element, time, doneFunc) {
+    sampleplayer.CastPlayer.prototype.fadeIn_ = function(element, time, doneFunc) {
         sampleplayer.fadeTo_(element, '', time, doneFunc);
     };
 
@@ -320,7 +320,7 @@ The overlay layer holds:
      * @param {number} time the amount of time (in seconds) to transition
      * @param {function()=} doneFunc the function to call when complete
      */
-    sampleplayer.fadeOut_ = function(element, time, doneFunc) {
+    sampleplayer.CastPlayer.prototype.fadeOut_ = function(element, time, doneFunc) {
         sampleplayer.fadeTo_(element, 0, time, doneFunc);
     };
 
@@ -332,7 +332,7 @@ The overlay layer holds:
      * @param {number} time the amount of time (in seconds) to transition
      * @param {function()=} doneFunc the function to call when complete
      */
-    sampleplayer.fadeTo_ = function(element, opacity, time, doneFunc) {
+    sampleplayer.CastPlayer.prototype.fadeTo_ = function(element, opacity, time, doneFunc) {
         var listener = null;
         listener = function() {
             element.style.webkitTransition = '';
