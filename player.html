@@ -958,17 +958,17 @@ The overlay layer holds:
     window.mediaElement.addEventListener('stalled', function(e){
         console.log("######### MEDIA ELEMENT STALLED");
 
+        /*
         window.player.setState_(sampleplayer.State.BUFFERING, false); //TODO:Buffering state should not be set here because movie can be playing while stalled.
         //We only show buffering state if video stops due to buffering, i.e. 'waiting' event
-//        if (this.mediaElement_.currentTime) {
-//            this.mediaElement_.load();  // see if we can restart the process
-//        }
+
 
         //Fade in buffering after 5 seconds
         var mediaInfo_ = window.player.element_.querySelector('.media-info');
         setTimeout(function() {
             window.player.fadeIn_(mediaInfo_, 0.75)
         }, 5000);
+        */
 
         setHudMessage('mediaElementState','Stalled');
     });
@@ -1020,7 +1020,8 @@ The overlay layer holds:
 
             //Only change to pause state if we were not seeking before
             //When seeking media element goes to pause so we do not want to react to it
-            if(window.player.state != sampleplayer.State.SEEKING) {
+            if(window.player.state_ != sampleplayer.State.SEEKING) {
+                
                 var mediaInfo_ = window.player.element_.querySelector('.media-info');
                 var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
                 var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
