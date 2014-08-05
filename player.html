@@ -898,8 +898,8 @@ The overlay layer holds:
         var xfade = isLoading;
         var delay = !isLoading ? 0 : 3000;      // 3 seconds
 
-        //var mediaInfo_ = sampleplayer.element_.querySelector('.media-info');
-        //setTimeout(sampleplayer.fadeOut_(mediaInfo_, 0.75), 5000);
+        var mediaInfo_ = window.player.element_.querySelector('.media-info');
+        setTimeout(window.player.fadeOut_(mediaInfo_, 0.75), 5000);
 
         window.player.setState_(sampleplayer.State.PLAYING, xfade, delay);
         setHudMessage('mediaElementState','Playing');
