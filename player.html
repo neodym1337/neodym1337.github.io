@@ -1022,8 +1022,14 @@ The overlay layer holds:
 
                 setTimeout(function () {
                     window.player.fadeOut_(mediaInfo_, 0.75);
-                    var controls = $(".controls div").not("controls-play-pause");
-                    window.player.fadeOut_(controls, 0.75);
+                    //var controls = $(".controls div").not("controls-play-pause");
+                    var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
+                    var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
+                    var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
+
+                    window.player.fadeOut_(controlCurTime, 0.75);
+                    window.player.fadeOut_(controlTotalTime, 0.75);
+                    window.player.fadeOut_(controlTotalProgress, 0.75);
 
                 }, 5000);
             }
