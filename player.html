@@ -195,7 +195,6 @@ The overlay layer holds:
             var func = function() { self.setState_(state, crossfade); };
             self.delay_ = setTimeout(func, delay);
         } else {
-
             if (!crossfade) {
                 self.state_ = state;
                 self.element_.className = 'player ' + (self.type_ || '') + ' ' + state;
@@ -310,7 +309,7 @@ The overlay layer holds:
      * @param {function()=} doneFunc the function to call when complete
      */
     sampleplayer.CastPlayer.prototype.fadeIn_ = function(element, time, doneFunc) {
-        sampleplayer.fadeTo_(element, '', time, doneFunc);
+        this.fadeTo_(element, '', time, doneFunc);
     };
 
     /**
@@ -321,7 +320,7 @@ The overlay layer holds:
      * @param {function()=} doneFunc the function to call when complete
      */
     sampleplayer.CastPlayer.prototype.fadeOut_ = function(element, time, doneFunc) {
-        sampleplayer.fadeTo_(element, 0, time, doneFunc);
+        this.fadeTo_(element, 0, time, doneFunc);
     };
 
     /**
