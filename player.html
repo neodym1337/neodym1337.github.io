@@ -958,7 +958,7 @@ The overlay layer holds:
     window.mediaElement.addEventListener('stalled', function(e){
         console.log("######### MEDIA ELEMENT STALLED");
 
-        //window.player.setState_(sampleplayer.State.BUFFERING, false); //TODO:Buffering state should not be set here because movie can be playing while stalled.
+        window.player.setState_(sampleplayer.State.BUFFERING, false); //TODO:Buffering state should not be set here because movie can be playing while stalled.
         //We only show buffering state if video stops due to buffering, i.e. 'waiting' event
 //        if (this.mediaElement_.currentTime) {
 //            this.mediaElement_.load();  // see if we can restart the process
@@ -1016,17 +1016,19 @@ The overlay layer holds:
             //When seeking media element goes to pause so we do not want to react to it
             if(window.player.state != sampleplayer.State.SEEKING) {
                 var mediaInfo_ = window.player.element_.querySelector('.media-info');
+                var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
+                var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
+                var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
+
                 window.player.fadeIn_(mediaInfo_, 0);
+                window.player.fadeIn_(controlCurTime, 0.75);
+                window.player.fadeIn_(controlTotalTime, 0.75);
+                window.player.fadeIn_(controlTotalProgress, 0.75);
+
                 window.player.setState_(sampleplayer.State.PAUSED, false);
-                //setTimeout(window.player.fadeOut_(mediaInfo_, 0.75), 5000);
 
                 setTimeout(function () {
                     window.player.fadeOut_(mediaInfo_, 0.75);
-                    //var controls = $(".controls div").not("controls-play-pause");
-                    var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
-                    var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
-                    var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
-
                     window.player.fadeOut_(controlCurTime, 0.75);
                     window.player.fadeOut_(controlTotalTime, 0.75);
                     window.player.fadeOut_(controlTotalProgress, 0.75);
