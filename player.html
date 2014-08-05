@@ -882,6 +882,10 @@ The overlay layer holds:
         setHudMessage('mediaElementState','Can Play');
         if(window.mediaElement.seeking == false) {
             // only play when we are not in the process of seeking
+            if(window.player.state_ == sampleplayer.State.LOADING){
+
+                window.mediaElement.play();
+            }
             window.player.setState_(sampleplayer.State.PLAYING, false);
         }
     });
