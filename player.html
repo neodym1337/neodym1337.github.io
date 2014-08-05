@@ -149,7 +149,7 @@ The overlay layer holds:
 
     var playerDiv = document.getElementById('player');
     window.mediaElement = playerDiv.querySelector('video');
-    //window.mediaElement.autoplay = true;
+    window.mediaElement.autoplay = true;
 
 
 // CASTPLAYER
@@ -874,11 +874,12 @@ The overlay layer holds:
     window.mediaElement.addEventListener('loadeddata', function(e){
         console.log("######### MEDIA ELEMENT DATA LOADED");
         setHudMessage('mediaElementState','Data Loaded');
-
+        /*
         if(window.player.state_ == sampleplayer.State.LOADING){
 
             window.mediaElement.play();
         }
+        */
 
 
     });
@@ -887,10 +888,7 @@ The overlay layer holds:
         setHudMessage('mediaElementState','Can Play');
         if(window.mediaElement.seeking == false) {
             // only play when we are not in the process of seeking
-            if(window.player.state_ == sampleplayer.State.LOADING){
 
-                window.mediaElement.play();
-            }
             //window.player.setState_(sampleplayer.State.PLAYING, false);
         }
     });
@@ -906,6 +904,7 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT PLAYING");
         //Is loading will usually be false here since we set state playing in canplay eventlistener
         //Why do they do it in example code?
+        /*
         var isLoading = window.player.state_ == sampleplayer.State.LOADING;
         var xfade = isLoading;
         var delay = !isLoading ? 0 : 3000;      // 3 seconds
@@ -914,6 +913,17 @@ The overlay layer holds:
         setTimeout(window.player.fadeOut_(mediaInfo_, 0.75), 10000);
 
         window.player.setState_(sampleplayer.State.PLAYING, xfade, delay);
+        */
+
+
+
+        var isLoading = window.player.state_ == sampleplayer.State.LOADING;
+
+
+        var mediaInfo_ = window.player.element_.querySelector('.media-info');
+        setTimeout(window.player.fadeOut_(mediaInfo_, 0.75), 10000);
+
+        window.player.setState_(sampleplayer.State.PLAYING, false);
         setHudMessage('mediaElementState','Playing');
     });
     window.mediaElement.addEventListener('waiting', function(e){
