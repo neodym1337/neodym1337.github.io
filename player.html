@@ -998,6 +998,18 @@ The overlay layer holds:
         clearTimeout(this.seekingTimeout_);
         window.player.element_.classList.add('seeking');
         */
+
+
+
+        var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
+        var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
+        var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
+
+
+        window.player.fadeIn_(controlCurTime, 0.75);
+        window.player.fadeIn_(controlTotalTime, 0.75);
+        window.player.fadeIn_(controlTotalProgress, 0.75);
+
         window.player.setState_(sampleplayer.State.SEEKING, false);
         setHudMessage('mediaElementState','Seeking');
     });
@@ -1008,6 +1020,17 @@ The overlay layer holds:
         window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
                 'seeking', 3000);
         */
+
+        var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
+        var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
+        var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
+
+        setTimeout(function() {
+            window.player.fadeOut_(controlCurTime, 0.75);
+            window.player.fadeOut_(controlTotalTime, 0.75);
+            window.player.fadeOut_(controlTotalProgress, 0.75);
+        }, 5000);
+
         setHudMessage('mediaElementState','Seeked');
     });
 
@@ -1021,7 +1044,7 @@ The overlay layer holds:
             //Only change to pause state if we were not seeking before
             //When seeking media element goes to pause so we do not want to react to it
             if(window.player.state_ != sampleplayer.State.SEEKING) {
-                
+
                 var mediaInfo_ = window.player.element_.querySelector('.media-info');
                 var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
                 var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
