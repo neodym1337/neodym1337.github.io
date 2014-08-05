@@ -42,6 +42,8 @@ The overlay layer holds:
   </script>
       <script type="text/javascript" src="http://www.gstatic.com/cast/sdk/libs/mediaplayer/0.8.0/media_player.js"></script>
 
+    <script src="jquery-2.1.1.min.js"></script>
+
   		
 </head>
 
@@ -69,7 +71,6 @@ The overlay layer holds:
 		<div class="overlay">
             <div class="launching-spinner"></div>
 			<div class="logo"></div>
-
 			<div class="controls">
 				<span class="controls-play-pause"></span>
 				<span class="controls-cur-time"></span>
@@ -79,7 +80,6 @@ The overlay layer holds:
 					<div class="controls-progress-thumb"></div>
 				</div>
 			</div>
-
 			<div class="media-info">
                 <div class="media-artwork"></div>
 				<div class="media-title"></div>
@@ -916,17 +916,16 @@ The overlay layer holds:
         window.player.setState_(sampleplayer.State.PLAYING, xfade, delay);
         */
 
-        var
-
-                mediaInfo_ = window.player.element_.querySelector('.media-info');
+        var mediaInfo_ = window.player.element_.querySelector('.media-info');
 
         var isLoading = window.player.state_ == sampleplayer.State.LOADING;
 
         var isPaused = window.player.state_ == sampleplayer.State.PAUSED;
-        if (isPaused){
+        if (isPaused){ //Fade out artwork if we come from pause
             window.player.fadeOut_(mediaInfo_, 0.75)
         }
         else{
+            //Fade out with timeout if first time
             setTimeout(function() {
                 window.player.fadeOut_(mediaInfo_, 0.75)
             }, 5000);
@@ -996,16 +995,23 @@ The overlay layer holds:
     window.mediaElement.addEventListener('pause', function(e) {
         console.log("######### MEDIA ELEMENT Paused ");
         setHudMessage('mediaElementState','Paused');
-        if (window.player.state_ != sampleplayer.State.DONE) {
 
-            var mediaInfo_ = window.player.element_.querySelector('.media-info');
-            window.player.fadeIn_(mediaInfo_, 0);
-            window.player.setState_(sampleplayer.State.PAUSED, false);
-            //setTimeout(window.player.fadeOut_(mediaInfo_, 0.75), 5000);
 
-            setTimeout(function() {
-                window.player.fadeOut_(mediaInfo_, 0.75)
-            }, 5000);
+        if (window.player.state_ != window.player.State.DONE) {
+
+            if(window.player.state != window.player.State.SEEKING) {
+                var mediaInfo_ = window.player.element_.querySelector('.media-info');
+                window.player.fadeIn_(mediaInfo_, 0);
+                window.player.setState_(sampleplayer.State.PAUSED, false);
+                //setTimeout(window.player.fadeOut_(mediaInfo_, 0.75), 5000);
+
+                setTimeout(function () {
+                    window.player.fadeOut_(mediaInfo_, 0.75);
+                    var controls = $(".controls div").not("controls-play-pause");
+                    window.player.fadeOut_(controls, 0.75);
+
+                }, 5000);
+            }
         }
     });
 
