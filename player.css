@@ -204,18 +204,29 @@ body {
     display:block;
 }
 
+.player.video.paused .media-info,
+.player.video.paused .controls{
+    display:block;
+}
+
+/*
 .player.video.paused .media-artwork,
 .player.video.paused .media-info,
 .player.video.paused .media-info. media-title,
-.player.video.paused .media-info. media-subtitle{
+.player.video.paused .media-info. media-subtitle,
+.player.video.paused .controls-total-time,
+.player.video.paused .controls-cur-time,
+.player.video.paused .controls-progress{
     display: block;
 }
-
+*/
+/*
 .player.video.paused .controls-total-time,
 .player.video.paused .controls-cur-time,
 .player.video.paused .controls-progress {
     display: none;
 }
+*/
 
 .player .media-artwork {
   background-size: contain;
