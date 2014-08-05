@@ -81,6 +81,7 @@ The overlay layer holds:
 				</div>
 			</div>
 			<div class="media-info">
+                <div class="receiver-logo"></div>
                 <div class="media-artwork"></div>
 				<div class="media-title"></div>
 				<div class="media-subtitle"></div>
@@ -98,8 +99,8 @@ The overlay layer holds:
      */
     sampleplayer.IDLE_TIMEOUT = {
         LAUNCHING: 30 * 1000,    // 30 seconds
-        LOADING: 3000 * 1000,    // 50 minutes
-        PAUSED: 60 * 30 * 1000, //30 * 1000,       // 10 minutes normally, use 30 seconds for demo
+        LOADING: 10 * 60 * 1000,    // 50 minutes
+        PAUSED:  10 * 60 * 1000, //10 min    30 * 1000,       // 10 minutes normally, use 30 seconds for demo
         STALLED: 30 * 1000,      // 30 seconds
         DONE: 30 * 1000,         // 5 minutes normally, use 30 seconds for demo
         IDLE: 60 * 5 * 1000      //30 * 1000          // 5 minutes normally, use 30 seconds for demo
@@ -997,9 +998,9 @@ The overlay layer holds:
         setHudMessage('mediaElementState','Paused');
 
 
-        if (window.player.state_ != window.player.State.DONE) {
+        if (window.player.state_ != sampleplayer.State.DONE) {
 
-            if(window.player.state != window.player.State.SEEKING) {
+            if(window.player.state != sampleplayer.State.SEEKING) {
                 var mediaInfo_ = window.player.element_.querySelector('.media-info');
                 window.player.fadeIn_(mediaInfo_, 0);
                 window.player.setState_(sampleplayer.State.PAUSED, false);
