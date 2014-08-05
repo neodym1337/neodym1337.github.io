@@ -964,6 +964,12 @@ The overlay layer holds:
 //            this.mediaElement_.load();  // see if we can restart the process
 //        }
 
+        //Fade in buffering after 5 seconds
+        var mediaInfo_ = window.player.element_.querySelector('.media-info');
+        setTimeout(function() {
+            window.player.fadeIn_(mediaInfo_, 0.75)
+        }, 5000);
+
         setHudMessage('mediaElementState','Stalled');
     });
     window.mediaElement.addEventListener('error', function(e){
