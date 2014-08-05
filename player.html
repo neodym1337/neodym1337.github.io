@@ -875,6 +875,11 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT DATA LOADED");
         setHudMessage('mediaElementState','Data Loaded');
 
+        if(window.player.state_ == sampleplayer.State.LOADING){
+
+            window.mediaElement.play();
+        }
+
 
     });
     window.mediaElement.addEventListener('canplay', function(e){
