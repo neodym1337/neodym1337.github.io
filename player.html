@@ -35,7 +35,7 @@ The overlay layer holds:
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Cast Receiver / Player sample</title>
+	<title>BR MeLiNa Custom Receiver</title>
 	<link rel="stylesheet" href="player.css" />
   <script type="text/javascript" 
 		src="http://www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js">
@@ -67,8 +67,9 @@ The overlay layer holds:
 			<video></video>
 		</div>
 		<div class="overlay">
+            <div class="launching-spinner"></div>
 			<div class="logo"></div>
-			<div class="media-artwork"></div>
+
 			<div class="controls">
 				<span class="controls-play-pause"></span>
 				<span class="controls-cur-time"></span>
@@ -78,7 +79,9 @@ The overlay layer holds:
 					<div class="controls-progress-thumb"></div>
 				</div>
 			</div>
+
 			<div class="media-info">
+                <div class="media-artwork"></div>
 				<div class="media-title"></div>
 				<div class="media-subtitle"></div>
 			</div>
@@ -96,10 +99,10 @@ The overlay layer holds:
     sampleplayer.IDLE_TIMEOUT = {
         LAUNCHING: 30 * 1000,    // 30 seconds
         LOADING: 3000 * 1000,    // 50 minutes
-        PAUSED: 30 * 1000,       // 10 minutes normally, use 30 seconds for demo
+        PAUSED: 60 * 30 * 1000, //30 * 1000,       // 10 minutes normally, use 30 seconds for demo
         STALLED: 30 * 1000,      // 30 seconds
         DONE: 30 * 1000,         // 5 minutes normally, use 30 seconds for demo
-        IDLE: 30 * 1000          // 5 minutes normally, use 30 seconds for demo
+        IDLE: 60 * 5 * 1000      //30 * 1000          // 5 minutes normally, use 30 seconds for demo
     };
 
     /**
@@ -124,10 +127,10 @@ The overlay layer holds:
         PLAYING: 'playing',
         PAUSED: 'paused',
         STALLED: 'stalled',
+        SEEKING: 'seeking',
         DONE: 'done',
         IDLE: 'idle'
     };
-
 
     window.castReceiverManager = null;
     window.mediaManager = null;
@@ -146,7 +149,7 @@ The overlay layer holds:
 
     var playerDiv = document.getElementById('player');
     window.mediaElement = playerDiv.querySelector('video');
-    window.mediaElement.autoplay = true;
+    //window.mediaElement.autoplay = true;
 
 
 // CASTPLAYER
@@ -178,6 +181,8 @@ The overlay layer holds:
     };
 
     sampleplayer.CastPlayer.prototype.setContentType_ = function(mimeType) {
+
+        // HLS stream mimetype 'application/vnd.apple.mpegURL'
         if (mimeType.indexOf('application/vnd.apple.mpegURL') == 0) {
             this.type_ = sampleplayer.Type.VIDEO;
         }
@@ -196,9 +201,9 @@ The overlay layer holds:
                 self.setIdleTimeout_(sampleplayer.IDLE_TIMEOUT[state.toUpperCase()]);
                 console.log('setState(%o)', state);
             } else {
-                sampleplayer.fadeOut_(self.element_, 0.75, function() {
+                self.fadeOut_(self.element_, 0.75, function() {
                     self.setState_(state, false);
-                    sampleplayer.fadeIn_(self.element_, 0.75);
+                    self.fadeIn_(self.element_, 0.75);
                 });
             }
         }
@@ -209,12 +214,15 @@ The overlay layer holds:
      *
      */
     sampleplayer.CastPlayer.prototype.onIdle_ = function() {
-        console.log('onIdle');
+        //console.log('onIdle');
+
+
         if (this.state_ != sampleplayer.State.IDLE) {
             this.setState_(sampleplayer.State.IDLE, true);
         } else {
             window.close();
         }
+
     };
 
     /**
@@ -300,8 +308,8 @@ The overlay layer holds:
      * @param {number} time the amount of time (in seconds) to transition
      * @param {function()=} doneFunc the function to call when complete
      */
-    sampleplayer.fadeIn_ = function(element, time, doneFunc) {
-        sampleplayer.fadeTo_(element, '', time, doneFunc);
+    sampleplayer.CastPlayer.prototype.fadeIn_ = function(element, time, doneFunc) {
+        this.fadeTo_(element, '', time, doneFunc);
     };
 
     /**
@@ -311,6 +319,9 @@ The overlay layer holds:
      * @param {number} time the amount of time (in seconds) to transition
      * @param {function()=} doneFunc the function to call when complete
      */
+    sampleplayer.CastPlayer.prototype.fadeOut_ = function(element, time, doneFunc) {
+        this.fadeTo_(element, 0, time, doneFunc);
+    };
 
     /**
      * Causes the given element to fade to the given opacity
@@ -320,7 +331,7 @@ The overlay layer holds:
      * @param {number} time the amount of time (in seconds) to transition
      * @param {function()=} doneFunc the function to call when complete
      */
-    sampleplayer.fadeTo_ = function(element, opacity, time, doneFunc) {
+    sampleplayer.CastPlayer.prototype.fadeTo_ = function(element, opacity, time, doneFunc) {
         var listener = null;
         listener = function() {
             element.style.webkitTransition = '';
@@ -341,10 +352,12 @@ The overlay layer holds:
     console.log('### Application Loaded. Starting system.');
     setHudMessage('applicationState','Loaded. Starting up.');
 
+    //TODO: add loading app spinner here
+
     /**
      * Sets the log verbosity level.
      *
-     * Debug logging (all messages).
+     * Debug logging (all messages).s
      * DEBUG
      *
      * Verbose logging (sender messages).
@@ -375,6 +388,9 @@ The overlay layer holds:
         console.log("### Cast Receiver Manager is READY: " + JSON.stringify(event));
         setHudMessage('castReceiverManagerMessage', 'READY: ' + JSON.stringify(event));
         setHudMessage('applicationState','Loaded. Started. Ready.');
+
+        //window.player.setState_(sampleplayer.State.IDLE, true);
+        ////TODO: remove loading spinner here
     }
 
     /**
@@ -684,11 +700,11 @@ The overlay layer holds:
         setHudMessage('mediaManagerMessage', 'STOP: ' + JSON.stringify(event));
 
         var self = window.player;
-        sampleplayer.fadeOut_(self.element_, 0.75, function() {
+        window.player.fadeOut_(self.element_, 0.75, function() {
             self.mediaElement_.pause();
             self.mediaElement_.removeAttribute('src');
             self.setState_(sampleplayer.State.DONE, false);
-            sampleplayer.fadeIn_(self.element_, 0.75);
+            window.player.fadeIn_(self.element_, 0.75);
         });
 
         window.mediaManager['onStopOrig'](event);
@@ -710,11 +726,19 @@ The overlay layer holds:
      * Processes the load event.
      * @param event
      */
+
+    //var firstPlay;
     window.mediaManager.onLoad = function(event) {
         console.log("### Media Manager - LOAD: " + JSON.stringify(event));
         setHudMessage('mediaManagerMessage', 'LOAD ' + JSON.stringify(event));
 
         var self = window.player;
+
+        //firstPlay = true;
+        var mediaInfo_ = self.element_.querySelector('.media-info');
+        self.fadeIn_(mediaInfo_, 0);
+
+        window.player.fadeIn_(mediaInfo_, 0);
 
         var title = sampleplayer.getValue_(event.data, ['media', 'metadata', 'title']
         );
@@ -732,9 +756,10 @@ The overlay layer holds:
         sampleplayer.setBackgroundImage_(artworkElement, artwork);
 
         var contentId = sampleplayer.getValue_(event.data, ['media', 'contentId']);
-        var contentType = sampleplayer.getValue_(event.data, ['media', 'contentType']
-        );
+        var contentType = sampleplayer.getValue_(event.data, ['media', 'contentType']);
+
         self.setContentType_(contentType);
+
         self.setState_(sampleplayer.State.LOADING, false);
 
         // TODO - setup for load here
@@ -839,6 +864,8 @@ The overlay layer holds:
      seeked - seeking has completed
 
      http://www.w3.org/2010/05/video/mediaevents.html for more info.
+
+     http://www.w3.org/TR/html5/embedded-content-0.html#mediaevents
      **/
     window.mediaElement.addEventListener('loadstart', function(e){
         console.log("######### MEDIA ELEMENT LOAD START");
@@ -847,12 +874,18 @@ The overlay layer holds:
     window.mediaElement.addEventListener('loadeddata', function(e){
         console.log("######### MEDIA ELEMENT DATA LOADED");
         setHudMessage('mediaElementState','Data Loaded');
+
+
     });
     window.mediaElement.addEventListener('canplay', function(e){
         console.log("######### MEDIA ELEMENT CAN PLAY");
         setHudMessage('mediaElementState','Can Play');
         if(window.mediaElement.seeking == false) {
             // only play when we are not in the process of seeking
+            if(window.player.state_ == sampleplayer.State.LOADING){
+
+                window.mediaElement.play();
+            }
             window.player.setState_(sampleplayer.State.PLAYING, false);
         }
     });
@@ -860,13 +893,21 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT ENDED");
         window.player.setState_(sampleplayer.State.DONE, true);
 
+        //Finished playing through media
+
         setHudMessage('mediaElementState','Ended');
     });
     window.mediaElement.addEventListener('playing', function(e){
         console.log("######### MEDIA ELEMENT PLAYING");
+        //Is loading will usually be false here since we set state playing in canplay eventlistener
+        //Why do they do it in example code?
         var isLoading = window.player.state_ == sampleplayer.State.LOADING;
         var xfade = isLoading;
         var delay = !isLoading ? 0 : 3000;      // 3 seconds
+
+        var mediaInfo_ = window.player.element_.querySelector('.media-info');
+        setTimeout(window.player.fadeOut_(mediaInfo_, 0.75), 5000);
+
         window.player.setState_(sampleplayer.State.PLAYING, xfade, delay);
         setHudMessage('mediaElementState','Playing');
     });
@@ -876,10 +917,14 @@ The overlay layer holds:
             window.player.setState_(sampleplayer.State.BUFFERING, false);
         }
         setHudMessage('mediaElementState','Waiting');
+        //Playback has stopped because the next frame is not available, but the user agent expects that frame to become available in due course.
+        //This is what we want for buffering
     });
     window.mediaElement.addEventListener('stalled', function(e){
         console.log("######### MEDIA ELEMENT STALLED");
-        window.player.setState_(sampleplayer.State.BUFFERING, false);
+
+        //window.player.setState_(sampleplayer.State.BUFFERING, false); //TODO:Buffering state should not be set here because movie can be playing while stalled.
+        //We only show buffering state if video stops due to buffering, i.e. 'waiting' event
 //        if (this.mediaElement_.currentTime) {
 //            this.mediaElement_.load();  // see if we can restart the process
 //        }
@@ -897,23 +942,31 @@ The overlay layer holds:
     window.mediaElement.addEventListener('suspend', function(e){
         console.log("######### MEDIA ELEMENT SUSPEND " + e);
         setHudMessage('mediaElementState','Suspended');
+
+        //The user agent is intentionally not currently fetching media data. (but can be playing)
     });
     window.mediaElement.addEventListener('progress', function(e){
         setHudMessage('mediaElementState','Progress');
+
+        //The user agent is fetching media data. (but can be playing)
     });
 
     window.mediaElement.addEventListener('seeking', function(e){
         console.log("######### MEDIA ELEMENT SEEKING " + e);
+        /*
         clearTimeout(this.seekingTimeout_);
         window.player.element_.classList.add('seeking');
+        */
+        window.player.setState_(sampleplayer.State.SEEKING, false);
         setHudMessage('mediaElementState','Seeking');
     });
     window.mediaElement.addEventListener('seeked', function(e){
         console.log("######### MEDIA ELEMENT SEEKED " + e);
+        /*
         clearTimeout(this.seekingTimeout_);
         window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
                 'seeking', 3000);
-
+        */
         setHudMessage('mediaElementState','Seeked');
     });
 
@@ -921,11 +974,15 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT Paused ");
         setHudMessage('mediaElementState','Paused');
         if (window.player.state_ != sampleplayer.State.DONE) {
+
+            var mediaInfo_ = window.player.element_.querySelector('.media-info');
+            window.player.fadeIn_(mediaInfo_, 0);
             window.player.setState_(sampleplayer.State.PAUSED, false);
+            setTimeout(window.player.fadeOut_(mediaInfo_, 0.75), 5000);
         }
     });
 
-
+    /** Progress bar */
     window.mediaElement.addEventListener('timeupdate', function(e) {
         console.log("######### MEDIA ELEMENT timeupdate ");
         var curTime = window.player.mediaElement_.currentTime;
