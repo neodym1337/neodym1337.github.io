@@ -316,12 +316,15 @@ body {
     100% {transform: rotate(360deg);}
 }
 
-.player.paused .controls-play-pause {
+.player.paused .controls-play-pause,
+.player.playing .controls-play-pause{
   background-image: url("assets/paused.png");
 }
+/*
 .player.playing .controls-play-pause {
     background-image: url("assets/playing.png");
 }
+*/
 
 .player.video.playing .controls {
  display: block;
@@ -418,6 +421,9 @@ display: block;
     background-image: url("assets/br-logo-blue@2x.png");
 }
 
+/*
 .player.playing .controls-cur-time {
   margin-left: 0;
 }
+
+*/
