@@ -159,7 +159,7 @@ The overlay layer holds:
 
         this.element_ = element;
 
-        //this.isSeeking_;
+        this.isSeeking_;
 
         this.mediaInfo_ = this.element_.querySelector('.media-info');
 
@@ -1051,16 +1051,14 @@ The overlay layer holds:
         */
 
        //window.player.isSeeking_= true;
+        var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
+        var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
+        var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
+        window.player.fadeIn_(controlCurTime, 0);
+        window.player.fadeIn_(controlTotalTime, 0);
+        window.player.fadeIn_(controlTotalProgress, 0);
 
         if(window.player.state_ != sampleplayer.State.PAUSED){
-            var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
-            var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
-            var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
-
-
-            window.player.fadeIn_(controlCurTime, 0);
-            window.player.fadeIn_(controlTotalTime, 0);
-            window.player.fadeIn_(controlTotalProgress, 0);
 
             window.player.setState_(sampleplayer.State.SEEKING, false);
         }
@@ -1074,7 +1072,7 @@ The overlay layer holds:
         window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
                 'seeking', 3000);
         */
-        if(window.player.state_ != sampleplayer.State.PAUSED) {
+        //if(window.player.state_ != sampleplayer.State.PAUSED) {
             var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
             var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
             var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
@@ -1086,7 +1084,7 @@ The overlay layer holds:
             }, 5000);
 
             //window.player.isSeeking_ = false;
-        }
+        //}
         setHudMessage('mediaElementState','Seeked');
     });
 
