@@ -730,14 +730,14 @@ The overlay layer holds:
      * @param event
      */
 
-    //var firstPlay;
+
     window.mediaManager.onLoad = function(event) {
         console.log("### Media Manager - LOAD: " + JSON.stringify(event));
         setHudMessage('mediaManagerMessage', 'LOAD ' + JSON.stringify(event));
 
         var self = window.player;
 
-        //firstPlay = true;
+
         var mediaInfo_ = self.element_.querySelector('.media-info');
         var controlCurTime = self.element_.querySelector('.controls-cur-time');
         var controlTotalTime = self.element_.querySelector('.controls-total-time');
