@@ -998,6 +998,7 @@ The overlay layer holds:
         setHudMessage('mediaElementState','Progress');
 
         //The user agent is fetching media data. (but can be playing)
+
     });
 
     window.mediaElement.addEventListener('seeking', function(e){
@@ -1063,7 +1064,7 @@ The overlay layer holds:
                 window.player.fadeIn_(controlTotalTime, 0);
                 window.player.fadeIn_(controlTotalProgress, 0);
 
-                window.player.setState_(sampleplayer.State.PAUSED, false);
+
 
                 setTimeout(function () {
                     window.player.fadeOut_(mediaInfo_, 0.75);
@@ -1073,6 +1074,8 @@ The overlay layer holds:
 
                 }, 5000);
             }
+
+            window.player.setState_(sampleplayer.State.PAUSED, false);
         }
     });
 
