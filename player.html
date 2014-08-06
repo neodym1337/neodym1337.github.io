@@ -629,6 +629,8 @@ The overlay layer holds:
 
         window.mediaManager['onPauseOrig'](event);
 
+        window.player.isPaused_ = true;
+
 
     }
 
@@ -648,6 +650,7 @@ The overlay layer holds:
         setHudMessage('mediaManagerMessage', 'PLAY: ' + JSON.stringify(event));
 
         window.mediaManager['onPlayOrig'](event);
+        window.player.isPaused_ = false;
     }
 
     /**
@@ -964,13 +967,13 @@ The overlay layer holds:
                 window.player.fadeOut_(controlPlayPause, 0.75);
             }, 5000);
         }else {
-
+            /*
             window.player.fadeOut_(mediaInfo_, 0.75);
             window.player.fadeOut_(controlCurTime, 0.75);
             window.player.fadeOut_(controlTotalTime, 0.75);
             window.player.fadeOut_(controlTotalProgress, 0.75);
             window.player.fadeOut_(controlPlayPause, 0.75);
-
+             */
         }
         window.player.setState_(sampleplayer.State.PLAYING, false);
         setHudMessage('mediaElementState','Playing');
@@ -987,21 +990,19 @@ The overlay layer holds:
         var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
 
 
-        window.player.isPaused_ = true;
+
 
         if (window.player.state_ != sampleplayer.State.DONE) {
 
+            if (window.player.state_ != sampleplayer.State.SEEKING) {
 
-            //Only change to pause state if we were not seeking before
-            //When seeking media element goes to pause so we do not want to react to it
-            if(window.player.state_ != sampleplayer.State.SEEKING) {
+                window.player.setState_(sampleplayer.State.PAUSED, false);
 
                 window.player.fadeIn_(mediaInfo_, 0);
                 window.player.fadeIn_(controlCurTime, 0);
                 window.player.fadeIn_(controlTotalTime, 0);
                 window.player.fadeIn_(controlTotalProgress, 0);
                 window.player.fadeIn_(controlPlayPause, 0);
-                window.player.setState_(sampleplayer.State.PAUSED, false);
 
                 setTimeout(function () {
                     window.player.fadeOut_(mediaInfo_, 0.75);
@@ -1009,12 +1010,8 @@ The overlay layer holds:
                     window.player.fadeOut_(controlTotalTime, 0.75);
                     window.player.fadeOut_(controlTotalProgress, 0.75);
                     //window.player.fadeOut_(controlPlayPause, 0.75);
-
                 }, 5000);
             }
-
-
-
         }
     });
 
@@ -1084,54 +1081,34 @@ The overlay layer holds:
         var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
         var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
         var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
-
+        window.player.setState_(sampleplayer.State.SEEKING, false);
         window.player.fadeIn_(controlCurTime, 0);
         window.player.fadeIn_(controlTotalTime, 0);
         window.player.fadeIn_(controlTotalProgress, 0);
         window.player.fadeIn_(controlPlayPause, 0);
 
-        window.player.setState_(sampleplayer.State.SEEKING, false);
+
 
 
         setHudMessage('mediaElementState','Seeking');
     });
     window.mediaElement.addEventListener('seeked', function(e){
         console.log("######### MEDIA ELEMENT SEEKED " + e);
-        /*
-        clearTimeout(this.seekingTimeout_);
-        window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
-                'seeking', 3000);
-        */
-        /*
         var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
         var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
         var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
         var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
 
-        if(!window.player.isPaused_) {
 
-            console.log("Not paused during seek");
-            setTimeout(function () {
-                window.player.fadeOut_(controlCurTime, 0.75);
-                window.player.fadeOut_(controlTotalTime, 0.75);
-                window.player.fadeOut_(controlTotalProgress, 0.75);
-                window.player.fadeOut_(controlPlayPause, 0.75);
-            }, 5000);
-
-
-        }else {
-            console.log("Paused during seek");
-
+        if(window.player.isPaused_){
             window.player.setState_(sampleplayer.State.PAUSED, false);
-
-            setTimeout(function () {
-                window.player.fadeOut_(controlCurTime, 0.75);
-                window.player.fadeOut_(controlTotalTime, 0.75);
-                window.player.fadeOut_(controlTotalProgress, 0.75);
-                //window.player.fadeOut_(controlPlayPause, 0.75);
-            }, 5000);
         }
+        /*
+        clearTimeout(this.seekingTimeout_);
+        window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
+                'seeking', 3000);
         */
+
         setHudMessage('mediaElementState','Seeked');
     });
 
