@@ -40,6 +40,17 @@
   }
 }
 
+@keyframes loading {
+    0% {
+        -webkit-transform: scaleX(0);
+        margin-left: -50px;
+    }
+    to {
+        -webkit-transform: scaleX(5);
+        margin-left: 120%;
+    }
+}
+
 /* ------------------------------------------------- */
 /* Player                                            */
 /* ------------------------------------------------- */
