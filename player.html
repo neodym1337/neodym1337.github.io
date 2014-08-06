@@ -937,18 +937,38 @@ The overlay layer holds:
         */
 
         var mediaInfo_ = window.player.element_.querySelector('.media-info');
+        var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
+        var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
+        var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
+        var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
 
         var isLoading = window.player.state_ == sampleplayer.State.LOADING;
 
         var isPaused = window.player.state_ == sampleplayer.State.PAUSED;
+
+
+        /*
         if (isPaused){ //Fade out artwork if we come from pause
             window.player.fadeOut_(mediaInfo_, 0.75)
         }
-        else{
+        */
+        if (isLoading)
             //Fade out with timeout if first time
             setTimeout(function() {
-                window.player.fadeOut_(mediaInfo_, 0.75)
+                window.player.fadeOut_(mediaInfo_, 0.75);
+                window.player.fadeOut_(controlCurTime, 0.75);
+                window.player.fadeOut_(controlTotalTime, 0.75);
+                window.player.fadeOut_(controlTotalProgress, 0.75);
+                window.player.fadeOut_(controlPlayPause, 0.75);
             }, 5000);
+        }else {
+
+            window.player.fadeOut_(mediaInfo_, 0.75);
+            window.player.fadeOut_(controlCurTime, 0.75);
+            window.player.fadeOut_(controlTotalTime, 0.75);
+            window.player.fadeOut_(controlTotalProgress, 0.75);
+            window.player.fadeOut_(controlPlayPause, 0.75);
+
         }
         window.player.setState_(sampleplayer.State.PLAYING, false);
         setHudMessage('mediaElementState','Playing');
@@ -971,11 +991,13 @@ The overlay layer holds:
                 var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
                 var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
                 var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
+                var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
 
                 window.player.fadeIn_(mediaInfo_, 0);
                 window.player.fadeIn_(controlCurTime, 0);
                 window.player.fadeIn_(controlTotalTime, 0);
                 window.player.fadeIn_(controlTotalProgress, 0);
+                window.player.fadeIn_(controlPlayPause, 0);
 
                 window.player.setState_(sampleplayer.State.PAUSED, false);
 
@@ -984,6 +1006,7 @@ The overlay layer holds:
                     window.player.fadeOut_(controlCurTime, 0.75);
                     window.player.fadeOut_(controlTotalTime, 0.75);
                     window.player.fadeOut_(controlTotalProgress, 0.75);
+                    window.player.fadeOut_(controlPlayPause, 0.75);
 
                 }, 5000);
             }
@@ -1058,10 +1081,12 @@ The overlay layer holds:
         var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
         var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
         var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
+        var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
+
         window.player.fadeIn_(controlCurTime, 0);
         window.player.fadeIn_(controlTotalTime, 0);
         window.player.fadeIn_(controlTotalProgress, 0);
-
+        window.player.fadeIn_(controlPlayPause, 0);
 
         window.player.setState_(sampleplayer.State.SEEKING, false);
 
@@ -1079,11 +1104,13 @@ The overlay layer holds:
             var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
             var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
             var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
+            var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
 
             setTimeout(function () {
                 window.player.fadeOut_(controlCurTime, 0.75);
                 window.player.fadeOut_(controlTotalTime, 0.75);
                 window.player.fadeOut_(controlTotalProgress, 0.75);
+                window.player.fadeOut_(controlPlayPause, 0.75);
             }, 5000);
 
         if(window.player.isPaused_ == true){

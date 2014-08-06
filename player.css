@@ -315,9 +315,12 @@ body {
 .player.paused .controls-play-pause {
   background-image: url("assets/paused.png");
 }
+.player.playing .controls-play-pause {
+    background-image: url("assets/playing.png");
+}
 
 .player.video.playing .controls {
- display: none;
+ display: block;
 }
 
 .player .controls-progress {
