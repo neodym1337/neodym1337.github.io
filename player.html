@@ -739,7 +739,15 @@ The overlay layer holds:
 
         //firstPlay = true;
         var mediaInfo_ = self.element_.querySelector('.media-info');
+        var controlCurTime = self.element_.querySelector('.controls-cur-time');
+        var controlTotalTime = self.element_.querySelector('.controls-total-time');
+        var controlTotalProgress = self.element_.querySelector('.controls-progress');
+
         self.fadeIn_(mediaInfo_, 0);
+        self.fadeIn_(controlCurTime, 0);
+        self.fadeIn_(controlTotalTime, 0);
+        self.fadeIn_(controlTotalTime, 0);
+        self.fadeIn_(controlTotalProgress, 0);
 
         window.player.fadeIn_(mediaInfo_, 0);
 
@@ -1006,11 +1014,11 @@ The overlay layer holds:
         var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
 
 
-        window.player.fadeIn_(controlCurTime, 0.75);
-        window.player.fadeIn_(controlTotalTime, 0.75);
-        window.player.fadeIn_(controlTotalProgress, 0.75);
+        window.player.fadeIn_(controlCurTime, 0);
+        window.player.fadeIn_(controlTotalTime, 0);
+        window.player.fadeIn_(controlTotalProgress, 0);
 
-        window.player.setState_(sampleplayer.State.SEEKING, false);
+        //window.player.setState_(sampleplayer.State.SEEKING, false);
         setHudMessage('mediaElementState','Seeking');
     });
     window.mediaElement.addEventListener('seeked', function(e){
@@ -1051,9 +1059,9 @@ The overlay layer holds:
                 var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
 
                 window.player.fadeIn_(mediaInfo_, 0);
-                window.player.fadeIn_(controlCurTime, 0.75);
-                window.player.fadeIn_(controlTotalTime, 0.75);
-                window.player.fadeIn_(controlTotalProgress, 0.75);
+                window.player.fadeIn_(controlCurTime, 0);
+                window.player.fadeIn_(controlTotalTime, 0);
+                window.player.fadeIn_(controlTotalProgress, 0);
 
                 window.player.setState_(sampleplayer.State.PAUSED, false);
 
