@@ -1018,7 +1018,7 @@ The overlay layer holds:
         window.player.fadeIn_(controlTotalTime, 0);
         window.player.fadeIn_(controlTotalProgress, 0);
 
-        //window.player.setState_(sampleplayer.State.SEEKING, false);
+        window.player.setState_(sampleplayer.State.SEEKING, false);
         setHudMessage('mediaElementState','Seeking');
     });
     window.mediaElement.addEventListener('seeked', function(e){
