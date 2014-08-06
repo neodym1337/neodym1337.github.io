@@ -141,6 +141,19 @@ body {
   margin-bottom: 72px;
 }
 
+/* receiver-logo */
+.player .receiver-logo {
+    display: block;
+    position : absolute;
+    right: 5%;
+    bottom: 30%;
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
 .player.video.playing .logo {
   display: none;
 }
@@ -387,11 +400,15 @@ display: block;
 }
 
 .player.launching .logo {
-  background-image: url("assets/logo.png");
+  background-image: url("assets/br-logo-blue-launch.png");
   margin-top: -28px;
   margin-left: -38px;
   width: 76px;
   height: 57px;
+}
+
+.player .receiver-logo {
+    background-image: url("assets/br-logo-blue@2x.png");
 }
 
 .player.playing .controls-cur-time {
