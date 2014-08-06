@@ -951,12 +951,6 @@ The overlay layer holds:
 
         var isPaused = window.player.state_ == sampleplayer.State.PAUSED;
 
-
-        /*
-        if (isPaused){ //Fade out artwork if we come from pause
-            window.player.fadeOut_(mediaInfo_, 0.75)
-        }
-        */
         if (isLoading){
             //Fade out with timeout if first time
             setTimeout(function() {
@@ -1009,6 +1003,10 @@ The overlay layer holds:
                     window.player.fadeOut_(controlTotalProgress, 0.75);
                     //window.player.fadeOut_(controlPlayPause, 0.75);
                 }, 5000);
+            }
+            if((window.player.state == sampleplayer.State.SEEKING) && (window.player.isPaused_)){
+                console.log('Paused after seeking');
+                window.player.setState_(sampleplayer.State.PAUSED, false);
             }
         }
     });
@@ -1097,10 +1095,11 @@ The overlay layer holds:
         var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
         var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
 
-
+        /*
         if(window.player.isPaused_){
             window.player.setState_(sampleplayer.State.PAUSED, false);
         }
+        */
         /*
         clearTimeout(this.seekingTimeout_);
         window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
