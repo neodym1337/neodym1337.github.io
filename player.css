@@ -234,6 +234,10 @@ body {
   padding: 5px;
 }
 
+.player .media-info {
+    background-color: #cccfff;
+}
+
 .player .media-info .media-subtitle {
   color: #999;
   padding: 5px;
