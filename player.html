@@ -99,6 +99,7 @@ The overlay layer holds:
      */
     sampleplayer.IDLE_TIMEOUT = {
         LAUNCHING: 30 * 1000,    // 30 seconds
+        READY: 1000,
         LOADING: 10 * 60 * 1000,    // 50 minutes
         PAUSED:  10 * 60 * 1000, //10 min    30 * 1000,       // 10 minutes normally, use 30 seconds for demo
         STALLED: 30 * 1000,      // 30 seconds
@@ -123,6 +124,7 @@ The overlay layer holds:
      */
     sampleplayer.State = {
         LAUNCHING: 'launching',
+        READY: 'ready',
         LOADING: 'loading',
         BUFFERING: 'buffering',
         PLAYING: 'playing',
@@ -395,7 +397,7 @@ The overlay layer holds:
         console.log("### Cast Receiver Manager is READY: " + JSON.stringify(event));
         setHudMessage('castReceiverManagerMessage', 'READY: ' + JSON.stringify(event));
         setHudMessage('applicationState','Loaded. Started. Ready.');
-
+        window.player.setState_(sampleplayer.State.READY, false);
         //window.player.setState_(sampleplayer.State.IDLE, true);
         ////TODO: remove loading spinner here
     }
