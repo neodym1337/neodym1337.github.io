@@ -181,10 +181,14 @@ The overlay layer holds:
         this.totalTimeElement_ = this.element_.querySelector('.controls-total-time');
 
 
-        var jsonData = this.getInitialJson_();
-        console.log(jsonData);
-        
+        //var jsonData = this.fetchInitalJson_();
+        //console.log(jsonData);
 
+        $.getJSON('http://www.br.de/system/halTocJson.jsp', function(data) {
+            //data is the JSON string
+            console.log(data);
+            //return(data);
+        });
 
 
     };
