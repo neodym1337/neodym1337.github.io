@@ -180,6 +180,13 @@ The overlay layer holds:
         this.curTimeElement_ = this.element_.querySelector('.controls-cur-time');
         this.totalTimeElement_ = this.element_.querySelector('.controls-total-time');
 
+
+        var jsonData = this.getInitialJson_();
+        console.log(jsonData);
+        
+
+
+
     };
 
     sampleplayer.CastPlayer.prototype.setIdleTimeout_ = function(t) {
@@ -232,6 +239,15 @@ The overlay layer holds:
             window.close();
         }
 
+    };
+
+    sampleplayer.CastPlayer.prototype.fetchInitalJson_ = function(){
+
+        $.getJSON('http://www.br.de/system/halTocJson.jsp', function(data) {
+            //data is the JSON string
+            //console.log(data);
+            return(data);
+        });
     };
 
     /**
@@ -988,7 +1004,7 @@ The overlay layer holds:
 
         if (window.player.state_ != sampleplayer.State.DONE) {
 
-            if (window.player.state_ != sampleplayer.State.SEEKING) {
+            //if (window.player.state_ != sampleplayer.State.SEEKING) {
 
                 window.player.setState_(sampleplayer.State.PAUSED, false);
 
@@ -1005,7 +1021,7 @@ The overlay layer holds:
                     window.player.fadeOut_(controlTotalProgress, 0.75);
                     //window.player.fadeOut_(controlPlayPause, 0.75);
                 }, 5000);
-            }
+            //}
         
         }
     });
@@ -1076,7 +1092,7 @@ The overlay layer holds:
         var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
         var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
         var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
-        window.player.setState_(sampleplayer.State.SEEKING, false);
+        //window.player.setState_(sampleplayer.State.SEEKING, false);
         window.player.fadeIn_(controlCurTime, 0);
         window.player.fadeIn_(controlTotalTime, 0);
         window.player.fadeIn_(controlTotalProgress, 0);
@@ -1093,12 +1109,12 @@ The overlay layer holds:
         var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
         var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
         var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
-
+        /*
 
         if(window.player.isPaused_){
             window.player.setState_(sampleplayer.State.PAUSED, false);
         }
-
+        */
         /*
         clearTimeout(this.seekingTimeout_);
         window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
