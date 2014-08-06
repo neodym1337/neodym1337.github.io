@@ -1144,8 +1144,8 @@ The overlay layer holds:
         var totalTime = window.player.mediaElement_.duration;
         if (!isNaN(curTime) && !isNaN(totalTime)) {
             var pct = 100 * (curTime / totalTime);
-            console.log("current time "+ sampleplayer.formatDuration_(curTime));
-            console.log("\n totalTime time "+ sampleplayer.formatDuration_(totalTime));
+            //console.log("current time "+ sampleplayer.formatDuration_(curTime));
+            //console.log("\n totalTime time "+ sampleplayer.formatDuration_(totalTime));
             window.player.curTimeElement_.innerText = sampleplayer.formatDuration_(curTime);
             window.player.totalTimeElement_.innerText = sampleplayer.formatDuration_(totalTime);
             window.player.progressBarInnerElement_.style.width = pct + '%';
