@@ -1100,6 +1100,7 @@ The overlay layer holds:
         window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
                 'seeking', 3000);
         */
+
         if(!window.player.isPaused_) {
             var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
             var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
@@ -1120,6 +1121,8 @@ The overlay layer holds:
             var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
             var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
             //var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
+
+            //window.player.setState_(sampleplayer.State.PAUSED, false);
 
             setTimeout(function () {
                 window.player.fadeOut_(controlCurTime, 0.75);
