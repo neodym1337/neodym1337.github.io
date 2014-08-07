@@ -695,7 +695,7 @@ The overlay layer holds:
         setHudMessage('mediaManagerMessage', 'SEEK: ' + JSON.stringify(event));
 
         window.mediaManager['onSeekOrig'](event);
-
+        /*
         var totalTime = window.player.mediaElement_.duration;
 
         window.player.isSeeking_= true;
@@ -716,6 +716,7 @@ The overlay layer holds:
             window.player.progressBarInnerElement_.style.width = pct + '%';
             window.player.progressBarThumbElement_.style.left = pct + '%';
         }
+        */
 
     }
 
@@ -1173,7 +1174,7 @@ The overlay layer holds:
     /** Progress bar */
     window.mediaElement.addEventListener('timeupdate', function(e) {
         console.log("######### MEDIA ELEMENT timeupdate ");
-        if(!window.player.isSeeking_) {
+        //if(!window.player.isSeeking_) {
             var curTime = window.player.mediaElement_.currentTime;
             var totalTime = window.player.mediaElement_.duration;
             if (!isNaN(curTime) && !isNaN(totalTime)) {
@@ -1185,7 +1186,7 @@ The overlay layer holds:
                 window.player.progressBarInnerElement_.style.width = pct + '%';
                 window.player.progressBarThumbElement_.style.left = pct + '%';
             }
-        }
+        //}
     });
 
 
