@@ -976,24 +976,27 @@ The overlay layer holds:
 
         var isPaused = window.player.state_ == sampleplayer.State.PAUSED;
 
-        if (isLoading){
-            //Fade out with timeout if first time
-            setTimeout(function() {
+        if (window.player.state_ != sampleplayer.State.DONE) {
+            if (isLoading) {
+                //Fade out with timeout if first time
+                setTimeout(function () {
+                    window.player.fadeOut_(mediaInfo_, 0.75);
+                    window.player.fadeOut_(controlCurTime, 0.75);
+                    window.player.fadeOut_(controlTotalTime, 0.75);
+                    window.player.fadeOut_(controlTotalProgress, 0.75);
+                    window.player.fadeOut_(controlPlayPause, 0.75);
+                }, 5000);
+            } else {
                 window.player.fadeOut_(mediaInfo_, 0.75);
                 window.player.fadeOut_(controlCurTime, 0.75);
                 window.player.fadeOut_(controlTotalTime, 0.75);
                 window.player.fadeOut_(controlTotalProgress, 0.75);
                 window.player.fadeOut_(controlPlayPause, 0.75);
-            }, 5000);
-        }else {
-            window.player.fadeOut_(mediaInfo_, 0.75);
-            window.player.fadeOut_(controlCurTime, 0.75);
-            window.player.fadeOut_(controlTotalTime, 0.75);
-            window.player.fadeOut_(controlTotalProgress, 0.75);
-            window.player.fadeOut_(controlPlayPause, 0.75);
+            }
+            window.player.setState_(sampleplayer.State.PLAYING, false, 3000);
         }
-        window.player.setState_(sampleplayer.State.PLAYING, false, 3000);
-        setHudMessage('mediaElementState','Playing');
+        setHudMessage('mediaElementState', 'Playing');
+
     });
 
     window.mediaElement.addEventListener('pause', function(e) {
@@ -1100,7 +1103,7 @@ The overlay layer holds:
         var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
         var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
 
-        window.player.setState_(sampleplayer.State.SEEKING, false);
+        //window.player.setState_(sampleplayer.State.SEEKING, false);
 
         window.player.fadeIn_(controlCurTime, 0);
         window.player.fadeIn_(controlTotalTime, 0);
