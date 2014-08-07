@@ -539,17 +539,18 @@ The overlay layer holds:
      *
      * mediaManager.resetMediaElement(cast.receiver.media.IdleReason.FINISHED);
      **/
-    window.mediaManager['onEndedOrig'] = window.mediaManager.onEnded;
+    //window.mediaManager['onEndedOrig'] = window.mediaManager.onEnded;
     /**
      * Called when the media ends
      */
+    /*
     window.mediaManager.onEnded = function() {
         console.log("### Media Manager - ENDED" );
         setHudMessage('mediaManagerMessage', 'ENDED');
 
-
         window.mediaManager['onEndedOrig']();
     }
+    */
 
     /**
      * Default implementation of onError.
