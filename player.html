@@ -695,6 +695,27 @@ The overlay layer holds:
         setHudMessage('mediaManagerMessage', 'SEEK: ' + JSON.stringify(event));
 
         window.mediaManager['onSeekOrig'](event);
+
+        var totalTime = window.player.mediaElement_.duration;
+
+        window.player.isSeeking_= true;
+
+        //var seekTime = sampleplayer.getValue_(event.data, ['media']);
+        var seekTime = event.data.currentTime;
+        console.log("################## SEEK: " + seekTime);
+        /*
+        var curTime = window.player.mediaElement_.currentTime;
+        var totalTime = window.player.mediaElement_.duration;
+        if (!isNaN(curTime) && !isNaN(totalTime)) {
+            var pct = 100 * (curTime / totalTime);
+            //console.log("current time "+ sampleplayer.formatDuration_(curTime));
+            //console.log("\n totalTime time "+ sampleplayer.formatDuration_(totalTime));
+            window.player.curTimeElement_.innerText = sampleplayer.formatDuration_(curTime);
+            window.player.totalTimeElement_.innerText = sampleplayer.formatDuration_(totalTime);
+            window.player.progressBarInnerElement_.style.width = pct + '%';
+            window.player.progressBarThumbElement_.style.left = pct + '%';
+        }
+        */
     }
 
     /**
@@ -1135,6 +1156,8 @@ The overlay layer holds:
         */
 
         setHudMessage('mediaElementState','Seeked');
+
+        window.player.isSeeking_= false;
     });
 
 
@@ -1142,16 +1165,18 @@ The overlay layer holds:
     /** Progress bar */
     window.mediaElement.addEventListener('timeupdate', function(e) {
         console.log("######### MEDIA ELEMENT timeupdate ");
-        var curTime = window.player.mediaElement_.currentTime;
-        var totalTime = window.player.mediaElement_.duration;
-        if (!isNaN(curTime) && !isNaN(totalTime)) {
-            var pct = 100 * (curTime / totalTime);
-            //console.log("current time "+ sampleplayer.formatDuration_(curTime));
-            //console.log("\n totalTime time "+ sampleplayer.formatDuration_(totalTime));
-            window.player.curTimeElement_.innerText = sampleplayer.formatDuration_(curTime);
-            window.player.totalTimeElement_.innerText = sampleplayer.formatDuration_(totalTime);
-            window.player.progressBarInnerElement_.style.width = pct + '%';
-            window.player.progressBarThumbElement_.style.left = pct + '%';
+        if(!window.player.isSeeking_) {
+            var curTime = window.player.mediaElement_.currentTime;
+            var totalTime = window.player.mediaElement_.duration;
+            if (!isNaN(curTime) && !isNaN(totalTime)) {
+                var pct = 100 * (curTime / totalTime);
+                //console.log("current time "+ sampleplayer.formatDuration_(curTime));
+                //console.log("\n totalTime time "+ sampleplayer.formatDuration_(totalTime));
+                window.player.curTimeElement_.innerText = sampleplayer.formatDuration_(curTime);
+                window.player.totalTimeElement_.innerText = sampleplayer.formatDuration_(totalTime);
+                window.player.progressBarInnerElement_.style.width = pct + '%';
+                window.player.progressBarThumbElement_.style.left = pct + '%';
+            }
         }
     });
 
