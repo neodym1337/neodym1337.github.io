@@ -708,7 +708,7 @@ The overlay layer holds:
 
         var totalTime = window.player.mediaElement_.duration;
         if (!isNaN(seekTime) && !isNaN(totalTime)) {
-            var pct = 100 * (curTime / totalTime);
+            var pct = 100 * (seekTime / totalTime);
             //console.log("current time "+ sampleplayer.formatDuration_(curTime));
             //console.log("\n totalTime time "+ sampleplayer.formatDuration_(totalTime));
             window.player.curTimeElement_.innerText = sampleplayer.formatDuration_(seekTime);
@@ -1016,7 +1016,12 @@ The overlay layer holds:
                 window.player.fadeOut_(controlTotalProgress, 0.75);
                 window.player.fadeOut_(controlPlayPause, 0.75);
             }
-            window.player.setState_(sampleplayer.State.PLAYING, false, 3000);
+            if(isLoading){
+                window.player.setState_(sampleplayer.State.PLAYING, false);
+            }else {
+
+                window.player.setState_(sampleplayer.State.PLAYING, false, 3000);
+            }
         }
         setHudMessage('mediaElementState', 'Playing');
 
