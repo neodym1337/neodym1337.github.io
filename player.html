@@ -943,8 +943,7 @@ The overlay layer holds:
     });
     window.mediaElement.addEventListener('ended', function(e){
         console.log("######### MEDIA ELEMENT ENDED");
-        window.mediaElement.pause();
-        window.player.setState_(sampleplayer.State.DONE, true);
+        window.player.setState_(sampleplayer.State.DONE, false);
 
         //Finished playing through media
 
