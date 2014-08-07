@@ -547,6 +547,7 @@ The overlay layer holds:
         console.log("### Media Manager - ENDED" );
         setHudMessage('mediaManagerMessage', 'ENDED');
 
+
         window.mediaManager['onEndedOrig']();
     }
 
@@ -732,7 +733,7 @@ The overlay layer holds:
     window.mediaManager.onStop = function(event) {
         console.log("### Media Manager - STOP: " + JSON.stringify(event));
         setHudMessage('mediaManagerMessage', 'STOP: ' + JSON.stringify(event));
-
+        /*
         var self = window.player;
         window.player.fadeOut_(self.element_, 0.75, function() {
             self.mediaElement_.pause();
@@ -740,6 +741,10 @@ The overlay layer holds:
             self.setState_(sampleplayer.State.DONE, false);
             window.player.fadeIn_(self.element_, 0.75);
         });
+        */
+        var self = window.player;
+        self.mediaElement_.pause();
+        self.mediaElement_.removeAttribute('src');
 
         window.mediaManager['onStopOrig'](event);
     }
@@ -760,15 +765,11 @@ The overlay layer holds:
      * Processes the load event.
      * @param event
      */
-
-
     window.mediaManager.onLoad = function(event) {
         console.log("### Media Manager - LOAD: " + JSON.stringify(event));
         setHudMessage('mediaManagerMessage', 'LOAD ' + JSON.stringify(event));
 
         var self = window.player;
-
-
 
         var mediaInfo_ = self.element_.querySelector('.media-info');
         var controlCurTime = self.element_.querySelector('.controls-cur-time');
@@ -825,10 +826,12 @@ The overlay layer holds:
             window.mediaHost.onError = function (errorCode) {
                 console.error('### HOST ERROR - Fatal Error: code = ' + errorCode);
                 setHudMessage('mediaHostState', 'Fatal Error: code = ' + errorCode);
+
                 if (window.mediaPlayer !== null) {
                     window.mediaPlayer.unload();
                 }
-            }
+                window.mediaManager.sendLoadError();
+            };
 
             var initialTimeIndexSeconds = event.data['media']['currentTime'] || 0;
             // TODO: real code would know what content it was going to access and this would not be here.
@@ -940,6 +943,7 @@ The overlay layer holds:
     });
     window.mediaElement.addEventListener('ended', function(e){
         console.log("######### MEDIA ELEMENT ENDED");
+        window.mediaElement.pause();
         window.player.setState_(sampleplayer.State.DONE, true);
 
         //Finished playing through media
@@ -989,7 +993,7 @@ The overlay layer holds:
             window.player.fadeOut_(controlTotalProgress, 0.75);
             window.player.fadeOut_(controlPlayPause, 0.75);
         }
-        window.player.setState_(sampleplayer.State.PLAYING, false);
+        window.player.setState_(sampleplayer.State.PLAYING, false, 3000);
         setHudMessage('mediaElementState','Playing');
     });
 
@@ -1096,7 +1100,9 @@ The overlay layer holds:
         var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
         var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
         var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
-        //window.player.setState_(sampleplayer.State.SEEKING, false);
+
+        window.player.setState_(sampleplayer.State.SEEKING, false);
+
         window.player.fadeIn_(controlCurTime, 0);
         window.player.fadeIn_(controlTotalTime, 0);
         window.player.fadeIn_(controlTotalProgress, 0);
