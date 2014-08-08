@@ -785,7 +785,6 @@ The overlay layer holds:
         self.fadeIn_(controlTotalTime, 0);
         self.fadeIn_(controlTotalProgress, 0);
 
-        window.player.fadeIn_(mediaInfo_, 0);
 
         var title = sampleplayer.getValue_(event.data, ['media', 'metadata', 'title']
         );
@@ -838,8 +837,9 @@ The overlay layer holds:
 
             var initialTimeIndexSeconds = event.data['media']['currentTime'] || 0;
             // TODO: real code would know what content it was going to access and this would not be here.
-            var protocol = null;
 
+
+            /*
             var parser = document.createElement('a');
             parser.href = url;
 
@@ -851,9 +851,12 @@ The overlay layer holds:
             } else if (ext === 'ism/') {
                 protocol = cast.player.api.CreateSmoothStreamingProtocol(window.mediaHost);
             }
+
             console.log('### Media Protocol Identified as ' + ext);
             setHudMessage('mediaProtocol', ext);
-
+            */
+            var protocol = null;
+            protocol =  cast.player.api.CreateHlsStreamingProtocol(window.mediaHost);
             if (protocol === null) {
                 // Call on original handler
                 window.mediaManager['onLoadOrig'](event); // Call on the original callback
@@ -956,6 +959,11 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT PLAYING");
 
         window.player.isPaused_ = false;
+
+        var mediaInfo = window.mediaManager.getMediaInformation();
+        var mediaInfoString = JSON.stringify(mediaInfo);
+        console.log("#############   Mediainfo: " + mediaInfoString);
+
         /*
         Old code from example
 
@@ -1086,6 +1094,9 @@ The overlay layer holds:
     window.mediaElement.addEventListener('error', function(e){
         console.log("######### MEDIA ELEMENT ERROR " + e);
         setHudMessage('mediaElementState','Error');
+
+        //TODO: Send errors to senders
+        //window.mediaManager.sendError(senderId, requestId, type, opt_reason, opt_customData)
     });
     window.mediaElement.addEventListener('abort', function(e){
         console.log("######### MEDIA ELEMENT ABORT " + e);
@@ -1103,7 +1114,7 @@ The overlay layer holds:
         //The user agent is fetching media data. (but can be playing)
 
     });
-
+    /** Seeking */
     window.mediaElement.addEventListener('seeking', function(e){
         console.log("######### MEDIA ELEMENT SEEKING " + e);
         /*
@@ -1150,23 +1161,22 @@ The overlay layer holds:
     });
 
 
-
     /** Progress bar */
     window.mediaElement.addEventListener('timeupdate', function(e) {
         console.log("######### MEDIA ELEMENT timeupdate ");
-        //if(!window.player.isSeeking_) {
-            var curTime = window.player.mediaElement_.currentTime;
-            var totalTime = window.player.mediaElement_.duration;
-            if (!isNaN(curTime) && !isNaN(totalTime)) {
-                var pct = 100 * (curTime / totalTime);
-                //console.log("current time "+ sampleplayer.formatDuration_(curTime));
-                //console.log("\n totalTime time "+ sampleplayer.formatDuration_(totalTime));
-                window.player.curTimeElement_.innerText = sampleplayer.formatDuration_(curTime);
-                window.player.totalTimeElement_.innerText = sampleplayer.formatDuration_(totalTime);
-                window.player.progressBarInnerElement_.style.width = pct + '%';
-                window.player.progressBarThumbElement_.style.left = pct + '%';
-            }
-        //}
+
+        var curTime = window.player.mediaElement_.currentTime;
+        var totalTime = window.player.mediaElement_.duration;
+        if (!isNaN(curTime) && !isNaN(totalTime)) {
+            var pct = 100 * (curTime / totalTime);
+            //console.log("current time "+ sampleplayer.formatDuration_(curTime));
+            //console.log("\n totalTime time "+ sampleplayer.formatDuration_(totalTime));
+            window.player.curTimeElement_.innerText = sampleplayer.formatDuration_(curTime);
+            window.player.totalTimeElement_.innerText = sampleplayer.formatDuration_(totalTime);
+            window.player.progressBarInnerElement_.style.width = pct + '%';
+            window.player.progressBarThumbElement_.style.left = pct + '%';
+        }
+
     });
 
 
