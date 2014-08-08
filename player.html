@@ -161,6 +161,8 @@ The overlay layer holds:
 
         this.element_ = element;
 
+        this.fadeTimeout_;
+
         this.isSeeking_;
 
         this.isPaused_;
@@ -980,12 +982,13 @@ The overlay layer holds:
         if (window.player.state_ != sampleplayer.State.DONE) {
             if (isLoading) {
                 //Fade out with timeout if first time
-                setTimeout(function () {
+                trasetTimeout(function () {
                     window.player.fadeOut_(mediaInfo_, 0.75);
                     window.player.fadeOut_(controlCurTime, 0.75);
                     window.player.fadeOut_(controlTotalTime, 0.75);
                     window.player.fadeOut_(controlTotalProgress, 0.75);
                     window.player.fadeOut_(controlPlayPause, 0.75);
+                    window.player.setState_(sampleplayer.State.PLAYING, false);
                 }, 5000);
             } else {
                 window.player.fadeOut_(mediaInfo_, 0.75);
@@ -993,13 +996,11 @@ The overlay layer holds:
                 window.player.fadeOut_(controlTotalTime, 0.75);
                 window.player.fadeOut_(controlTotalProgress, 0.75);
                 window.player.fadeOut_(controlPlayPause, 0.75);
-            }
-            if(isLoading){
                 window.player.setState_(sampleplayer.State.PLAYING, false);
-            }else {
-
-                window.player.setState_(sampleplayer.State.PLAYING, false, 3000);
             }
+
+
+
         }
         setHudMessage('mediaElementState', 'Playing');
 
@@ -1021,7 +1022,7 @@ The overlay layer holds:
         if (window.player.state_ != sampleplayer.State.DONE) {
 
             if (window.player.state_ != sampleplayer.State.SEEKING) {
-
+                clearTimeout(window.player.fadeTimeout_);
                 window.player.setState_(sampleplayer.State.PAUSED, false);
 
                 window.player.fadeIn_(mediaInfo_, 0);
@@ -1030,7 +1031,8 @@ The overlay layer holds:
                 window.player.fadeIn_(controlTotalProgress, 0);
                 window.player.fadeIn_(controlPlayPause, 0);
 
-                setTimeout(function () {
+
+                window.player.fadeTimeout_ = setTimeout(function () {
                     window.player.fadeOut_(mediaInfo_, 0.75);
                     window.player.fadeOut_(controlCurTime, 0.75);
                     window.player.fadeOut_(controlTotalTime, 0.75);
