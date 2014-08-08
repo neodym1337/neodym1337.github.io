@@ -982,7 +982,7 @@ The overlay layer holds:
         if (window.player.state_ != sampleplayer.State.DONE) {
             if (isLoading) {
                 //Fade out with timeout if first time
-                trasetTimeout(function () {
+                setTimeout(function () {
                     window.player.fadeOut_(mediaInfo_, 0.75);
                     window.player.fadeOut_(controlCurTime, 0.75);
                     window.player.fadeOut_(controlTotalTime, 0.75);
