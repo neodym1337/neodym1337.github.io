@@ -109,7 +109,7 @@ The overlay layer holds:
      * The amount of time in a given state before the player goes idle.
      */
     sampleplayer.IDLE_TIMEOUT = {
-        LAUNCHING: 30 * 1000,    // 30 seconds
+        LAUNCHING: 3 * 1000,    // 30 seconds
         READY: 3000,
         LOADING: 10 * 60 * 1000,    // 50 minutes
         PAUSED:  10 * 60 * 1000, //10 min    30 * 1000,       // 10 minutes normally, use 30 seconds for demo
@@ -201,6 +201,7 @@ The overlay layer holds:
         this.mediaInfo_ = this.element_.querySelector('.media-info');
 
         this.state_;
+
         this.setState_(sampleplayer.State.LAUNCHING);
 
         this.mediaElement_ = /** @type {HTMLMediaElement} */
@@ -214,6 +215,7 @@ The overlay layer holds:
         this.totalTimeElement_ = this.element_.querySelector('.controls-total-time');
 
         this.idleBoxElement_ = document.getElementById('idle-box');
+        this.currentSliderIndex_ = 0;
 
         //var jsonData = this.fetchInitalJson_();
         //console.log(jsonData);
@@ -257,6 +259,10 @@ The overlay layer holds:
                 self.element_.className = 'player ' + (self.type_ || '') + ' ' + state;
                 self.setIdleTimeout_(sampleplayer.IDLE_TIMEOUT[state.toUpperCase()]);
                 console.log('setState(%o)', state);
+
+                if(self.state_ != sampleplayer.State.IDLE) {
+                    self.stopIdleSlider_();
+                }
             } else {
                 self.fadeOut_(self.element_, 0.75, function() {
                     self.setState_(state, false);
@@ -268,21 +274,41 @@ The overlay layer holds:
 
     sampleplayer.CastPlayer.prototype.startIdleSlider_ = function() {
         this.idleSliderTimeout = setTimeout(function(){
-            this.fadeOut_(this.idleBoxElement_, 0, function() {
-                ;
+            var player = window.player;
+            $(player.idleBoxElement_).fadeOut(800, function() {
+                var imageurl = data[player.currentSliderIndex_]['imageurl'];
+                var title = data[player.currentSliderIndex_]['title'];
+                var subtitle = data[player.currentSliderIndex_]['subtitle'];
+                var description = data[player.currentSliderIndex_]['description'];
+                var time = data[player.currentSliderIndex_]['time'];
+
+                player.currentSliderIndex_ = ((player.currentSliderIndex_+1) % data.length);
+
+                $("#idle-title").html(title);
+                $("#idle-subtitle").html(subtitle);
+                $("#idle-description").html(description);
+                $("#idle-time").html(time);
+                $("#idle-image img").attr('src', imageurl);
+
+                $(player.idleBoxElement_).fadeIn(800, function() {
+                    player.startIdleSlider_();
+                });
             });
-        }, 10000);
+        }, 5000); // should be 30 seconds
         // after 30 seconds fadeOut Element (timeout speichern)
         // get next element from data array (currently prototype)
         // set attributes bei #idle-box
         // fade in
-        // rekursiver aufruf
+        // recursive
     }
 
     // Call this function whenever the state of the receiver changes to a non-Idle state
     sampleplayer.CastPlayer.prototype.stopIdleSlider_ = function() {
         // clear timeout
-        clearTimeout(this.idleSliderTimeout);
+        if(typeof this.idleSliderTimeout !== "undefined") {
+            clearTimeout(this.idleSliderTimeout);
+        }
+
         // fade out
         this.fadeOut_(this.idleBoxElement_, 0);
     }
@@ -295,7 +321,9 @@ The overlay layer holds:
         //console.log('onIdle');
 
         if (this.state_ != sampleplayer.State.IDLE) {
-            window.player.fadeIn_(this.idleBoxElement_, 0.75);
+            $(window.player.idleBoxElement_).fadeIn(800, function() {
+                player.startIdleSlider_(); // start the timer after fade in
+            });
             this.setState_(sampleplayer.State.IDLE, true);
         } else {
             window.close();
