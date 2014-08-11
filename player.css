@@ -241,15 +241,23 @@ body {
 .player .media-info .media-title {
   color: #ddd;
   line-height: 100%;
-  font-size: 66px;
+  font-size: 50px;
   padding: 5px;
+  white-space: nowrap;      /* keep the text on one line */
+  overflow: hidden;         /* prevent the text from being shown outside the border */
+  text-overflow: ellipsis;  /* cut off text with an elipsis */
+    width:  90%;
 }
 
 .player .media-info .media-subtitle {
   color: #999;
   padding: 5px;
   line-height: 100%;
-  font-size: 33px;
+  font-size: 25px;
+  white-space: nowrap;      /* keep the text on one line */
+  overflow: hidden;         /* prevent the text from being shown outside the border */
+  text-overflow: ellipsis;  /* cut off text with an elipsis */
+    width:  90%;
 }
 
 .player.audio .media-artwork {

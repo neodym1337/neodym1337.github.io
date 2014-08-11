@@ -185,7 +185,7 @@ The overlay layer holds:
 
     sampleplayer.CastPlayer.prototype.setState_ = function(state, crossfade, delay){
         var self = this;
-        debugger;
+        //debugger;
         clearTimeout(self.delay_);
         if (delay) {
             var func = function() { self.setState_(state, crossfade); };
