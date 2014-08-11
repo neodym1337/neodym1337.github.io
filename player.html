@@ -104,7 +104,7 @@ The overlay layer holds:
         PAUSED:  10 * 60 * 1000, //10 min    30 * 1000,       // 10 minutes normally, use 30 seconds for demo
         STALLED: 30 * 1000,      // 30 seconds
         DONE: 30 * 1000,         // 5 minutes normally, use 30 seconds for demo
-        IDLE: 60 * 5 * 1000      //30 * 1000          // 5 minutes normally, use 30 seconds for demo
+        IDLE: 5 * 60 * 1000      //30 * 1000          // 5 minutes normally, use 30 seconds for demo
     };
 
     /**
@@ -997,7 +997,6 @@ The overlay layer holds:
                     window.player.fadeOut_(controlTotalTime, 0.75);
                     window.player.fadeOut_(controlTotalProgress, 0.75);
                     window.player.fadeOut_(controlPlayPause, 0.75);
-
                 }, 5000);
             } else {
                 window.player.fadeOut_(mediaInfo_, 0.75);
@@ -1007,12 +1006,8 @@ The overlay layer holds:
                 window.player.fadeOut_(controlPlayPause, 0.75);
                 window.player.setState_(sampleplayer.State.PLAYING, false);
             }
-
-
-
         }
         setHudMessage('mediaElementState', 'Playing');
-
     });
 
     window.mediaElement.addEventListener('pause', function(e) {
@@ -1024,9 +1019,6 @@ The overlay layer holds:
         var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
         var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
         var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
-
-
-
 
         if (window.player.state_ != sampleplayer.State.DONE) {
 
@@ -1040,7 +1032,6 @@ The overlay layer holds:
                 window.player.fadeIn_(controlTotalProgress, 0);
                 window.player.fadeIn_(controlPlayPause, 0);
 
-
                 window.player.fadeTimeout_ = setTimeout(function () {
                     window.player.fadeOut_(mediaInfo_, 0.75);
                     window.player.fadeOut_(controlCurTime, 0.75);
@@ -1049,11 +1040,13 @@ The overlay layer holds:
                     //window.player.fadeOut_(controlPlayPause, 0.75);
                 }, 5000);
             }
+            /*
             if((window.player.state_ == sampleplayer.State.SEEKING) && window.player.isPaused_){
-
+                console.log("------------ PAUSED AFTER SEEKING");
                 window.player.setState_(sampleplayer.State.PAUSED, false);
 
             }
+            */
         
         }
     });
@@ -1143,12 +1136,12 @@ The overlay layer holds:
         var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
         var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
         var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
-        /*
+
 
         if(window.player.isPaused_){
             window.player.setState_(sampleplayer.State.PAUSED, false);
         }
-        */
+        
         /*
         clearTimeout(this.seekingTimeout_);
         window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
