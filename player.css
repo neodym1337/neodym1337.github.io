@@ -88,8 +88,98 @@ body {
   bottom: 0;
 }
 
-.player.idle, .player.done {
-  background-image: url('assets/done.png');
+#idle-box {
+    position: absolute;
+    display: none;
+    margin-top: 5%;
+    margin-left: 5%;
+    width: 90%;
+    height: 80%;
+}
+
+#idle-image {
+    width : 30%;
+    height: 80%;
+    float: left;
+    margin-top: 5%;
+}
+
+#idle-image img {
+    transform: perspective( 1000px ) rotateY(30deg);
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 100%
+}
+
+#idle-text {
+    color: #fefde7;
+    width : 70%;
+    height: 80%;
+    font-weight: lighter;
+    float: left;
+    margin-top: 5%;
+}
+
+#idle-title {
+    margin-left: 5%;
+    margin-top: 3%;
+    font-size: 50px;
+    font-family: Helvetica;
+    width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+#idle-subtitle {
+    margin-left: 5%;
+    margin-top: 1%;
+    font-size: 25px;
+    font-family: Helvetica;
+    width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+#idle-description {
+    margin-left: 5%;
+    margin-top: 3%;
+    font-size: 20px;
+    font-family: Helvetica;
+    width: 90%;
+    height: 45%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+#idle-time {
+    margin-left: 5%;
+    margin-top: 1%;
+    font-size: 20px;
+    text-align: right;
+    font-family: Helvetica;
+    width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+#idle-info-sender {
+    margin-left: 5%;
+    margin-top: 1%;
+    font-size: 15px;
+    font-family: Helvetica;
+    color: #a1dcfe;
+    width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    float: left;
 }
 
 .player img, .player video {

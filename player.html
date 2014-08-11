@@ -43,8 +43,6 @@ The overlay layer holds:
       <script type="text/javascript" src="http://www.gstatic.com/cast/sdk/libs/mediaplayer/0.9.0/media_player.js"></script>
 
     <script src="jquery-2.1.1.min.js"></script>
-
-  		
 </head>
 
 <body style="margin: 0">
@@ -88,6 +86,19 @@ The overlay layer holds:
 			</div>
 		</div>
 	</div>
+    <div id="idle-box">
+        <div id="idle-image">
+            <img src="http://media-cache-ec0.pinimg.com/236x/7f/75/6b/7f756bcb3481db56650768cc5fc0cf50.jpg" alt="">
+        </div>
+        <div id="idle-text">
+            <div id="idle-title">Weltmeister 2014 Deutschland</div>
+            <div id="idle-subtitle">Ein bisschen Text für den Untertitel</div>
+            <div id="idle-description">Ein bisschen Text für die Beschreibung. es wird etwas länger Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren
+                , no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</div>
+            <div id="idle-time">45 min</div>
+            <div id="idle-info-sender">Sie können dieses Video von ihrem Gerät mit der BR Mediatheks App für iOS oder Android auswählen.</div>
+        </div>
+    </div>
     <script type="text/javascript">
     "use strict";
 
@@ -155,6 +166,25 @@ The overlay layer holds:
     window.mediaElement.autoplay = true;
 
 
+    // Fake data for idle slider
+    var data = [{title: "Testtitel Eins", subtitle: "Subtitel Eins", description: "orem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam " +
+            "nonumy eirmod tempor invidunt ut labore et dolore magna aliq yam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clit" +
+            "a kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed d",
+        imageurl:"http://media-cache-ec0.pinimg.com/236x/7f/75/6b/7f756bcb3481db56650768cc5fc0cf50.jpg", time: "20min"},
+    {
+        title: "Testtitel Zwei", subtitle: "Subtitel Zwei", description: "orem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam " +
+    "nonumy eirmod tempor invidunt ut labore et dolore magna aliq yam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clit" +
+    "a kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed d",
+            imageurl:"http://media-cache-ec0.pinimg.com/236x/7f/75/6b/7f756bcb3481db56650768cc5fc0cf50.jpg", time: "20min"},
+        {
+            title: "Testtitel Drei", subtitle: "Subtitel Drei", description: "orem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam " +
+                "nonumy eirmod tempor invidunt ut labore et dolore magna aliq yam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clit" +
+                "a kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed d",
+            imageurl:"http://media-cache-ec0.pinimg.com/236x/7f/75/6b/7f756bcb3481db56650768cc5fc0cf50.jpg", time: "20min"}
+    ];
+
+
+
 // CASTPLAYER
 
     sampleplayer.CastPlayer = function(element) {
@@ -182,6 +212,7 @@ The overlay layer holds:
         this.curTimeElement_ = this.element_.querySelector('.controls-cur-time');
         this.totalTimeElement_ = this.element_.querySelector('.controls-total-time');
 
+        this.idleBoxElement_ = document.getElementById('idle-box');
 
         //var jsonData = this.fetchInitalJson_();
         //console.log(jsonData);
@@ -231,6 +262,27 @@ The overlay layer holds:
         }
     };
 
+    sampleplayer.CastPlayer.prototype.startIdleSlider_ = function() {
+        this.idleSliderTimeout = setTimeout(function(){
+            this.fadeOut_(this.idleBoxElement_, 0, function() {
+                ;
+            });
+        }, 10000);
+        // after 30 seconds fadeOut Element (timeout speichern)
+        // get next element from data array (currently prototype)
+        // set attributes bei #idle-box
+        // fade in
+        // rekursiver aufruf
+    }
+
+    // Call this function whenever the state of the receiver changes to a non-Idle state
+    sampleplayer.CastPlayer.prototype.stopIdleSlider_ = function() {
+        // clear timeout
+        clearTimeout(this.idleSliderTimeout);
+        // fade out
+        this.fadeOut_(this.idleBoxElement_, 0);
+    }
+
     /**
      * Callback called when player enters idle state
      *
@@ -238,8 +290,8 @@ The overlay layer holds:
     sampleplayer.CastPlayer.prototype.onIdle_ = function() {
         //console.log('onIdle');
 
-
         if (this.state_ != sampleplayer.State.IDLE) {
+            window.player.fadeIn_(this.idleBoxElement_, 0.75);
             this.setState_(sampleplayer.State.IDLE, true);
         } else {
             window.close();
