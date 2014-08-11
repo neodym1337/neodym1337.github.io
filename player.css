@@ -402,10 +402,6 @@ body {
 .player.buffering .controls-play-pause,
 .player.seeking .controls-play-pause,
 .player.loading .controls-play-pause{
- /*
-  background-image: url("assets/buffering.png");
-  -webkit-animation: spin 1s infinite linear;
-  */
     width: 20px;
     height: 20px;
     border: 10px solid #cccccc;
@@ -428,11 +424,6 @@ body {
 .player.playing .controls-play-pause{
   background-image: url("assets/paused.png");
 }
-/*
-.player.playing .controls-play-pause {
-    background-image: url("assets/playing.png");
-}
-*/
 
 .player.video.playing .controls {
  display: block;

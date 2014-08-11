@@ -48,7 +48,7 @@ The overlay layer holds:
 <body style="margin: 0">
 
 	<div id="messages">
-        <div id="title">Sample Media Receiver HUD</div>
+        <div id="title">Receiver HUD</div>
         <div>Application State: <span id="applicationState">-</span></div>
         <div>Session Count: <span id="sessionCount">0</span></div>
         <div>Media Element State: <span  id="mediaElementState">-</span></div>
@@ -125,7 +125,8 @@ The overlay layer holds:
      */
     sampleplayer.Type = {
         IMAGE: 'image',
-        VIDEO: 'video'
+        VIDEO: 'video',
+        LIVESTREAM: 'livestream'
     };
 
     /**
@@ -238,6 +239,9 @@ The overlay layer holds:
         // HLS stream mimetype 'application/vnd.apple.mpegURL'
         if (mimeType.indexOf('application/vnd.apple.mpegURL') == 0) {
             this.type_ = sampleplayer.Type.VIDEO;
+        }
+        if(mimeType.indexOf('livestream')) {
+            this.type_ =  sampleplayer.Type.LIVESTREAM;
         }
     };
 
@@ -853,8 +857,8 @@ The overlay layer holds:
         var artworkElement = self.element_.querySelector('.media-artwork');
         sampleplayer.setBackgroundImage_(artworkElement, artwork);
 
-        var contentId = sampleplayer.getValue_(event.data, ['media', 'contentId']);
-        var contentType = sampleplayer.getValue_(event.data, ['media', 'contentType']);
+        var contentId = sampleplayer.getValue_(event.data, ['media', 'contentId']); //url
+        var contentType = sampleplayer.getValue_(event.data, ['media', 'contentType']); //mimetype & livestream
 
         self.setContentType_(contentType);
 
@@ -1092,13 +1096,7 @@ The overlay layer holds:
                     //window.player.fadeOut_(controlPlayPause, 0.75);
                 }, 5000);
             }
-            /*
-            if((window.player.state_ == sampleplayer.State.SEEKING) && window.player.isPaused_){
-                console.log("------------ PAUSED AFTER SEEKING");
-                window.player.setState_(sampleplayer.State.PAUSED, false);
 
-            }
-            */
         
         }
     });
@@ -1191,14 +1189,9 @@ The overlay layer holds:
 
 
         if(window.player.isPaused_){
+            //Set paused state after paused seeking
             window.player.setState_(sampleplayer.State.PAUSED, false);
         }
-        
-        /*
-        clearTimeout(this.seekingTimeout_);
-        window.player.seekingTimeout_ = sampleplayer.addClassWithTimeout_(window.player.element_,
-                'seeking', 3000);
-        */
 
         setHudMessage('mediaElementState','Seeked');
 
