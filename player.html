@@ -219,12 +219,13 @@ The overlay layer holds:
 
         //var jsonData = this.fetchInitalJson_();
         //console.log(jsonData);
-
+        /*
         $.getJSON('http://www.br.de/system/halTocJson.jsp', function(data) {
             //data is the JSON string
             console.log(data);
             //return(data);
         });
+        */
 
 
     };
@@ -242,7 +243,7 @@ The overlay layer holds:
         if (mimeType.indexOf('application/vnd.apple.mpegURL') == 0) {
             this.type_ = sampleplayer.Type.VIDEO;
         }
-        if(mimeType.indexOf('livestream')) {
+        if(mimeType.indexOf('livestream') == 0) {
             this.type_ =  sampleplayer.Type.LIVESTREAM;
         }
     };
@@ -331,14 +332,7 @@ The overlay layer holds:
 
     };
 
-    sampleplayer.CastPlayer.prototype.fetchInitalJson_ = function(){
 
-        $.getJSON('http://www.br.de/system/halTocJson.jsp', function(data) {
-            //data is the JSON string
-            //console.log(data);
-            return(data);
-        });
-    };
 
     /**
      * Get a value from an object multiple levels deep.
