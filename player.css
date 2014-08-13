@@ -427,6 +427,7 @@ body {
 
 .player.video.playing .controls {
  display: block;
+ overflow: hidden;
 }
 
 .player .controls-progress {
