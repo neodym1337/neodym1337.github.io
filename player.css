@@ -57,6 +57,7 @@
 
 body {
   background-color: #000;
+  overflow: hidden !important;
 }
  #messages {
             color: #FFFFFF;
@@ -187,10 +188,12 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
+  margin: auto auto;
   background-color: #000;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  overflow: hidden !important;
 }
 
 .player.image img, .player.video.buffering video,
@@ -427,7 +430,6 @@ body {
 
 .player.video.playing .controls {
  display: block;
- overflow: hidden;
 }
 
 .player .controls-progress {
@@ -494,6 +496,7 @@ display: block;
 
 .player.loading .controls-progress-inner {
   width: 50px !important;
+  overflow: hidden !important;
   -webkit-animation: loading 1s infinite ease-in;
   animation: loading 1s infinite ease-in;
 }

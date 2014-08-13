@@ -244,7 +244,7 @@ The overlay layer holds:
         if (mimeType.indexOf('application/vnd.apple.mpegURL') == 0) {
             this.type_ = sampleplayer.Type.VIDEO;
             //this.isLivestream = false;
-            
+
             $(".controls-total-time").show();
             $(".controls-progress").show();
         }
@@ -1086,12 +1086,25 @@ The overlay layer holds:
         var isLoading = window.player.state_ == sampleplayer.State.LOADING;
 
         var isPaused = window.player.state_ == sampleplayer.State.PAUSED;
+/*
+        clearTimeout(window.player.fadeTimeout_);
+        window.player.setState_(sampleplayer.State.PAUSED, false);
+
+        window.player.fadeIn_(mediaInfo_, 0);
+        window.player.fadeIn_(controlCurTime, 0);
+        window.player.fadeIn_(controlTotalTime, 0);
+        window.player.fadeIn_(controlTotalProgress, 0);
+        window.player.fadeIn_(controlPlayPause, 0);
+
+        window.player.fadeTimeout_ = setTimeout(function () {
+        */
 
         if (window.player.state_ != sampleplayer.State.DONE) {
             if (isLoading) {
                 //Fade out with timeout if first time
+                clearTimeout(window.player.fadeTimeout_);
                 window.player.setState_(sampleplayer.State.PLAYING, false);
-                setTimeout(function () {
+                window.player.fadeTimeout_ = setTimeout(function () {
                     window.player.fadeOut_(mediaInfo_, 0.75);
                     window.player.fadeOut_(controlCurTime, 0.75);
                     window.player.fadeOut_(controlTotalTime, 0.75);
