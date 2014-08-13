@@ -192,6 +192,8 @@ The overlay layer holds:
 
         this.element_ = element;
 
+        this.isLivestream_;
+
         this.fadeTimeout_;
 
         this.isSeeking_;
@@ -241,16 +243,35 @@ The overlay layer holds:
         // HLS stream mimetype 'application/vnd.apple.mpegURL'
         if (mimeType.indexOf('application/vnd.apple.mpegURL') == 0) {
             this.type_ = sampleplayer.Type.VIDEO;
+            //this.isLivestream = false;
+            
+            $(".controls-total-time").show();
+            $(".controls-progress").show();
         }
         if(mimeType.indexOf('livestream') == 0) {
             //this.type_ =  sampleplayer.Type.LIVESTREAM;
             this.type_ = sampleplayer.Type.VIDEO;
+
+            /*
+            var controlTotalTime = window.mediaElement.querySelector('.controls-total-time');
+            var controlTotalProgress = window.mediaElement.querySelector('.controls-progress');
+
+            controlTotalTime.style.display = 'none';
+            controlTotalProgress.style.display = 'none';
+            */
+
+            $(".controls-total-time").hide();
+            $(".controls-progress").hide();
         }
     };
 
     sampleplayer.CastPlayer.prototype.setState_ = function(state, crossfade, delay){
         var self = this;
         clearTimeout(self.delay_);
+
+
+
+
         if (delay) {
             var func = function() { self.setState_(state, crossfade); };
             self.delay_ = setTimeout(func, delay);
