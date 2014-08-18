@@ -187,7 +187,6 @@ The overlay layer holds:
     var data = [];
 
     function Media(title, subtitle, description, tag, imageURL) {
-        //var that= {};
 
         this.title= title;
         this.subtitle = subtitle;
@@ -197,7 +196,7 @@ The overlay layer holds:
         this.imageURL = "http://media-cache-ec0.pinimg.com/236x/7f/75/6b/7f756bcb3481db56650768cc5fc0cf50.jpg";
 
         return this;
-    }
+    };
 
 
 // CASTPLAYER
@@ -244,7 +243,7 @@ The overlay layer holds:
         $.getJSON('startpage.json', function(json) {
             //console.log(json);
             var test = sampleplayer.parseJson_(json);
-            //TODO: We should fetch the startpage everytime receiver enters idle
+            //TODO: We should fetch the startpage every time receiver enters idle
         });
 
     };
@@ -253,7 +252,7 @@ The overlay layer holds:
     sampleplayer.parseJson_ = function(json) {
 
         var teasersArray = json._embedded.teasers;
-
+        data = [];
         $.each(teasersArray, function(i, teaser ) {
             var title = teaser.topline;
             var subtitle = teaser.headline;
@@ -1211,17 +1210,7 @@ The overlay layer holds:
     window.mediaElement.addEventListener('stalled', function(e){
         console.log("######### MEDIA ELEMENT STALLED");
 
-        /*
-        window.player.setState_(sampleplayer.State.BUFFERING, false); //TODO:Buffering state should not be set here because movie can be playing while stalled.
-        //We only show buffering state if video stops due to buffering, i.e. 'waiting' event
-
-
-        //Fade in buffering after 5 seconds
-        var mediaInfo_ = window.player.element_.querySelector('.media-info');
-        setTimeout(function() {
-            window.player.fadeIn_(mediaInfo_, 0.75)
-        }, 5000);
-        */
+      //This event can be used to test buffering
 
         setHudMessage('mediaElementState','Stalled');
     });
