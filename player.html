@@ -184,6 +184,17 @@ The overlay layer holds:
             imageurl:"http://media-cache-ec0.pinimg.com/236x/7f/75/6b/7f756bcb3481db56650768cc5fc0cf50.jpg", time: "20min"}
     ];
 
+    function Media(title, subtitle, description, tag, imageURL) {
+        //var that= {};
+
+        this.title= title;
+        this.subtitle = subtitle;
+        this.description = description;
+        this.tag = tag;
+        this.imageURL = imageURL;
+
+        return this;
+    }
 
 
 // CASTPLAYER
@@ -241,16 +252,28 @@ The overlay layer holds:
     sampleplayer.parseJson_ = function(json) {
        //console.log(json);
 
-       var teasersArray = json._embedded.teasers;
+        var teasersArray = json._embedded.teasers;
 
-       console.log(teasersArray);
+        var parsedTeasersArray = [];
 
-        jQuery.each( teasersArray, function( i, teaser ) {
-            //$( "#" + val ).text( "Mine is " + val + "." );
+        //console.log(teasersArray);
 
-            // Will stop running after "three"
-            //return ( val !== "three" );
-            console.log(teaser);
+        $.each(teasersArray, function(i, teaser ) {
+            //Title, subtitle, description, time, imageurl, boxTitle.
+
+            //console.log(teaser);
+
+            var title = teaser.topline;
+            var subtitle = teaser.headline;
+            var description = teaser.teaserText;
+            var tag = teaser.boxTitle;
+            var imageURLs = teaser.teaserImage._links;
+
+            var media = new Media(title, subtitle, description, tag, imageURLs);
+
+            console.log(media);
+
+
         });
 
 
