@@ -222,7 +222,7 @@ The overlay layer holds:
 
         $.getJSON('startpage.json', function(json) {
             //console.log(json);
-            this.parseJson_(json);
+            var test = sampleplayer.parseJson_(json);
         });
 
 
@@ -238,7 +238,7 @@ The overlay layer holds:
 
     };
 
-    sampleplayer.CastPlayer.prototype.parseJson_ = function(json) {
+    sampleplayer.parseJson_ = function(json) {
         console.log(json);
     };
 
