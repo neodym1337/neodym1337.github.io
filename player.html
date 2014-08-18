@@ -206,11 +206,11 @@ The overlay layer holds:
 
         this.element_ = element;
 
-
-
         this.isLivestream_;
 
         this.fadeTimeout_;
+
+        this.bufferTimeout_;
 
         this.isSeeking_;
 
@@ -236,38 +236,25 @@ The overlay layer holds:
         this.currentSliderIndex_ = 0;
 
 
-        $.getJSON('startpage.json', function(json) {
-            //console.log(json);
-            var test = sampleplayer.parseJson_(json);
-        });
-
-
-
-        /*
-        $.getJSON('http://www.br.de/system/halTocJson.jsp', function(data) {
-            //data is the JSON string
-            console.log(data);
-            //return(data);
-        });
-        */
-
+        var test = sampleplayer.fetchJson_();
 
     };
 
+    sampleplayer.fetchJson_ = function() {
+        $.getJSON('startpage.json', function(json) {
+            //console.log(json);
+            var test = sampleplayer.parseJson_(json);
+            //TODO: We should fetch the startpage everytime receiver enters idle
+        });
+
+    };
+
+    /** Parses json object and pushes it to the idle media object array */
     sampleplayer.parseJson_ = function(json) {
-       //console.log(json);
 
         var teasersArray = json._embedded.teasers;
 
-        var parsedTeasersArray = [];
-
-        //console.log(teasersArray);
-
         $.each(teasersArray, function(i, teaser ) {
-            //Title, subtitle, description, time, imageurl, boxTitle.
-
-            //console.log(teaser);
-
             var title = teaser.topline;
             var subtitle = teaser.headline;
             var description = teaser.teaserText;
@@ -276,14 +263,8 @@ The overlay layer holds:
 
             var media = new Media(title, subtitle, description, tag, imageURLs);
 
-            //console.log(media);
-
             data.push(media);
-
-
         });
-
-
     };
 
     sampleplayer.CastPlayer.prototype.setIdleTimeout_ = function(t) {
@@ -1114,6 +1095,7 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT PLAYING");
 
         window.player.isPaused_ = false;
+        clearTimeout(window.player.bufferTimeout_);
 
         var mediaInfo = window.mediaManager.getMediaInformation();
         var mediaInfoString = JSON.stringify(mediaInfo);
@@ -1141,18 +1123,7 @@ The overlay layer holds:
         var isLoading = window.player.state_ == sampleplayer.State.LOADING;
 
         var isPaused = window.player.state_ == sampleplayer.State.PAUSED;
-/*
-        clearTimeout(window.player.fadeTimeout_);
-        window.player.setState_(sampleplayer.State.PAUSED, false);
 
-        window.player.fadeIn_(mediaInfo_, 0);
-        window.player.fadeIn_(controlCurTime, 0);
-        window.player.fadeIn_(controlTotalTime, 0);
-        window.player.fadeIn_(controlTotalProgress, 0);
-        window.player.fadeIn_(controlPlayPause, 0);
-
-        window.player.fadeTimeout_ = setTimeout(function () {
-        */
 
         if (window.player.state_ != sampleplayer.State.DONE) {
             if (isLoading) {
@@ -1181,6 +1152,7 @@ The overlay layer holds:
     window.mediaElement.addEventListener('pause', function(e) {
         console.log("######### MEDIA ELEMENT Paused ");
         setHudMessage('mediaElementState','Paused');
+        clearTimeout(window.player.bufferTimeout_);
 
         var mediaInfo_ = window.player.element_.querySelector('.media-info');
         var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
@@ -1217,13 +1189,20 @@ The overlay layer holds:
     window.mediaElement.addEventListener('waiting', function(e){
         console.log("######### MEDIA ELEMENT WAITING");
         if (window.player.state_ != sampleplayer.State.LOADING) {
-            window.player.setState_(sampleplayer.State.BUFFERING, false);
 
-            //Fade in buffering after 5 seconds
-            var mediaInfo_ = window.player.element_.querySelector('.media-info');
-            setTimeout(function() {
-                window.player.fadeIn_(mediaInfo_, 0.75)
+            //Buffer after 5 seconds
+            window.player.bufferTimeout_ = setTimeout(function() {
+                window.player.setState_(sampleplayer.State.BUFFERING, false);
+
+                //Fade in artwork 5 seconds after buffering
+                var mediaInfo_ = window.player.element_.querySelector('.media-info');
+                setTimeout(function() {
+                    window.player.fadeIn_(mediaInfo_, 0.75)
+                }, 5000);
+
             }, 5000);
+
+
         }
         setHudMessage('mediaElementState','Waiting');
         //Playback has stopped because the next frame is not available, but the user agent expects that frame to become available in due course.
