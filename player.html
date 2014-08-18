@@ -221,7 +221,8 @@ The overlay layer holds:
 
 
         $.getJSON('startpage.json', function(json) {
-            console.log(json);
+            //console.log(json);
+            this.parseJson_(json);
         });
 
 
@@ -235,6 +236,10 @@ The overlay layer holds:
         */
 
 
+    };
+
+    sampleplayer.CastPlayer.prototype.parseJson_ = function(json) {
+        console.log(json);
     };
 
     sampleplayer.CastPlayer.prototype.setIdleTimeout_ = function(t) {
