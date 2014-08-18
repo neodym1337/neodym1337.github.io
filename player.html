@@ -241,9 +241,17 @@ The overlay layer holds:
     sampleplayer.parseJson_ = function(json) {
        //console.log(json);
 
-       var teasers = json._embedded.teasers;
+       var teasersArray = json._embedded.teasers;
 
-       console.log(teasers);
+       console.log(teasersArray);
+
+        jQuery.each( teasersArray, function( i, teaser ) {
+            //$( "#" + val ).text( "Mine is " + val + "." );
+
+            // Will stop running after "three"
+            //return ( val !== "three" );
+            console.log(teaser);
+        });
 
 
     };
