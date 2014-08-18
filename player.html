@@ -166,7 +166,7 @@ The overlay layer holds:
     window.mediaElement = playerDiv.querySelector('video');
     window.mediaElement.autoplay = true;
 
-
+    /*
     // Fake data for idle slider
     var data = [{title: "Testtitel Eins", subtitle: "Subtitel Eins", description: "orem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam " +
             "nonumy eirmod tempor invidunt ut labore et dolore magna aliq yam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clit" +
@@ -183,6 +183,8 @@ The overlay layer holds:
                 "a kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed d",
             imageurl:"http://media-cache-ec0.pinimg.com/236x/7f/75/6b/7f756bcb3481db56650768cc5fc0cf50.jpg", time: "20min"}
     ];
+    */
+    var data = [];
 
     function Media(title, subtitle, description, tag, imageURL) {
         //var that= {};
@@ -192,6 +194,7 @@ The overlay layer holds:
         this.description = description;
         this.tag = tag;
         this.imageURL = imageURL;
+        this.imageURL = "http://media-cache-ec0.pinimg.com/236x/7f/75/6b/7f756bcb3481db56650768cc5fc0cf50.jpg";
 
         return this;
     }
@@ -202,6 +205,8 @@ The overlay layer holds:
     sampleplayer.CastPlayer = function(element) {
 
         this.element_ = element;
+
+
 
         this.isLivestream_;
 
@@ -272,6 +277,8 @@ The overlay layer holds:
             var media = new Media(title, subtitle, description, tag, imageURLs);
 
             console.log(media);
+
+            data.push(media);
 
 
         });
