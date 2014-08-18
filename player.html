@@ -220,6 +220,12 @@ The overlay layer holds:
         this.currentSliderIndex_ = 0;
 
 
+        $.getJSON('startpage.json', function(json) {
+            console.log(json);
+        });
+
+
+
         /*
         $.getJSON('http://www.br.de/system/halTocJson.jsp', function(data) {
             //data is the JSON string
@@ -228,9 +234,6 @@ The overlay layer holds:
         });
         */
 
-        $.getJSON('startpage.json', function(json) {
-            console.log(json);
-        });
 
     };
 
