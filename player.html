@@ -228,6 +228,9 @@ The overlay layer holds:
         });
         */
 
+        $.getJSON('startpage.json', function(json) {
+            console.log(json);
+        });
 
     };
 
@@ -1217,10 +1220,6 @@ The overlay layer holds:
     /** Seeking */
     window.mediaElement.addEventListener('seeking', function(e){
         console.log("######### MEDIA ELEMENT SEEKING " + e);
-        /*
-        clearTimeout(this.seekingTimeout_);
-        window.player.element_.classList.add('seeking');
-        */
 
        //window.player.isSeeking_= true;
         var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
