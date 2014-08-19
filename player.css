@@ -173,16 +173,20 @@ body {
 }
 
 #idle-info-sender {
-    margin-left: 5%;
-    margin-top: 1%;
-    font-size: 15px;
+    margin-bottom: 3%;
+    font-size: 17px;
     font-family: Helvetica;
     color: #a1dcfe;
-    width: 90%;
+    width: 100%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    float: left;
+    text-align: center;
+}
+
+#idle-info-sender img {
+    width: 3%;
+    margin-left: 10px;
 }
 
 .player img, .player video {

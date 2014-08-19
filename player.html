@@ -96,7 +96,11 @@ The overlay layer holds:
             <div id="idle-description">Ein bisschen Text für die Beschreibung. es wird etwas länger Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren
                 , no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</div>
             <div id="idle-time">45 min</div>
-            <div id="idle-info-sender">Sie können dieses Video von ihrem Gerät mit der BR Mediatheks App für iOS oder Android auswählen.</div>
+        </div>
+        <div id="idle-info-sender">
+            <p>Sie können dieses Video von ihrem Gerät mit der BR Mediatheks App für iOS oder Android auswählen.<span>
+                <img src="assets/br-logo-blue-launch.png" alt="logo">
+            </span></p>
         </div>
     </div>
     <script type="text/javascript">
@@ -232,7 +236,7 @@ The overlay layer holds:
         this.totalTimeElement_ = this.element_.querySelector('.controls-total-time');
 
         this.idleBoxElement_ = document.getElementById('idle-box');
-        this.currentSliderIndex_ = 0;
+        this.currentSliderIndex_ = 1;
 
 
         var test = sampleplayer.fetchJson_();
@@ -259,6 +263,14 @@ The overlay layer holds:
             var description = teaser.teaserText;
             var tag = teaser.boxTitle;
             var imageURLs = teaser.teaserImage._links.image853.href;
+
+            if (i === 0) {
+                $("#idle-title").html(title);
+                $("#idle-subtitle").html(subtitle);
+                $("#idle-description").html(description);
+                $("#idle-time").html(tag);
+                $("#idle-image img").attr('src', imageURLs);
+            }
 
             var media = new Media(title, subtitle, description, tag, imageURLs);
 
@@ -332,19 +344,19 @@ The overlay layer holds:
     sampleplayer.CastPlayer.prototype.startIdleSlider_ = function() {
         this.idleSliderTimeout = setTimeout(function(){
             var player = window.player;
-            $(player.idleBoxElement_).fadeOut(800, function() {
+            $(player.idleBoxElement_).not('#idle-info-sender').fadeOut(800, function() {
                 var imageurl = data[player.currentSliderIndex_]['imageURL'];
                 var title = data[player.currentSliderIndex_]['title'];
                 var subtitle = data[player.currentSliderIndex_]['subtitle'];
                 var description = data[player.currentSliderIndex_]['description'];
-                var time = data[player.currentSliderIndex_]['time'];
+                var tag = data[player.currentSliderIndex_]['tag'];
 
                 player.currentSliderIndex_ = ((player.currentSliderIndex_+1) % data.length);
 
                 $("#idle-title").html(title);
                 $("#idle-subtitle").html(subtitle);
                 $("#idle-description").html(description);
-                $("#idle-time").html(time);
+                $("#idle-time").html(tag);
                 $("#idle-image img").attr('src', imageurl);
 
                 $(player.idleBoxElement_).fadeIn(800, function() {
