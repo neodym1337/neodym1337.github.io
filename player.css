@@ -107,6 +107,7 @@ body {
 
 #idle-image img {
     transform: perspective( 1000px ) rotateY(30deg);
+    -webkit-transform: perspective( 1000px ) rotateY(30deg);
     margin-left: 10%;
     margin-right: 10%;
     height: 100%
