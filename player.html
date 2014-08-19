@@ -258,7 +258,7 @@ The overlay layer holds:
             var subtitle = teaser.headline;
             var description = teaser.teaserText;
             var tag = teaser.boxTitle;
-            var imageURLs = teaser.teaserImage._links;
+            var imageURLs = teaser.teaserImage._links.image853.href;
 
             var media = new Media(title, subtitle, description, tag, imageURLs);
 
@@ -333,7 +333,7 @@ The overlay layer holds:
         this.idleSliderTimeout = setTimeout(function(){
             var player = window.player;
             $(player.idleBoxElement_).fadeOut(800, function() {
-                var imageurl = data[player.currentSliderIndex_]['imageurl'];
+                var imageurl = data[player.currentSliderIndex_]['imageURL'];
                 var title = data[player.currentSliderIndex_]['title'];
                 var subtitle = data[player.currentSliderIndex_]['subtitle'];
                 var description = data[player.currentSliderIndex_]['description'];

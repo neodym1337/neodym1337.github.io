@@ -109,8 +109,8 @@ body {
     -webkit-transform: perspective( 1000px ) rotateY(30deg);
     margin-left: 10%;
     margin-right: 10%;
-    height: 100%;
-    -webkit-box-reflect: below 10px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(80%, transparent), to(rgba(255,255,255,0.2)));
+    width: 100%;
+    -webkit-box-reflect: below 10px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255,255,255,0.4)));
 }
 
 #idle-text {
@@ -152,7 +152,8 @@ body {
     font-size: 20px;
     font-family: Helvetica;
     width: 90%;
-    height: 45%;
+    line-height: 1.4;
+    max-height: 20*1.4*8; /*45 %*/
     overflow: hidden;
     text-overflow: ellipsis;
     float: left;
@@ -160,7 +161,7 @@ body {
 
 #idle-time {
     margin-left: 5%;
-    margin-top: 1%;
+    margin-top: 2%;
     font-size: 20px;
     text-align: right;
     font-family: Helvetica;
@@ -248,16 +249,16 @@ body {
 
 /* receiver-logo */
 .player .receiver-logo {
-    display: block;
-    position : absolute;
-    right: 5px;
-    top: 0px;
-    width: 50px;
-    height: 50px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: bottom;
-}
+     display: block;
+     position : absolute;
+     right: 5px;
+     top: 0px;
+     width: 50px;
+     height: 50px;
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: bottom;
+ }
 
 .player.video.playing .logo {
   display: none;
