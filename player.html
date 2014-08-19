@@ -967,7 +967,12 @@ The overlay layer holds:
                 setHudMessage('mediaHostState', 'Fatal Error: code = ' + errorCode);
 
                 if (window.mediaPlayer !== null) {
-                    window.mediaPlayer.unload();
+
+                    console.log('media player not null');
+                    //window.mediaPlayer.unload();
+                    window.mediaPlayer.reload();
+
+                    //mediaManager.resetMediaElement(cast.receiver.media.IdleReason.FINISHED);
                 }
                 window.mediaManager.sendLoadError();
             };
