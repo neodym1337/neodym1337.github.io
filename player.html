@@ -540,6 +540,8 @@ The overlay layer holds:
      **/
     cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
+    cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
+
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
 
     /**
@@ -1058,6 +1060,7 @@ The overlay layer holds:
     window.mediaElement.addEventListener('loadstart', function(e){
         console.log("######### MEDIA ELEMENT LOAD START");
         setHudMessage('mediaElementState','Load Start');
+
     });
     window.mediaElement.addEventListener('loadeddata', function(e){
         console.log("######### MEDIA ELEMENT DATA LOADED");
@@ -1098,7 +1101,7 @@ The overlay layer holds:
 
         var mediaInfo = window.mediaManager.getMediaInformation();
         var mediaInfoString = JSON.stringify(mediaInfo);
-        console.log("#############   Mediainfo: " + mediaInfoString);
+        //console.log("#############   Mediainfo: " + mediaInfoString);
 
         /*
         Old code from example
