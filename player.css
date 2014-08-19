@@ -106,11 +106,11 @@ body {
 }
 
 #idle-image img {
-    transform: perspective( 1000px ) rotateY(30deg);
     -webkit-transform: perspective( 1000px ) rotateY(30deg);
     margin-left: 10%;
     margin-right: 10%;
-    height: 100%
+    height: 100%;
+    -webkit-box-reflect: below 10px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(80%, transparent), to(rgba(255,255,255,0.2)));
 }
 
 #idle-text {
