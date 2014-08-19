@@ -833,8 +833,11 @@ The overlay layer holds:
         console.log("### Media Manager - SEEK: " + JSON.stringify(event));
         setHudMessage('mediaManagerMessage', 'SEEK: ' + JSON.stringify(event));
         var seekTime = event.data.currentTime;
+        var totalTime =  window.mediaElement.duration;
 
-        console.log("TOTAL TIME OF THE VIDEO " + window.mediaElement.duration);
+        if ((totalTime - seekTime) < 3.0) { event.data.currentTime = totalTime - 5.0}
+
+        console.log("TOTAL TIME OF THE VIDEO " +);
         console.log("Skip to second " + seekTime);
 
 
