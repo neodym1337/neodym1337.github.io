@@ -193,7 +193,7 @@ The overlay layer holds:
         this.description = description;
         this.tag = tag;
         this.imageURL = imageURL;
-        this.imageURL = "http://media-cache-ec0.pinimg.com/236x/7f/75/6b/7f756bcb3481db56650768cc5fc0cf50.jpg";
+        /*this.imageURL = "http://media-cache-ec0.pinimg.com/236x/7f/75/6b/7f756bcb3481db56650768cc5fc0cf50.jpg";*/
 
         return this;
     };
@@ -832,6 +832,11 @@ The overlay layer holds:
     window.mediaManager.onSeek = function(event) {
         console.log("### Media Manager - SEEK: " + JSON.stringify(event));
         setHudMessage('mediaManagerMessage', 'SEEK: ' + JSON.stringify(event));
+        var seekTime = event.data.currentTime;
+
+        console.log("TOTAL TIME OF THE VIDEO " + window.mediaElement.duration);
+        console.log("Skip to second " + seekTime);
+
 
         window.mediaManager['onSeekOrig'](event);
     }
