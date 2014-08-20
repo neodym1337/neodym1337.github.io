@@ -1249,12 +1249,15 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT ERROR " + e);
         setHudMessage('mediaElementState','Error');
 
-        //TODO: Send errors to senders
+        window.player.setState_(sampleplayer.State.DONE, false);
+        //We probably don't have to send errors manually since SDK takes care of that
         //window.mediaManager.sendError(senderId, requestId, type, opt_reason, opt_customData)
     });
     window.mediaElement.addEventListener('abort', function(e){
         console.log("######### MEDIA ELEMENT ABORT " + e);
         setHudMessage('mediaElementState','Abort');
+
+        //Go to idle state when we abort the mediaelement (after fail to load)
         window.player.setState_(sampleplayer.State.DONE, false);
 
     });
