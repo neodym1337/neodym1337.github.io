@@ -46,7 +46,7 @@ The overlay layer holds:
 </head>
 
 <body style="margin: 0">
-
+    <!--
 	<div id="messages">
         <div id="title">Receiver HUD</div>
         <div>Application State: <span id="applicationState">-</span></div>
@@ -62,6 +62,7 @@ The overlay layer holds:
         <div>Error: <span id="errorMessage">-</span></div>
         <div>cast: <span id="castObject">-</span></div>
     </div>
+    -->
 	<div id="player" class="player">
 		<div class="media">
 			<video></video>
@@ -118,7 +119,7 @@ The overlay layer holds:
         LOADING: 10 * 60 * 1000,    // 50 minutes
         PAUSED:  10 * 60 * 1000, //10 min    30 * 1000,       // 10 minutes normally, use 30 seconds for demo
         STALLED: 30 * 1000,      // 30 seconds
-        DONE: 30 * 1000,         // 5 minutes normally, use 30 seconds for demo
+        DONE: 1000,         // 5 minutes normally, use 30 seconds for demo
         IDLE: 5 * 60 * 1000      //30 * 1000          // 5 minutes normally, use 30 seconds for demo
     };
 
@@ -161,7 +162,7 @@ The overlay layer holds:
     window.connectedCastSenders = []; // {senderId:'', channel:obj}
 
     function setHudMessage(elementId, message) {
-        document.getElementById(elementId).innerHTML = '' + JSON.stringify(message);
+        //document.getElementById(elementId).innerHTML = '' + JSON.stringify(message);
     }
 
     // Initialize the receiver SDK before starting the app-specific logic
@@ -988,13 +989,12 @@ The overlay layer holds:
 
                 if (window.mediaPlayer !== null) {
 
-                    console.log('media player not null');
                     //window.mediaPlayer.unload();
                     window.mediaPlayer.reload();
 
                     //mediaManager.resetMediaElement(cast.receiver.media.IdleReason.FINISHED);
                 }
-                //window.mediaManager.sendLoadError();
+                window.mediaManager.sendLoadError();
             };
 
             var initialTimeIndexSeconds = event.data['media']['currentTime'] || 0;
@@ -1017,6 +1017,7 @@ The overlay layer holds:
             console.log('### Media Protocol Identified as ' + ext);
             setHudMessage('mediaProtocol', ext);
             */
+
             var protocol = null;
             protocol =  cast.player.api.CreateHlsStreamingProtocol(window.mediaHost);
             if (protocol === null) {
@@ -1215,10 +1216,12 @@ The overlay layer holds:
     /** Buffering */
     window.mediaElement.addEventListener('waiting', function(e){
         console.log("######### MEDIA ELEMENT WAITING");
+
         if (window.player.state_ != sampleplayer.State.LOADING) {
 
             //Buffer after 5 seconds
             window.player.bufferTimeout_ = setTimeout(function() {
+
                 window.player.setState_(sampleplayer.State.BUFFERING, false);
 
                 //Fade in artwork 5 seconds after buffering
