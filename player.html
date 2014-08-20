@@ -1255,6 +1255,8 @@ The overlay layer holds:
     window.mediaElement.addEventListener('abort', function(e){
         console.log("######### MEDIA ELEMENT ABORT " + e);
         setHudMessage('mediaElementState','Abort');
+        window.player.setState_(sampleplayer.State.DONE, false);
+
     });
     window.mediaElement.addEventListener('suspend', function(e){
         console.log("######### MEDIA ELEMENT SUSPEND " + e);
