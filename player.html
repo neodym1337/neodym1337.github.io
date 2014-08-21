@@ -645,6 +645,7 @@ The overlay layer holds:
 
         /** check if visible and pause media if not - add a timer to tear down after a period of time
          if visibilty does not change back **/
+        /*
         if (event.data) { // It is visible
             //window.mediaElement.play(); // Resume media playback
 
@@ -661,6 +662,7 @@ The overlay layer holds:
                 window.close();
             }, (10 * 60 * 1000)); // 10 Minute timeout
         }
+        */
     }
 
     /**
@@ -1358,14 +1360,14 @@ The overlay layer holds:
         */
         if (document.webkithidden) { // It is visible
             //window.mediaElement.play(); // Resume media playback
-
+            console.log("### Webkit Visibility Changed : True");
             window.player.mediaElement_.play();
 
             window.clearTimeout(window.timeout); // Turn off the timeout
             window.timeout = null;
         } else {
             //window.mediaElement.pause(); // Pause playback
-
+            console.log("### Webkit Visibility Changed : False");
             window.player.mediaElement_.pause();
 
             window.timeout = window.setTimeout(function(){
