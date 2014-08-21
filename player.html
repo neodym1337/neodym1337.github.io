@@ -1371,20 +1371,20 @@ The overlay layer holds:
             //window.mediaElement.pause(); // Pause playback
             //window.mediaElement.play(); // Resume media playback
             console.log("### Webkit Visibility Changed : False");
-            window.player.mediaElement_.play();
-
-            window.clearTimeout(window.timeout); // Turn off the timeout
-            window.timeout = null;
-
-        } else { // It is visible
-            console.log("### Webkit Visibility Changed : True");
             window.player.mediaElement_.pause();
 
             window.timeout = window.setTimeout(function(){
                 window.close();
             }, (10 * 60 * 1000)); // 10 Minute timeout
 
+        } else { // It is visible
+            console.log("### Webkit Visibility Changed : True");
 
+
+            window.player.mediaElement_.play();
+
+            window.clearTimeout(window.timeout); // Turn off the timeout
+            window.timeout = null;
 
 
         }
