@@ -1359,20 +1359,25 @@ The overlay layer holds:
         }
         */
         if (document.webkithidden) { // It is visible
-            //window.mediaElement.play(); // Resume media playback
-            console.log("### Webkit Visibility Changed : True");
-            window.player.mediaElement_.play();
-
-            window.clearTimeout(window.timeout); // Turn off the timeout
-            window.timeout = null;
-        } else {
             //window.mediaElement.pause(); // Pause playback
-            console.log("### Webkit Visibility Changed : False");
+
+            console.log("### Webkit Visibility Changed : True");
             window.player.mediaElement_.pause();
 
             window.timeout = window.setTimeout(function(){
                 window.close();
             }, (10 * 60 * 1000)); // 10 Minute timeout
+        } else {
+
+
+            //window.mediaElement.play(); // Resume media playback
+            console.log("### Webkit Visibility Changed : False");
+            window.player.mediaElement_.play();
+
+            window.clearTimeout(window.timeout); // Turn off the timeout
+            window.timeout = null;
+
+
         }
     });
 
