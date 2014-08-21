@@ -608,8 +608,9 @@ The overlay layer holds:
         var senders = window.castReceiverManager.getSenders();
         setHudMessage('sessionCount', '' + senders.length);
 
-        if(event.reason == cast.receiver.system.DisconnectReason.ERROR) {
-            window.player.idleSenderCount_ -= 1; // if the sender disconnect because of an error we decrease the count for idle senders
+        if(event.reason != cast.receiver.system.DisconnectReason.UNKNOWN) {
+            window.player.idleSenderCount_ -= 1; // if the sender disconnects because of an error or on purpose
+            // we decrease the count for idle senders
         }
 
         //If last sender explicity disconnects, turn off
