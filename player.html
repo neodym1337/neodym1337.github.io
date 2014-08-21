@@ -220,7 +220,7 @@ The overlay layer holds:
 
         this.isPaused_;
 
-        this.idleSenderCount_ = 0;
+        this.idleSenders_ = [];
 
         this.mediaInfo_ = this.element_.querySelector('.media-info');
 
@@ -591,7 +591,10 @@ The overlay layer holds:
         var senders = window.castReceiverManager.getSenders();
         setHudMessage('sessionCount', '' + senders.length);
 
-        window.player.idleSenderCount_ += 1;
+        var senderID = event.senderId;
+        if(window.player.indleSenders_.indexOf(senderID) > -1) {
+            window.player.idleSenders_.push(senderID);
+        }
     }
 
     /**
@@ -608,13 +611,18 @@ The overlay layer holds:
         var senders = window.castReceiverManager.getSenders();
         setHudMessage('sessionCount', '' + senders.length);
 
+        // remove sender id from idleSenders, when disconnect reason is on purpose or error
         if(event.reason != cast.receiver.system.DisconnectReason.UNKNOWN) {
-            window.player.idleSenderCount_ -= 1; // if the sender disconnects because of an error or on purpose
-            // we decrease the count for idle senders
+            for (var i = window.player.idleSenders_.length-1; i>=0; i--) {
+                if (window.player.idleSenders_[i] === event.senderId) {
+                    array.splice(i, 1);
+                    break;
+                }
+            }
         }
 
         //If last sender explicity disconnects, turn off
-        if(senders.length == 0 && event.reason == cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER && window.player.idleSenderCount_ == 0) {
+        if(senders.length == 0 && event.reason == cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER && window.player.idleSenders_.lenght == 0) {
             window.close();
         }
     }
