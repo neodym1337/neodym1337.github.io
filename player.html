@@ -592,7 +592,7 @@ The overlay layer holds:
         setHudMessage('sessionCount', '' + senders.length);
 
         var senderID = event.senderId;
-        if(window.player.indleSenders_.indexOf(senderID) > -1) {
+        if(window.player.idleSenders_.indexOf(senderID) > -1) {
             window.player.idleSenders_.push(senderID);
         }
     }
