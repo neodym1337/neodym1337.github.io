@@ -220,6 +220,8 @@ The overlay layer holds:
 
         this.isPaused_;
 
+        this.idleSenderCount_ = 0;
+
         this.mediaInfo_ = this.element_.querySelector('.media-info');
 
         this.state_;
@@ -588,6 +590,8 @@ The overlay layer holds:
         // TODO - add sender and grab CastChannel from CastMessageBus.getCastChannel(senderId)
         var senders = window.castReceiverManager.getSenders();
         setHudMessage('sessionCount', '' + senders.length);
+
+        window.player.idleSenderCount_ += 1;
     }
 
     /**
@@ -604,9 +608,14 @@ The overlay layer holds:
         var senders = window.castReceiverManager.getSenders();
         setHudMessage('sessionCount', '' + senders.length);
 
+        if(event.reason == cast.receiver.system.DisconnectReason.ERROR) {
+            window.player.idleSenderCount_ -= 1; // if the sender disconnect because of an error we decrease the count for idle senders
+        }
+
         //If last sender explicity disconnects, turn off
-        if(senders.length == 0 && event.reason == cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER)
+        if(senders.length == 0 && event.reason == cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER && window.player.idleSenderCount_ == 0) {
             window.close();
+        }
     }
 
     /**
