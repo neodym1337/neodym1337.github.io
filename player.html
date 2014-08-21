@@ -646,12 +646,20 @@ The overlay layer holds:
         /** check if visible and pause media if not - add a timer to tear down after a period of time
          if visibilty does not change back **/
         if (event.data) { // It is visible
-            window.mediaElement.play(); // Resume media playback
+            //window.mediaElement.play(); // Resume media playback
+
+            window.player.mediaElement_.play();
+
             window.clearTimeout(window.timeout); // Turn off the timeout
             window.timeout = null;
         } else {
-            window.mediaElement.pause(); // Pause playback
-            //window.timeout = window.setTimeout(function(){window.close();}, 10000); // 10 Minute timeout
+            //window.mediaElement.pause(); // Pause playback
+
+            window.player.mediaElement_.pause();
+
+            window.timeout = window.setTimeout(function(){
+                window.close();
+            }, (10 * 60 * 1000)); // 10 Minute timeout
         }
     }
 
