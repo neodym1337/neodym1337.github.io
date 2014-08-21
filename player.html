@@ -46,7 +46,7 @@ The overlay layer holds:
 </head>
 
 <body style="margin: 0">
-    <!--
+
 	<div id="messages">
         <div id="title">Receiver HUD</div>
         <div>Application State: <span id="applicationState">-</span></div>
@@ -62,7 +62,7 @@ The overlay layer holds:
         <div>Error: <span id="errorMessage">-</span></div>
         <div>cast: <span id="castObject">-</span></div>
     </div>
-    -->
+
 	<div id="player" class="player">
 		<div class="media">
 			<video></video>
@@ -162,7 +162,7 @@ The overlay layer holds:
     window.connectedCastSenders = []; // {senderId:'', channel:obj}
 
     function setHudMessage(elementId, message) {
-        //document.getElementById(elementId).innerHTML = '' + JSON.stringify(message);
+        document.getElementById(elementId).innerHTML = '' + JSON.stringify(message);
     }
 
     // Initialize the receiver SDK before starting the app-specific logic
@@ -660,6 +660,8 @@ The overlay layer holds:
     window.castReceiverManager.onVisibilityChanged = function(event) {
         console.log("### Cast Receiver Manager - Visibility Changed : " + JSON.stringify(event));
         setHudMessage('castReceiverManagerMessage', 'Visibility Changed: ' + JSON.stringify(event));
+
+        //We don't use this event, but the webkitvisibility below
 
         /** check if visible and pause media if not - add a timer to tear down after a period of time
          if visibilty does not change back **/
@@ -1247,7 +1249,6 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT WAITING");
 
         if (window.player.state_ != sampleplayer.State.LOADING) {
-
             //Buffer after 5 seconds
             window.player.bufferTimeout_ = setTimeout(function() {
 
@@ -1260,8 +1261,6 @@ The overlay layer holds:
                 }, 5000);
 
             }, 5000);
-
-
         }
         setHudMessage('mediaElementState','Waiting');
         //Playback has stopped because the next frame is not available, but the user agent expects that frame to become available in due course.
