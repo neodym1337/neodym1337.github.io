@@ -319,7 +319,7 @@ body {
   position: absolute;
   left: 96px;
   right: 96px;
-  bottom: 96px;
+  bottom: 30px;
 }
 
 .player.video.playing .media-info{
