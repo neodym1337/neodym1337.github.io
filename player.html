@@ -651,7 +651,7 @@ The overlay layer holds:
             window.timeout = null;
         } else {
             window.mediaElement.pause(); // Pause playback
-            window.timeout = window.setTimeout(function(){window.close();}, 10000); // 10 Minute timeout
+            //window.timeout = window.setTimeout(function(){window.close();}, 10000); // 10 Minute timeout
         }
     }
 
@@ -672,7 +672,7 @@ The overlay layer holds:
     window.messageBus.onMessage = function(event) {
         console.log("### Message Bus - Media Message: " + JSON.stringify(event));
         setHudMessage('messageBusMessage', event);
-
+        /*
         console.log("### CUSTOM MESSAGE: " + JSON.stringify(event));
         // show/hide messages
         console.log(event['data']);
@@ -681,6 +681,7 @@ The overlay layer holds:
         } else {
             document.getElementById('messages').style.display = 'none';
         }
+        */
     }
 
     // This class is used to send/receive media messages/events using the media protocol/namesapce (urn:x-cast:com.google.cast.media).
