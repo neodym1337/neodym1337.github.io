@@ -616,7 +616,7 @@ The overlay layer holds:
         if(event.reason != cast.receiver.system.DisconnectReason.UNKNOWN) {
             for (var i = window.player.idleSenders_.length-1; i>=0; i--) {
                 if (window.player.idleSenders_[i] === event.senderId) {
-                    array.splice(i, 1);
+                    window.player.idleSenders_.splice(i, 1);
                     break;
                 }
             }
