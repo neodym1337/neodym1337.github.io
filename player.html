@@ -1141,6 +1141,7 @@ The overlay layer holds:
     window.mediaElement.addEventListener('canplay', function(e){
         console.log("######### MEDIA ELEMENT CAN PLAY");
         setHudMessage('mediaElementState','Can Play');
+
         /*
         if(window.mediaElement.seeking == false) {
             // only play when we are not in the process of seeking
@@ -1275,27 +1276,39 @@ The overlay layer holds:
 
     window.mediaElement.addEventListener('stalled', function(e){
         console.log("######### MEDIA ELEMENT STALLED");
+        setHudMessage('mediaElementState','Stalled');
 
         //The user agent is trying to fetch media data, but data is unexpectedly not forthcoming.
+        var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
+        var mediaInfo_ = window.player.element_.querySelector('.media-info');
 
         if (window.player.state_ != sampleplayer.State.LOADING) {
             //Buffer after 5 seconds
-            //window.player.bufferTimeout_ = setTimeout(function() {
+            window.player.bufferTimeout_ = setTimeout(function() {
 
                 window.player.setState_(sampleplayer.State.BUFFERING, false);
                 window.player.fadeIn_(controlPlayPause, 0);
 
                 //Fade in artwork 5 seconds after buffering
-                var mediaInfo_ = window.player.element_.querySelector('.media-info');
+
                 setTimeout(function() {
                     window.player.fadeIn_(mediaInfo_, 0.75)
                 }, 5000);
 
-            //}, 5000);
+            }, 5000);
         }
 
-        setHudMessage('mediaElementState','Stalled');
+
     });
+
+    window.mediaElement.addEventListener('progress', function(e){
+        setHudMessage('mediaElementState','Progress');
+
+        clearTimeout(window.player.bufferTimeout_);
+        //The user agent is fetching media data. (but can be playing)
+
+    });
+
     window.mediaElement.addEventListener('error', function(e){
         console.log("######### MEDIA ELEMENT ERROR " + e);
         setHudMessage('mediaElementState','Error');
@@ -1318,12 +1331,13 @@ The overlay layer holds:
 
         //The user agent is intentionally not currently fetching media data. (but can be playing)
     });
-    window.mediaElement.addEventListener('progress', function(e){
-        setHudMessage('mediaElementState','Progress');
 
-        //The user agent is fetching media data. (but can be playing)
 
-    });
+
+
+
+
+
     /** Seeking */
     window.mediaElement.addEventListener('seeking', function(e){
         console.log("######### MEDIA ELEMENT SEEKING " + e);
