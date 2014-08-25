@@ -1164,6 +1164,7 @@ The overlay layer holds:
 
         window.player.isPaused_ = false;
         clearTimeout(window.player.bufferTimeout_);
+        clearTimeout(window.player.bufferArtworkTimeout_);
 
         var mediaInfo = window.mediaManager.getMediaInformation();
         var mediaInfoString = JSON.stringify(mediaInfo);
@@ -1221,6 +1222,7 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT Paused ");
         setHudMessage('mediaElementState','Paused');
         clearTimeout(window.player.bufferTimeout_);
+        clearTimeout(window.player.bufferArtworkTimeout_);
 
         var mediaInfo_ = window.player.element_.querySelector('.media-info');
         var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
@@ -1307,7 +1309,7 @@ The overlay layer holds:
 
         clearTimeout(window.player.bufferTimeout_);
         clearTimeout(window.player.bufferArtworkTimeout_);
-        
+
         var controlPlayPause_ = window.player.element_.querySelector('.controls-play-pause');
         var mediaInfo_ = window.player.element_.querySelector('.media-info');
 
