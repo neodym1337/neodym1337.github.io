@@ -1280,9 +1280,10 @@ The overlay layer holds:
 
         if (window.player.state_ != sampleplayer.State.LOADING) {
             //Buffer after 5 seconds
-            window.player.bufferTimeout_ = setTimeout(function() {
+            //window.player.bufferTimeout_ = setTimeout(function() {
 
                 window.player.setState_(sampleplayer.State.BUFFERING, false);
+                window.player.fadeIn_(controlPlayPause, 0);
 
                 //Fade in artwork 5 seconds after buffering
                 var mediaInfo_ = window.player.element_.querySelector('.media-info');
@@ -1290,7 +1291,7 @@ The overlay layer holds:
                     window.player.fadeIn_(mediaInfo_, 0.75)
                 }, 5000);
 
-            }, 5000);
+            //}, 5000);
         }
 
         setHudMessage('mediaElementState','Stalled');

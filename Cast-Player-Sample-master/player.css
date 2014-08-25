@@ -215,12 +215,12 @@ body {
   width: 44px;
   float: left;
 }
-
+/*
 .player.buffering .controls-play-pause {
   background-image: url("assets/buffering.png");
   -webkit-animation: spin 1s infinite linear;
 }
-
+*/
 .player.paused .controls-play-pause {
   background-image: url("assets/paused.png");
 }
