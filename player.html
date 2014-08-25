@@ -1225,6 +1225,11 @@ The overlay layer holds:
     window.mediaElement.addEventListener('pause', function(e) {
         console.log("######### MEDIA ELEMENT Paused ");
         setHudMessage('mediaElementState','Paused');
+
+        console.log(window.mediaPlayer.getState['underflow']);
+
+
+
         clearTimeout(window.player.bufferTimeout_);
         clearTimeout(window.player.bufferArtworkTimeout_);
 
