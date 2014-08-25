@@ -421,20 +421,6 @@ body {
     animation: buffer-spinner-animation linear .9s infinite;
 }
 
-.buffer-spinner {
-    background-size: cover;
-    border: 0;
-    float: left;
-    width: 20px;
-    height: 20px;
-    border: 10px solid #cccccc;
-    border-top-color: #F5F5F5;
-    border-radius: 100%;
-    opacity: 0.5;
-    -webkit-animation: buffer-spinner-animation linear .9s infinite;
-    animation: buffer-spinner-animation linear .9s infinite;
-
-}
 @-webkit-keyframes buffer-spinner-animation {
     100% {-webkit-transform: rotate(360deg);}
 }
