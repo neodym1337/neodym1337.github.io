@@ -1293,7 +1293,11 @@ The overlay layer holds:
             //Buffer after 5 seconds
             window.player.bufferTimeout_ = setTimeout(function() {
 
-                window.player.setState_(sampleplayer.State.BUFFERING, false);
+                //window.player.setState_(sampleplayer.State.BUFFERING, false);
+
+                controlPlayPause.className = controlPlayPause.className +  " .buffer-spinner";
+
+
                 window.player.isBuffering = true;
                 window.player.fadeIn_(controlPlayPause, 0);
 
@@ -1325,7 +1329,7 @@ The overlay layer holds:
             window.player.fadeOut_(mediaInfo_, 0.75);
             //window.player.isBuffering_ = false;
 
-            window.player.setState_(sampleplayer.State.PLAYING, false);
+            window.player.setState_(sampleplayer.State.PLAYING, true);
 
         }
 
