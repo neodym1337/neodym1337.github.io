@@ -1312,18 +1312,20 @@ The overlay layer holds:
     window.mediaElement.addEventListener('progress', function(e){
         setHudMessage('mediaElementState','Progress');
 
-        if (window.player.isBuffering_) {
+        if (window.player.state_ == sampleplayer.State.BUFFERING) {
 
 
-        clearTimeout(window.player.bufferTimeout_);
-        clearTimeout(window.player.bufferArtworkTimeout_);
+            clearTimeout(window.player.bufferTimeout_);
+            clearTimeout(window.player.bufferArtworkTimeout_);
 
-        var controlPlayPause_ = window.player.element_.querySelector('.controls-play-pause');
-        var mediaInfo_ = window.player.element_.querySelector('.media-info');
+            var controlPlayPause_ = window.player.element_.querySelector('.controls-play-pause');
+            var mediaInfo_ = window.player.element_.querySelector('.media-info');
 
-        window.player.fadeOut_(controlPlayPause_, 0.75);
-        window.player.fadeOut_(mediaInfo_, 0.75);
-        window.player.isBuffering_ = false;
+            window.player.fadeOut_(controlPlayPause_, 0.75);
+            window.player.fadeOut_(mediaInfo_, 0.75);
+            //window.player.isBuffering_ = false;
+
+            window.player.setState_(sampleplayer.State.PLAYING, false);
 
         }
 
