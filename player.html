@@ -1226,9 +1226,19 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT Paused ");
         setHudMessage('mediaElementState','Paused');
 
-        console.log(window.mediaPlayer.getState['underflow']);
+        console.log(window.mediaPlayer.getState(['underflow']));
 
+        console.log(window.mediaPlayer.getState('underflow'));
+        //window.mediaPlayer
 
+        if (castPlayer.getState().underflow) {
+            // video is paused because of buffering
+            // handing buffering event here
+            console.log("Buffering");
+        } else {
+            consoloe.log("Pause");
+            // video is paused for the other reason.
+        }
 
         clearTimeout(window.player.bufferTimeout_);
         clearTimeout(window.player.bufferArtworkTimeout_);
