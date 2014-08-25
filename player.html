@@ -216,6 +216,10 @@ The overlay layer holds:
 
         this.bufferTimeout_;
 
+        this.bufferArtworkTimeout_;
+
+        this.isBuffering;
+
 
         this.isSeeking_;
 
@@ -1290,6 +1294,7 @@ The overlay layer holds:
             window.player.bufferTimeout_ = setTimeout(function() {
 
                 window.player.setState_(sampleplayer.State.BUFFERING, false);
+                window.player.isBuffering = true;
                 window.player.fadeIn_(controlPlayPause, 0);
 
                 //Fade in artwork 5 seconds after buffering
@@ -1307,6 +1312,9 @@ The overlay layer holds:
     window.mediaElement.addEventListener('progress', function(e){
         setHudMessage('mediaElementState','Progress');
 
+        if (window.player.isBuffering_) {
+
+
         clearTimeout(window.player.bufferTimeout_);
         clearTimeout(window.player.bufferArtworkTimeout_);
 
@@ -1315,6 +1323,9 @@ The overlay layer holds:
 
         window.player.fadeOut_(controlPlayPause_, 0.75);
         window.player.fadeOut_(mediaInfo_, 0.75);
+        window.player.isBuffering_ = false;
+
+        }
 
 
         //The user agent is fetching media data. (but can be playing)
