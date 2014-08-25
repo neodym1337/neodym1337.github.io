@@ -216,6 +216,7 @@ The overlay layer holds:
 
         this.bufferTimeout_;
 
+
         this.isSeeking_;
 
         this.isPaused_;
@@ -1291,7 +1292,7 @@ The overlay layer holds:
 
                 //Fade in artwork 5 seconds after buffering
 
-                setTimeout(function() {
+                window.player.bufferArtworkTimeout_ = setTimeout(function() {
                     window.player.fadeIn_(mediaInfo_, 0.75)
                 }, 5000);
 
@@ -1305,6 +1306,8 @@ The overlay layer holds:
         setHudMessage('mediaElementState','Progress');
 
         clearTimeout(window.player.bufferTimeout_);
+        clearTimeout(window.player.bufferArtworkTimeout_);
+        
         var controlPlayPause_ = window.player.element_.querySelector('.controls-play-pause');
         var mediaInfo_ = window.player.element_.querySelector('.media-info');
 
