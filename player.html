@@ -218,10 +218,6 @@ The overlay layer holds:
 
         this.bufferArtworkTimeout_;
 
-        this.isBuffering;
-
-
-        this.isSeeking_;
 
         this.isPaused_;
 
@@ -1143,22 +1139,9 @@ The overlay layer holds:
         clearTimeout(window.player.bufferTimeout_);
         clearTimeout(window.player.bufferArtworkTimeout_);
 
-        var mediaInfo = window.mediaManager.getMediaInformation();
-        var mediaInfoString = JSON.stringify(mediaInfo);
-        //console.log("#############   Mediainfo: " + mediaInfoString);
+        //var mediaInfo = window.mediaManager.getMediaInformation();
+        //var mediaInfoString = JSON.stringify(mediaInfo);
 
-        /*
-        Old code from example
-
-        var isLoading = window.player.state_ == sampleplayer.State.LOADING;
-        var xfade = isLoading;
-        var delay = !isLoading ? 0 : 3000;      // 3 seconds
-
-        var mediaInfo_ = window.player.element_.querySelector('.media-info');
-        setTimeout(window.player.fadeOut_(mediaInfo_, 0.75), 10000);
-
-        window.player.setState_(sampleplayer.State.PLAYING, xfade, delay);
-        */
 
         var mediaInfo_ = window.player.element_.querySelector('.media-info');
         var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
@@ -1173,7 +1156,7 @@ The overlay layer holds:
 
         if (window.player.state_ != sampleplayer.State.DONE) {
             if (isLoading) {
-                //Fade out with timeout if first time
+                //Fade out with timeout if we are playing for the first time in a session
                 clearTimeout(window.player.fadeTimeout_);
                 window.player.setState_(sampleplayer.State.PLAYING, false);
                 window.player.fadeTimeout_ = setTimeout(function () {
@@ -1184,6 +1167,7 @@ The overlay layer holds:
                     window.player.fadeOut_(controlPlayPause, 0.75);
                 }, 5000);
             } else {
+                //If we come from a normal play
                 window.player.fadeOut_(mediaInfo_, 0.75);
                 window.player.fadeOut_(controlCurTime, 0.75);
                 window.player.fadeOut_(controlTotalTime, 0.75);
@@ -1197,11 +1181,8 @@ The overlay layer holds:
 
     window.mediaElement.addEventListener('pause', function(e) {
 
-
         //console.log(window.mediaPlayer.getState(['underflow']));
-
         //console.log(window.mediaPlayer.getState('underflow'));
-
 
         if (window.mediaPlayer.getState().underflow) {
             // video is paused because of buffering
@@ -1209,7 +1190,7 @@ The overlay layer holds:
             console.log("######### MEDIA ELEMENT Buffering");
             setHudMessage('mediaElementState','Buffering');
 
-            //The user agent is trying to fetch media data, but data is unexpectedly not forthcoming.
+
             var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
             var mediaInfo_ = window.player.element_.querySelector('.media-info');
 
@@ -1219,14 +1200,10 @@ The overlay layer holds:
 
                     window.player.setState_(sampleplayer.State.BUFFERING, false);
 
-                    //controlPlayPause.className = controlPlayPause.className +  " .buffer-spinner";
-
-
                     window.player.isBuffering = true;
                     window.player.fadeIn_(controlPlayPause, 0);
 
                     //Fade in artwork 5 seconds after buffering
-
                     window.player.bufferArtworkTimeout_ = setTimeout(function() {
                         window.player.fadeIn_(mediaInfo_, 0.75)
                     }, 5000);
@@ -1265,69 +1242,33 @@ The overlay layer holds:
                         window.player.fadeOut_(controlCurTime, 0.75);
                         window.player.fadeOut_(controlTotalTime, 0.75);
                         window.player.fadeOut_(controlTotalProgress, 0.75);
-                        //window.player.fadeOut_(controlPlayPause, 0.75);
                     }, 5000);
                 }
-
-
             }
         }
-
-
     });
 
     /** Buffering */
     window.mediaElement.addEventListener('waiting', function(e){
         console.log("######### MEDIA ELEMENT WAITING");
         setHudMessage('mediaElementState','Waiting');
+        //Not used with media player library
 
         //Playback has stopped because the next frame is not available, but the user agent expects that frame to become available in due course.
         //This is what we want for buffering
-        /*
-        if (window.player.state_ != sampleplayer.State.LOADING) {
-            //Buffer after 5 seconds
 
-            window.player.setState_(sampleplayer.State.BUFFERING, false);
-
-            //Fade in artwork 5 seconds after buffering
-            var mediaInfo_ = window.player.element_.querySelector('.media-info');
-            setTimeout(function() {
-                 window.player.fadeIn_(mediaInfo_, 0.75)
-            }, 5000);
-        }
-        */
     });
 
     window.mediaElement.addEventListener('stalled', function(e){
         console.log("######### MEDIA ELEMENT STALLED");
         setHudMessage('mediaElementState','Stalled');
-
+        //Not used with media player library
     });
 
     window.mediaElement.addEventListener('progress', function(e){
         setHudMessage('mediaElementState','Progress');
 
-        /*
-        if (window.player.state_ == sampleplayer.State.BUFFERING) {
-
-            clearTimeout(window.player.bufferTimeout_);
-            clearTimeout(window.player.bufferArtworkTimeout_);
-
-            var controlPlayPause_ = window.player.element_.querySelector('.controls-play-pause');
-            var mediaInfo_ = window.player.element_.querySelector('.media-info');
-
-            window.player.fadeOut_(controlPlayPause_, 0.75);
-            window.player.fadeOut_(mediaInfo_, 0.75);
-            //window.player.isBuffering_ = false;
-
-            window.player.setState_(sampleplayer.State.PLAYING, true);
-
-        }
-        */
-
-
-        //The user agent is fetching media data. (but can be playing)
-
+       //Not used with media player library
     });
 
     window.mediaElement.addEventListener('error', function(e){
@@ -1357,7 +1298,6 @@ The overlay layer holds:
     window.mediaElement.addEventListener('seeking', function(e){
         console.log("######### MEDIA ELEMENT SEEKING " + e);
 
-       //window.player.isSeeking_= true;
         var controlCurTime = window.player.element_.querySelector('.controls-cur-time');
         var controlTotalTime = window.player.element_.querySelector('.controls-total-time');
         var controlTotalProgress = window.player.element_.querySelector('.controls-progress');
@@ -1387,7 +1327,6 @@ The overlay layer holds:
 
         setHudMessage('mediaElementState','Seeked');
 
-        window.player.isSeeking_= false;
     });
 
 
