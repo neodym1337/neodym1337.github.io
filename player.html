@@ -1026,6 +1026,8 @@ The overlay layer holds:
                 'url': url
             });
 
+            //host.initialBandwidth = 3 * 1024 * 1024; // 3 MBPS   //Default is 2 MBPS
+
             window.mediaHost.onError = function (errorCode) {
                 console.error('### HOST ERROR - Fatal Error: code = ' + errorCode);
                 setHudMessage('mediaHostState', 'Fatal Error: code = ' + errorCode);
@@ -1041,25 +1043,7 @@ The overlay layer holds:
             };
 
             var initialTimeIndexSeconds = event.data['media']['currentTime'] || 0;
-            // TODO: real code would know what content it was going to access and this would not be here.
 
-
-            /*
-            var parser = document.createElement('a');
-            parser.href = url;
-
-            var ext = ext = parser.pathname.split('.').pop();
-            if (ext === 'm3u8') {
-                protocol =  cast.player.api.CreateHlsStreamingProtocol(window.mediaHost);
-            } else if (ext === 'mpd') {
-                protocol = cast.player.api.CreateDashStreamingProtocol(window.mediaHost);
-            } else if (ext === 'ism/') {
-                protocol = cast.player.api.CreateSmoothStreamingProtocol(window.mediaHost);
-            }
-
-            console.log('### Media Protocol Identified as ' + ext);
-            setHudMessage('mediaProtocol', ext);
-            */
 
             var protocol = null;
             protocol =  cast.player.api.CreateHlsStreamingProtocol(window.mediaHost);
@@ -1134,12 +1118,7 @@ The overlay layer holds:
     window.mediaElement.addEventListener('loadeddata', function(e){
         console.log("######### MEDIA ELEMENT DATA LOADED");
         setHudMessage('mediaElementState','Data Loaded');
-        /*
-        if(window.player.state_ == sampleplayer.State.LOADING){
 
-            window.mediaElement.play();
-        }
-        */
 
 
     });
@@ -1147,13 +1126,7 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT CAN PLAY");
         setHudMessage('mediaElementState','Can Play');
 
-        /*
-        if(window.mediaElement.seeking == false) {
-            // only play when we are not in the process of seeking
 
-            //window.player.setState_(sampleplayer.State.PLAYING, false);
-        }
-        */
     });
     window.mediaElement.addEventListener('ended', function(e){
         console.log("######### MEDIA ELEMENT ENDED");
@@ -1223,18 +1196,18 @@ The overlay layer holds:
     });
 
     window.mediaElement.addEventListener('pause', function(e) {
-        console.log("######### MEDIA ELEMENT Paused ");
-        setHudMessage('mediaElementState','Paused');
 
-        console.log(window.mediaPlayer.getState(['underflow']));
 
-        console.log(window.mediaPlayer.getState('underflow'));
-        //window.mediaPlayer
+        //console.log(window.mediaPlayer.getState(['underflow']));
+
+        //console.log(window.mediaPlayer.getState('underflow'));
+
 
         if (window.mediaPlayer.getState().underflow) {
             // video is paused because of buffering
             // handing buffering event here
-            console.log("Buffering");
+            console.log("######### MEDIA ELEMENT Buffering");
+            setHudMessage('mediaElementState','Buffering');
 
             //The user agent is trying to fetch media data, but data is unexpectedly not forthcoming.
             var controlPlayPause = window.player.element_.querySelector('.controls-play-pause');
@@ -1262,7 +1235,9 @@ The overlay layer holds:
             }
 
         } else {
-            consoloe.log("Paused");
+            console.log("######### MEDIA ELEMENT Paused ");
+            setHudMessage('mediaElementState','Paused');
+
             // video is paused for the other reason.
             clearTimeout(window.player.bufferTimeout_);
             clearTimeout(window.player.bufferArtworkTimeout_);
@@ -1327,16 +1302,13 @@ The overlay layer holds:
         console.log("######### MEDIA ELEMENT STALLED");
         setHudMessage('mediaElementState','Stalled');
 
-
-
-
     });
 
     window.mediaElement.addEventListener('progress', function(e){
         setHudMessage('mediaElementState','Progress');
 
+        /*
         if (window.player.state_ == sampleplayer.State.BUFFERING) {
-
 
             clearTimeout(window.player.bufferTimeout_);
             clearTimeout(window.player.bufferArtworkTimeout_);
@@ -1351,6 +1323,7 @@ The overlay layer holds:
             window.player.setState_(sampleplayer.State.PLAYING, true);
 
         }
+        */
 
 
         //The user agent is fetching media data. (but can be playing)
@@ -1379,12 +1352,6 @@ The overlay layer holds:
 
         //The user agent is intentionally not currently fetching media data. (but can be playing)
     });
-
-
-
-
-
-
 
     /** Seeking */
     window.mediaElement.addEventListener('seeking', function(e){
@@ -1450,16 +1417,7 @@ The overlay layer holds:
      * Supporting CEC
      **/
     document.addEventListener('webkitvisibilitychange', function(){
-        /*
-        if(document.webkithidden) {
-            //window.mediaElement.pause(); // Pause playback
-            //window.timeout = window.setTimeout(function(){window.close();}, 10000); // 10 second timeout
-        } else {
-            //window.mediaElement.play(); // Resume media playback
-            //window.clearTimeout(window.timeout); // Turn off the timeout
-            //window.timeout = null;
-        }
-        */
+
         if (document.webkitHidden) { // It is hidden
             //window.mediaElement.pause(); // Pause playback
             //window.mediaElement.play(); // Resume media playback
@@ -1472,13 +1430,9 @@ The overlay layer holds:
 
         } else { // It is visible
             console.log("### Webkit Visibility Changed : True");
-
-
             window.player.mediaElement_.play();
-
             window.clearTimeout(window.timeout); // Turn off the timeout
             window.timeout = null;
-
 
         }
     });
