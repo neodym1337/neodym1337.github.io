@@ -1058,7 +1058,12 @@ The overlay layer holds:
                 // Player registers to listen to the media element events through the mediaHost property of the
                 // mediaElement
                 window.mediaPlayer = new cast.player.api.Player(window.mediaHost);
-                window.mediaPlayer.load(protocol, initialTimeIndexSeconds);
+                if (contentType = "livestream") {
+                    window.mediaPlayer.load(protocol, Number.POSITIVE_INFINITY);
+                }else {
+                    window.mediaPlayer.load(protocol, initialTimeIndexSeconds);
+
+                }
             }
         }
     }
