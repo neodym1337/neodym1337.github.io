@@ -1031,10 +1031,16 @@ The overlay layer holds:
 
                 if (window.mediaPlayer !== null) {
 
-                    window.mediaPlayer.unload();
-                    //window.mediaPlayer.reload();
+                    if (errorCode == 3) {
+                        window.mediaPlayer.reload();
 
-                    mediaManager.resetMediaElement(cast.receiver.media.IdleReason.ERROR);
+                    } else {
+
+                        window.mediaPlayer.unload();
+
+
+                        mediaManager.resetMediaElement(cast.receiver.media.IdleReason.ERROR);
+                    }
                 }
                 window.mediaManager.sendLoadError();
             };
