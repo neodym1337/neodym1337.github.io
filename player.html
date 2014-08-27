@@ -1039,6 +1039,8 @@ The overlay layer holds:
              cast.player.api.ErrorCode.PLAYBACK
              Error related to media playback.
 
+             {MANIFEST:0,PLAYBACK:1,MEDIAKEYS:2,NETWORK:3}
+
             */
             window.mediaHost.onError = function (errorCode) {
                 console.error('### HOST ERROR - Fatal Error: code = ' + errorCode);
@@ -1081,9 +1083,10 @@ The overlay layer holds:
                 // Player registers to listen to the media element events through the mediaHost property of the
                 // mediaElement
                 window.mediaPlayer = new cast.player.api.Player(window.mediaHost);
-                if (contentType = "livestream") {
+                if (contentType == "livestream") {
                     window.mediaPlayer.load(protocol, Number.POSITIVE_INFINITY);
                 }else {
+
                     window.mediaPlayer.load(protocol, initialTimeIndexSeconds);
 
                 }
