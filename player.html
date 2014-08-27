@@ -131,7 +131,6 @@ The overlay layer holds:
     sampleplayer.Type = {
         IMAGE: 'image',
         VIDEO: 'video',
-        LIVESTREAM: 'livestream'
     };
 
     /**
@@ -294,7 +293,7 @@ The overlay layer holds:
         // HLS stream mimetype 'application/vnd.apple.mpegURL'
         if (mimeType.indexOf('application/vnd.apple.mpegURL') == 0) {
             this.type_ = sampleplayer.Type.VIDEO;
-            //this.isLivestream = false;
+            this.isLivestream_ = false;
 
             $(".controls-total-time").show();
             $(".controls-progress").show();
@@ -302,7 +301,7 @@ The overlay layer holds:
         if(mimeType.indexOf('livestream') == 0) {
             //this.type_ =  sampleplayer.Type.LIVESTREAM;
             this.type_ = sampleplayer.Type.VIDEO;
-
+            this.isLivestream_ = true;
             /*
             var controlTotalTime = window.mediaElement.querySelector('.controls-total-time');
             var controlTotalProgress = window.mediaElement.querySelector('.controls-progress');
@@ -311,6 +310,7 @@ The overlay layer holds:
             controlTotalProgress.style.display = 'none';
             */
 
+            $(".controls-cur-time").text('Live');
             $(".controls-total-time").hide();
             $(".controls-progress").hide();
         }
@@ -1374,7 +1374,7 @@ The overlay layer holds:
 
         var curTime = window.player.mediaElement_.currentTime;
         var totalTime = window.player.mediaElement_.duration;
-        if (!isNaN(curTime) && !isNaN(totalTime)) {
+        if (!isNaN(curTime) && !isNaN(totalTime) && !window.player.isLivestream_) {
             var pct = 100 * (curTime / totalTime);
             //console.log("current time "+ sampleplayer.formatDuration_(curTime));
             //console.log("\n totalTime time "+ sampleplayer.formatDuration_(totalTime));
