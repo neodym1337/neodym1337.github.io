@@ -201,12 +201,31 @@
     };
 
     sampleplayer.fetchJson_ = function() {
+
+        $.getJSON('http://www.br.de/system/halTocJson.jsp', function(json) {
+
+            var tocURL = json.medcc.version["0"].href;
+            console.log('Startpage url' + startpageURL);
+
+            $.getJSON(tocURL, function(json) {
+
+                var startpageURL = json._links.home.href;
+
+                $.getJSON(startpageURL, function(json) {
+
+                    var test = sampleplayer.parseJson_(json);
+
+                });
+
+            });
+
+        });
+        /*
         $.getJSON('startpage.json', function(json) {
             //console.log(json);
             var test = sampleplayer.parseJson_(json);
-            //TODO: We should fetch the startpage every time receiver enters idle
         });
-
+        */
     };
 
     /** Parses json object and pushes it to the idle media object array */
