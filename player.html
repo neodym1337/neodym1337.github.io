@@ -157,6 +157,8 @@
 
     sampleplayer.CastPlayer = function(element) {
 
+        sampleplayer.fetchJson_();
+
         this.element_ = element;
 
         this.isLivestream_;
@@ -192,7 +194,9 @@
         this.currentSliderIndex_ = 1;
 
 
-        var test = sampleplayer.fetchJson_();
+        //var test =
+
+
 
     };
 
@@ -226,7 +230,6 @@
             }
 
             var media = new Media(title, subtitle, description, tag, imageURLs);
-
             data.push(media);
         });
     };
@@ -919,6 +922,8 @@
     window.mediaManager.onLoad = function(event) {
         console.log("### Media Manager - LOAD: " + JSON.stringify(event));
         setHudMessage('mediaManagerMessage', 'LOAD ' + JSON.stringify(event));
+
+        sampleplayer.fetchJson_();
 
         var self = window.player;
 
