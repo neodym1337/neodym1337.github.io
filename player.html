@@ -273,9 +273,6 @@
         var self = this;
         clearTimeout(self.delay_);
 
-
-
-
         if (delay) {
             var func = function() { self.setState_(state, crossfade); };
             self.delay_ = setTimeout(func, delay);
@@ -843,8 +840,8 @@
 
         if ((totalTime - seekTime) < 3.0) { event.data.currentTime = totalTime - 5.0}
 
-        console.log("TOTAL TIME OF THE VIDEO " + totalTime);
-        console.log("Skip to second " + seekTime);
+        //console.log("TOTAL TIME OF THE VIDEO " + totalTime);
+        //console.log("Skip to second " + seekTime);
 
 
         window.mediaManager['onSeekOrig'](event);
