@@ -205,11 +205,13 @@
         $.getJSON('http://www.br.de/system/halTocJson.jsp', function(json) {
 
             var tocURL = json.medcc.version["0"].href;
-            console.log('Startpage url' + startpageURL);
+            console.log('Startpage url' + tocURL);
 
             $.getJSON(tocURL, function(json) {
 
                 var startpageURL = json._links.home.href;
+
+                console.log('Startpage url' + startpageURL);
 
                 $.getJSON(startpageURL, function(json) {
 
