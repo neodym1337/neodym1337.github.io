@@ -733,7 +733,7 @@
      */
     window.mediaManager.onError = function(obj) {
 
-        console.log("### Media Manager - error: " + JSON.stringify(obj));
+        console.log("### Media Manager - error: " + obj);
         //setHudMessage('mediaManagerMessage', 'ERROR - ' + JSON.stringify(obj));
 
         window.player.setState_(sampleplayer.State.DONE, true);
@@ -1294,7 +1294,7 @@
     });
 
     window.mediaElement.addEventListener('error', function(e){
-        console.log("######### MEDIA ELEMENT ERROR " + e);
+        console.log("######### MEDIA ELEMENT ERROR " + e.code);
         setHudMessage('mediaElementState','Error');
 
         window.player.setState_(sampleplayer.State.DONE, false);
