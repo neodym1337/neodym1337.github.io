@@ -319,7 +319,7 @@
     };
 
     sampleplayer.CastPlayer.prototype.startIdleSlider_ = function() {
-        if(data.length() > 0) {
+        if(data.length > 0) {
             $("#idle-info-sender").html("<p>Sie können dieses Video von ihrem Gerät mit der BR Mediatheks App für " +
                     "iOS oder Android auswählen.<span> <img src='assets/br-logo-blue-launch.png' alt='logo'> </span></p>");
             this.idleSliderTimeout = setTimeout(function(){
