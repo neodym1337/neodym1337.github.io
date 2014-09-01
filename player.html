@@ -200,7 +200,7 @@
     };
 
     sampleplayer.fetchJson_ = function() {
-        setTimeout(function() {
+        //setTimeout(function() {
                     $.getJSON('http://www.br.de/system/halTocJson.jsp', function(json) {
 
                         var tocURL = json.medcc.version["0"].href;
@@ -222,7 +222,7 @@
                         });
 
                     });
-                }(), 10000);
+ //               }(), 10000); // test to see what happens if the json takes 10 seconds to load
 
         /*
         $.getJSON('startpage.json', function(json) {
