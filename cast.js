@@ -29,7 +29,7 @@ $(document).ready(function () {
     };
 
     //window.messageBus = {} // TODO get CastMessageBus
-    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
+    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:se.johan.maze');
     //window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
 
     /**
