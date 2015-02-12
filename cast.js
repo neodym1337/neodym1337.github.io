@@ -14,9 +14,8 @@ $(document).ready(function () {
 
     // TODO log level
 
-    cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
-    cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
+    cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
     //window.castReceiverManager = {}; // TODO get CastReceiverManager
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
