@@ -13,11 +13,10 @@ function checkDebug() {
 $(document).ready(function () {
 
     // TODO log level
-
-    cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
-
     //window.castReceiverManager = {}; // TODO get CastReceiverManager
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+
+    cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
     log('Starting receiver manager');
 
@@ -44,7 +43,7 @@ $(document).ready(function () {
      * There is no default handler
      */
     window.castReceiverManager.onSenderConnected = function(event) {
-        //console.log("### Cast Receiver Manager - Sender Connected : " + JSON.stringify(event));
+    
         log('Received sender connected event ' + event.data);
         addPlayer(event.senderId);
 

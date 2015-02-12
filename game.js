@@ -63,7 +63,7 @@ function makeMaze() {
 function handleMessage(action, playerId) {
     var player = theMaze.players[playerId];
     if (player) {
-        handleKeypress(action, player);
+        handleKeypress(action, playerId);
     }
 }
 
