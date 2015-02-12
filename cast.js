@@ -42,7 +42,8 @@ $(document).ready(function () {
      * There is no default handler
      */
     window.castReceiverManager.onSenderConnected = function(event) {
-        console.log("### Cast Receiver Manager - Sender Connected : " + JSON.stringify(event));
+        //console.log("### Cast Receiver Manager - Sender Connected : " + JSON.stringify(event));
+        log('Received sender connected event ' + event.data);
         addPlayer(event.senderId);
 
     }
