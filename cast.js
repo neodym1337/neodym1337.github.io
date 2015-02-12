@@ -16,8 +16,6 @@ $(document).ready(function () {
 
     cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
-    cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
-
     //window.castReceiverManager = {}; // TODO get CastReceiverManager
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
 
@@ -29,7 +27,7 @@ $(document).ready(function () {
     };
 
     //window.messageBus = {} // TODO get CastMessageBus
-    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
+    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:se.johan.maze');
     //window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
 
     /**
