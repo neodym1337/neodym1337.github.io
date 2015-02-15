@@ -1,0 +1,10 @@
+{
+    "name": "cast-maze",
+    "version": "0.0.0",
+    "dependencies": {
+        "grunt": "~0.4.4",
+        "grunt-contrib-copy": "~0.5.0",
+        "grunt-gh-pages": "~0.9.1",
+        "grunt-contrib-clean": "~0.4.0"
+    }
+}

@@ -12,31 +12,29 @@ function checkDebug() {
 
 $(document).ready(function () {
 
-    // TODO: 1. ------------------ Get castreceiver manager
+    // TODO log level
     //window.castReceiverManager = {}; // TODO get CastReceiverManager
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
 
-    
-	log('Starting receiver manager');
-
     cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
-   
+    log('Starting receiver manager');
 
     window.castReceiverManager.onReady = function (event) {
         log('Received ready event ' + JSON.stringify(event.data));
         window.castReceiverManager.setApplicationState("Application status is ready...");
     };
 
-   //TODO: 2. ------------------ Get castReceiverManager message bus
+    //window.messageBus = {} // TODO get CastMessageBus
     //window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:se.johan.maze');
     window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
 
     //window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
 
- 
-    
-
+    /**
+     * When sender connected
+     */
+    // TODO onSenderConnected call addPlayer(<id>)
     /**
      * If provided, it processes the 'senderconnected' event.
      * Called to process the 'senderconnected' event.
@@ -46,7 +44,6 @@ $(document).ready(function () {
      */
     window.castReceiverManager.onSenderConnected = function(event) {
     
-    	// TODO: 4. ------------------onSenderConnected call addPlayer(<id>)
         log('Received sender connected event ' + event.data);
         addPlayer(event.senderId);
 
@@ -70,10 +67,15 @@ $(document).ready(function () {
      */
     window.messageBus.onMessage = function (event) {
         log('Message [' + event.senderId + '] ' + event.data);
-        //  TODO: 5 ------------------call method to move player with direction
+        // TODO call method to move player with direction
         handleMessage(event.data, event.senderId); 
     };
 
+    /**
+     * Start receiver
+     */
+    // TODO start CastReceiverManager
+    log('Receiver manager started');
 
       /**
      * Application config
@@ -99,19 +101,11 @@ $(document).ready(function () {
     appConfig.maxInactivity = 6000; // 10 minutes for testing, use default 10sec in prod by not setting this value
 
     /**
-     * Start receiver
      * Initializes the system manager. The application should call this method when
      * it is ready to start receiving messages, typically after registering
      * to listen for the events it is interested on.
      */
- 
-    // TODO: 3. ------------------ start CastReceiverManager
-
     window.castReceiverManager.start(appConfig);
-
-
-  
-    log('Receiver manager started');
 
     /**
      * Misc method to log into console box in web view
