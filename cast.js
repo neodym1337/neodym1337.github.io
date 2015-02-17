@@ -12,7 +12,7 @@ function checkDebug() {
 
 $(document).ready(function () {
 
-    // TODO: 1. ------------------ Get castreceiver manager
+    // TODO: 1. ------------------ Get castreceiver manager 
     //window.castReceiverManager = {}; // TODO get CastReceiverManager
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
 
@@ -29,8 +29,8 @@ $(document).ready(function () {
     };
 
    //TODO: 2. ------------------ Get castReceiverManager message bus
-    //window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:se.johan.maze');
-    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
+    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:se.johan.workshop.cast.maze');
+    //window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
 
     //window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
 
@@ -42,7 +42,6 @@ $(document).ready(function () {
      * Called to process the 'senderconnected' event.
      * @param {cast.receiver.CastReceiverManager.Event} event - can be null
      *
-     * There is no default handler
      */
     window.castReceiverManager.onSenderConnected = function(event) {
     
