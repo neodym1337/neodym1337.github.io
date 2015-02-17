@@ -29,8 +29,8 @@ $(document).ready(function () {
     };
 
    //TODO: 2. ------------------ Get castReceiverManager message bus
-    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:se.johan.workshop.cast.maze');
-    //window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
+    //window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:se.johan.workshop.cast.maze');
+    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
 
     //window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
 
